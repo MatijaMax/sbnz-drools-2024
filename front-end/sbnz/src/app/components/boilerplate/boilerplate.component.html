@@ -43,7 +43,7 @@
           </td>
         </tr>
       </td>
-      <td><button [disabled]="loggedUser && loggedUser.role=='ROLE_Regular'">Buy this arrangement!</button></td>
+      <td><button *ngIf="loggedUser && loggedUser.role=='ROLE_Regular'">Buy this arrangement!</button></td>
     </tr>
   </tbody>
 </table>

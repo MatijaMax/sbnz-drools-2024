@@ -44,7 +44,7 @@ public class UserController {
         user.setCompanyInformation(userDTO.getCompanyInformation());
         user.setProfession(userDTO.getProfession());
         user.setPhoneNumber(userDTO.getPhoneNumber());
-        List<Role> roles = roleService.findByName("Regular");
+        List<Role> roles = roleService.findByName("ROLE_Regular");
         user.setRoles(roles);
         user = userService.save(user);
         UserResponseDTO userResponseDTO = new UserResponseDTO(user);
@@ -62,7 +62,7 @@ public class UserController {
         user.setCompanyInformation(userDTO.getCompanyInformation());
         user.setProfession(userDTO.getProfession());
         user.setPhoneNumber(userDTO.getPhoneNumber());
-        List<Role> roles = roleService.findByName("Admin");
+        List<Role> roles = roleService.findByName("ROLE_Admin");
         user.setRoles(roles);
         user = userService.save(user);
         UserResponseDTO userResponseDTO = new UserResponseDTO(user);
