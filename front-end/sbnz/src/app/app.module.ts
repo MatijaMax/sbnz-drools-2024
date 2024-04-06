@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RegisterComponent } from './components/register/register.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,12 +14,16 @@ import {MatIconModule} from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { BoilerplateComponent } from './components/boilerplate/boilerplate.component';
+import { LoginComponent } from './components/login/login.component';
+import { TokenInterceptor } from './interceptor/TokenInterceptor';
+import { UserServiceService } from './services/user-service.service';
 
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'companies', pathMatch: 'full'},
   { path: 'boilerplate', component: BoilerplateComponent},
-  { path: 'register', component: RegisterComponent}
+  { path: 'register', component: RegisterComponent},
+  { path: 'login', component: LoginComponent},
 ]
 
 @NgModule({
@@ -27,7 +31,8 @@ const appRoutes: Routes = [
     AppComponent,
     NavbarComponent,
     RegisterComponent,
-    BoilerplateComponent
+    BoilerplateComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +48,14 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
+    UserServiceService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -5,6 +5,7 @@ import sbnz.domain.Student;
 import sbnz.domain.User;
 import sbnz.dto.UserCreateDTO;
 import sbnz.dto.UserResponseDTO;
+import sbnz.service.RoleService;
 import sbnz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,8 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private RoleService roleService;
     @GetMapping(value = "/all")
     public ResponseEntity<List<UserResponseDTO>> getAllUsers(){
         List<User> users = userService.findAll();
@@ -41,7 +44,8 @@ public class UserController {
         user.setCompanyInformation(userDTO.getCompanyInformation());
         user.setProfession(userDTO.getProfession());
         user.setPhoneNumber(userDTO.getPhoneNumber());
-        user.setRole(Role.Regular);
+        List<Role> roles = roleService.findByName("Regular");
+        user.setRoles(roles);
         user = userService.save(user);
         UserResponseDTO userResponseDTO = new UserResponseDTO(user);
         return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
