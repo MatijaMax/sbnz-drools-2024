@@ -79,7 +79,7 @@ public class StudentController {
         if (student == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-/*
+
         KieServices ks = KieServices.Factory.get();
         KieContainer kieContainer = ks.getKieClasspathContainer();
         KieSession kSession = kieContainer.newKieSession("ksession-rules");
@@ -147,7 +147,8 @@ public class StudentController {
         int fired = kSession.fireAllRules();
         System.out.println(fired);
 
-        System.out.println("Category: " + c1.getCategory()); */
+        System.out.println("Category: " + c1.getCategory());
+
 
         return new ResponseEntity<>(new StudentDTO(student), HttpStatus.OK);
     }

@@ -1,0 +1,18 @@
+<div class="register-container" style="margin-top: 40px">
+  <form [formGroup]="registerForm">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <mat-label>Price</mat-label>
+      <input matInput formControlName="price" />
+    </mat-form-field>
+    <br />
+
+    <button mat-flat-button color="primary" (click)="RegisterArr()">
+      Register
+    </button>
+  </form>
+</div>
