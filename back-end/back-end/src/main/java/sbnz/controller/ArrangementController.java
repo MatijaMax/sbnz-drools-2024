@@ -12,8 +12,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sbnz.domain.Arrangement;
 import sbnz.domain.Student;
+import sbnz.domain.Trip;
 import sbnz.dto.ArrangementDTO;
+import sbnz.dto.ArrangementWithTripsDTO;
 import sbnz.dto.StudentDTO;
+import sbnz.dto.TripDTO;
 import sbnz.model.Customer;
 import sbnz.model.Item;
 import sbnz.model.Order;
@@ -22,10 +25,7 @@ import sbnz.service.ArrangementService;
 import sbnz.service.StudentService;
 import sbnz.util.DebugAgendaEventListener;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RestController
@@ -143,4 +143,62 @@ public class ArrangementController {
         return new ResponseEntity<>(new ArrangementDTO(arrangement), HttpStatus.CREATED);
     }
 
+    @GetMapping(value = "/{arrangementId}/trips")
+    public ResponseEntity<List<TripDTO>> getArrangementTrips(@PathVariable Integer arrangementId) {
+
+        Arrangement arrangement = aService.findOneWithTrips(arrangementId);
+        if(arrangement == null) {
+            List<TripDTO> tDTOs = new ArrayList<>();
+            return new ResponseEntity<>(tDTOs, HttpStatus.OK);
+        }
+        Set<Trip> trips = arrangement.getTrips();
+        List<TripDTO> tripDTOS = new ArrayList<>();
+
+        for (Trip e : trips) {
+            tripDTOS.add(new TripDTO(e));
+        }
+        return new ResponseEntity<>(tripDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{arrangementId}/withTrips")
+    public ResponseEntity<ArrangementWithTripsDTO> getArrangementWithTrips(@PathVariable Integer arrangementId) {
+
+        Arrangement arrangement = aService.findOneWithTrips(arrangementId);
+        if(arrangement == null) {
+            ArrangementWithTripsDTO adto = new ArrangementWithTripsDTO();
+            return new ResponseEntity<>(adto, HttpStatus.OK);
+        }
+        Set<Trip> trips = arrangement.getTrips();
+        Set<TripDTO> tripDTOS = new HashSet<>();
+
+        for (Trip e : trips) {
+            tripDTOS.add(new TripDTO(e));
+        }
+
+        ArrangementWithTripsDTO adto = new ArrangementWithTripsDTO(arrangement);
+        adto.setTrips(tripDTOS);
+        return new ResponseEntity<>(adto, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/allWithTrips")
+    public ResponseEntity<List<ArrangementWithTripsDTO>> getAllWithTrips() {
+
+        List<Arrangement> arrangements = aService.findAllWithTrips();
+        System.out.println(arrangements);
+
+        List<ArrangementWithTripsDTO> arrangementDTOs = new ArrayList<>();
+        for (Arrangement a : arrangements) {
+            Set<Trip> trips = a.getTrips();
+            Set<TripDTO> tripDTOS = new HashSet<>();
+
+            for (Trip e : trips) {
+                tripDTOS.add(new TripDTO(e));
+            }
+            ArrangementWithTripsDTO adto = new ArrangementWithTripsDTO(a);
+            adto.setTrips(tripDTOS);
+            arrangementDTOs.add(adto);
+        }
+
+        return new ResponseEntity<>(arrangementDTOs, HttpStatus.OK);
+    }
 }

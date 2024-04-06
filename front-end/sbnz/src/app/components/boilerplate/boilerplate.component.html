@@ -1,1 +1,49 @@
-<h1>BOILERPLATE</h1>
+<h1>Arragements</h1>
+<table class="place-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Price of the arrangement (per person)</th>
+      <th>Number of people going</th>
+      <th><h3>Trips that we offer</h3></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let arrangement of arrangementsAll">
+      <td>{{ arrangement.id }}</td>
+      <td>{{ arrangement.name }}</td>
+      <td>{{ arrangement.price }}</td>
+      <td><input type="number" /></td>
+      <td>
+        <tr>
+          <td colspan="3">
+            <div class="subtable">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price of the trip (per person)</th>
+                    <th>Number of people going to the trip</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let trip of arrangement.trips">
+                    <td>{{ trip.id }}</td>
+                    <td>{{ trip.name }}</td>
+                    <td>{{ trip.description }}</td>
+                    <td>{{ trip.price }}</td>
+                    <td><input type="number" /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
+      </td>
+      <td><button>Buy this arrangement!</button></td>
+    </tr>
+  </tbody>
+</table>
