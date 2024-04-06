@@ -1,20 +1,23 @@
 package sbnz.domain;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
+@Table(name="arrangements", schema = "isa")
 public class Arrangement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
 
     @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "price", nullable = false)
     private Integer price;
+
+    @OneToMany(mappedBy = "arrangement", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Trip> trips = new HashSet<Trip>();
 
     public Arrangement() {
         super();
@@ -25,6 +28,21 @@ public class Arrangement {
         this.id = id;
         this.name = name;
         this.price = price;
+    }
+
+    public Arrangement(Integer id, String name, Integer price, Set<Trip> trips) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.trips = trips;
+    }
+
+    public Set<Trip> getTrips() {
+        return trips;
+    }
+
+    public void setTrips(Set<Trip> trips) {
+        this.trips = trips;
     }
 
     public Integer getId() {
