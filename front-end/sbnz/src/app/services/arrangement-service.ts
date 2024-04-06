@@ -16,4 +16,10 @@ export class ArrangementService {
       arrangement
     );
   }
+
+  getAllWithTrips(): Observable<any> {
+    return this.http.get<any>(
+      environment.apiHost + 'arrangements/allWithTrips'
+    );
+  }
 }
