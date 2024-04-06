@@ -3,6 +3,7 @@ package sbnz.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sbnz.domain.Trip;
 import sbnz.dto.TripCreateDTO;
@@ -31,8 +32,9 @@ public class TripController {
         return new ResponseEntity<>(tripDTOs, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<TripDTO> saveStudent(@RequestBody TripCreateDTO eDTO) {
+    public ResponseEntity<TripDTO> save(@RequestBody TripCreateDTO eDTO) {
 
         Trip e = new Trip();
         e.setDescription(eDTO.getDescription());
