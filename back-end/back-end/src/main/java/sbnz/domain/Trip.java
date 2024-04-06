@@ -14,6 +14,10 @@ public class Trip {
     private String description;
     @Column(name = "price", nullable = false)
     private Integer price;
+    @Column(name = "type", nullable = false)
+    private TRIPTYPE type;
+    public enum TRIPTYPE {HISTORY, ADVENTURE, SOCIAL, EXTREME};
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "arrangementId", nullable = true)
     private Arrangement arrangement;
@@ -23,25 +27,28 @@ public class Trip {
         super();
     }
 
-    public Trip(Integer id, String name, String description, Integer price) {
+    public Trip(Integer id, String name, String description, Integer price, TRIPTYPE type) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.type = type;
     }
 
-    public Trip(Integer id, String name, String description, Integer price, Arrangement arrangement) {
+    public Trip(Integer id, String name, String description, Integer price, TRIPTYPE type, Arrangement arrangement) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.type = type;
         this.arrangement = arrangement;
     }
 
-    public Trip(String name, String description, Integer price) {
+    public Trip(String name, String description, Integer price, TRIPTYPE type) {
         this.name = name;
         this.description = description;
         this.price = price;
+        this.type = type;
     }
 
     public Integer getId() {
@@ -74,6 +81,14 @@ public class Trip {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public TRIPTYPE getType() {
+        return type;
+    }
+
+    public void setType(TRIPTYPE type) {
+        this.type = type;
     }
 
     public Arrangement getArrangement() {

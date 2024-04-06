@@ -14,7 +14,7 @@ import { ArrangementService } from 'src/app/services/arrangement-service';
 export class RegisterArrangementComponent {
   arrangement: ArrangementCreate = { name: '', price: 0 };
   createdArrangement: Arrangement = { name: '', price: 0, id: 0 };
-  trip: TripCreate = { name: '', price: 0, description: '', arrangementId: 0 };
+  trip: TripCreate = { name: '', price: 0, description: '', arrangementId: 0, type: '' };
   registerForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
     price: new FormControl(0, [Validators.required]),
@@ -39,12 +39,13 @@ export class RegisterArrangementComponent {
     this.arrangement.price = this.registerForm.value.price || 0;
   }
   AddTrip() {
+    console.log(this.trip);
     this.trip.arrangementId = this.createdArrangement.id;
     this.arrService.addTrip(this.trip).subscribe({
       next: () => {
         console.log(this.trip);
         alert('tour registered');
-        this.trip = { name: '', price: 0, description: '', arrangementId: 0 };
+        this.trip = { name: '', price: 0, description: '', arrangementId: 0, type: ''};
       },
     });
   }

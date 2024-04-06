@@ -40,6 +40,7 @@ public class TripController {
         e.setDescription(eDTO.getDescription());
         e.setName(eDTO.getName());
         e.setPrice(eDTO.getPrice());
+        e.setType(eDTO.getType());
 
         e.setArrangement(arrangementService.getById(eDTO.getArrangementId()));
 

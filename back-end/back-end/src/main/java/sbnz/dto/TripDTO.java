@@ -7,19 +7,22 @@ public class TripDTO {
     private String name;
     private String description;
     private Integer price;
+    private Trip.TRIPTYPE type;
 
     public TripDTO(Trip e) {
         this.id = e.getId();
         this.name = e.getName();
         this.description = e.getDescription();
         this.price = e.getPrice();
+        this.type = e.getType();
     }
 
-    public TripDTO(Integer id, String name, String description, Integer price) {
+    public TripDTO(Integer id, String name, String description, Integer price, Trip.TRIPTYPE type) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.type = type;
     }
 
     public Integer getId() {
@@ -52,5 +55,13 @@ public class TripDTO {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public Trip.TRIPTYPE getType() {
+        return type;
+    }
+
+    public void setType(Trip.TRIPTYPE type) {
+        this.type = type;
     }
 }
