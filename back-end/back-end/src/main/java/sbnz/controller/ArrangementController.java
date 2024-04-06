@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RestController
 @RequestMapping(value = "api/arrangements")
 public class ArrangementController {
@@ -130,10 +131,11 @@ public class ArrangementController {
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<ArrangementDTO> saveStudent(@RequestBody ArrangementDTO arrangementDTO) {
+    public ResponseEntity<ArrangementDTO> save(@RequestBody ArrangementDTO arrangementDTO) {
 
         Arrangement arrangement = new Arrangement();
         arrangement.setName(arrangementDTO.getName());
+        arrangement.setPrice(arrangementDTO.getPrice());
 
         arrangement = aService.save(arrangement);
         return new ResponseEntity<>(new ArrangementDTO(arrangement), HttpStatus.CREATED);

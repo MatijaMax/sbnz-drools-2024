@@ -13,14 +13,18 @@ public class Arrangement {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "price", nullable = false)
+    private Integer price;
+
     public Arrangement() {
         super();
     }
 
-    public Arrangement(Integer id, String name) {
+    public Arrangement(Integer id, String name, Integer price) {
         super();
         this.id = id;
         this.name = name;
+        this.price = price;
     }
 
     public Integer getId() {
@@ -78,5 +82,13 @@ public class Arrangement {
     @Override
     public String toString() {
         return "Arrangement [id=" + id + ", firstName=" + name + "]";
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 }

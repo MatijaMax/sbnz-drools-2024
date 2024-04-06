@@ -8,26 +8,28 @@ import { RegisterComponent } from './components/register/register.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { BoilerplateComponent } from './components/boilerplate/boilerplate.component';
-
+import { RegisterArrangementComponent } from './components/register-arrangement/register-arrangement.component';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: 'companies', pathMatch: 'full'},
-  { path: 'boilerplate', component: BoilerplateComponent},
-  { path: 'register', component: RegisterComponent}
-]
+  { path: '', redirectTo: 'companies', pathMatch: 'full' },
+  { path: 'boilerplate', component: BoilerplateComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'register-arrangement', component: RegisterArrangementComponent },
+];
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     RegisterComponent,
-    BoilerplateComponent
+    BoilerplateComponent,
+    RegisterArrangementComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,9 +43,9 @@ const appRoutes: Routes = [
     MatIconModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
