@@ -18,6 +18,7 @@ import { LoginComponent } from './components/login/login.component';
 import { TokenInterceptor } from './interceptor/TokenInterceptor';
 import { UserServiceService } from './services/user-service.service';
 import { RegisterArrangementComponent } from './components/register-arrangement/register-arrangement.component';
+import { MatSelectModule } from '@angular/material/select';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'companies', pathMatch: 'full' },
@@ -48,6 +49,7 @@ const appRoutes: Routes = [
     MatIconModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSelectModule,
     RouterModule.forRoot(appRoutes),
   ],
   providers: [

@@ -50,4 +50,22 @@ public class UserController {
         UserResponseDTO userResponseDTO = new UserResponseDTO(user);
         return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
     }
+    @PostMapping(consumes = "application/json", path = "/admin")
+    public ResponseEntity<UserResponseDTO> saveAdmin(@RequestBody UserCreateDTO userDTO){
+        User user = new User();
+        user.setEmail(userDTO.getEmail());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setCity(userDTO.getCity());
+        user.setCountry(userDTO.getCountry());
+        user.setPassword(userDTO.getPassword());
+        user.setCompanyInformation(userDTO.getCompanyInformation());
+        user.setProfession(userDTO.getProfession());
+        user.setPhoneNumber(userDTO.getPhoneNumber());
+        List<Role> roles = roleService.findByName("Admin");
+        user.setRoles(roles);
+        user = userService.save(user);
+        UserResponseDTO userResponseDTO = new UserResponseDTO(user);
+        return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
+    }
 }
