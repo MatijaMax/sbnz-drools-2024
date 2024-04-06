@@ -1,8 +1,9 @@
 <mat-toolbar color="primary">
-  <span class="spacer">SBNZ</span>
-  <a mat-button [routerLink]="['/boilerplate']">Matija kralju moj </a>
-  <a mat-button>Propeleros 🤡</a>
-  <a mat-button [routerLink]="['/register']">Register</a>
-  <a mat-button [routerLink]="['/register-arrangement']">New arrangement</a>
-  <a mat-button>Log in</a>
+    <span class="spacer">SBNZ</span>
+     <a mat-button [routerLink]="['/boilerplate']">Matija kralju moj </a>
+     <a mat-button>Propeleros 🤡</a>
+     <a *ngIf="!user || user.email == ''" mat-button [routerLink]="['/register']">Register</a>
+     <a *ngIf="user && user.role == 'ROLE_Admin'" mat-button [routerLink]="['/register-arrangement']">New arrangement</a>
+     <a *ngIf="!user || user.email == ''" mat-button [routerLink]="['/login']">Log in</a>
+     <a *ngIf="user && user.email != ''" mat-button [routerLink]="['/login']" class="mat-button-soft" (click)="logout()">Log out</a>
 </mat-toolbar>

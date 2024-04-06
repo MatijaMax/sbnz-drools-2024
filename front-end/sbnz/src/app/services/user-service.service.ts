@@ -14,4 +14,7 @@ export class UserServiceService {
   registerUser(user: UserCreate): Observable<any> {
     return this.http.post<any>(environment.apiHost + "users", user);
   }
+  registerAdmin(user: UserCreate): Observable<any> {
+    return this.http.post<any>(environment.apiHost + "users/admin", user);
+  }
 }

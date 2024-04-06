@@ -1,6 +1,14 @@
 <div class="register-container" style="margin-top: 40px;">
     <form [formGroup]="registerForm">
     <mat-form-field>
+        <mat-label>Account type</mat-label>
+        <mat-select required formControlName="accountType">
+            <mat-option value="Regular">Regular</mat-option>
+            <mat-option value="Admin">Admin</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
       <mat-label>First name</mat-label>
       <input matInput formControlName="firstName">
     </mat-form-field>

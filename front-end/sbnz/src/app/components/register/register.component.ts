@@ -14,6 +14,7 @@ export class RegisterComponent implements OnInit{
   user: UserCreate = {firstName: '', lastName: '', email: '', city: '', country: '', phoneNumber: 0, companyInformation: '', profession: '', password: ''}
   repeatPassword: string
   registerForm = new FormGroup({
+    accountType: new FormControl('', [Validators.required]),
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required]),
@@ -36,12 +37,22 @@ export class RegisterComponent implements OnInit{
       return;
     }
     console.log(this.user)
-    this.userService.registerUser(this.user).subscribe({
-      next: () => { 
-        alert('user registered')
-        this.router.navigate(['/companies'])
-       }
-    });
+    if(this.registerForm.value.accountType == 'Regular'){
+      this.userService.registerUser(this.user).subscribe({
+        next: () => { 
+          alert('user registered')
+          this.router.navigate(['/companies'])
+         }
+      });
+    }
+    else if(this.registerForm.value.accountType == 'Admin'){
+      this.userService.registerAdmin(this.user).subscribe({
+        next: () => { 
+          alert('admin registered')
+          this.router.navigate(['/companies'])
+         }
+      });
+    }
   }
 
   fillUser(){
