@@ -38,6 +38,8 @@ public class SecurityConfig {
             "/api/auth/login",
             "/api/users",
             "/api/users/admin",
+            "/api/arrangements",
+            "/api/arrangements/**",
             // other public endpoints of your API may be appended to this array
     };
     @Bean

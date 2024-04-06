@@ -4,6 +4,6 @@
      <a mat-button>Propeleros 🤡</a>
      <a *ngIf="!user || user.email == ''" mat-button [routerLink]="['/register']">Register</a>
      <a *ngIf="user && user.role == 'Admin'" mat-button [routerLink]="['/register-arrangement']">New arrangement</a>
-     <a mat-button [routerLink]="['/login']">Log in</a>
+     <a *ngIf="!user || user.email == ''" mat-button [routerLink]="['/login']">Log in</a>
      <a *ngIf="user && user.email != ''" mat-button [routerLink]="['/login']" class="mat-button-soft" (click)="logout()">Log out</a>
 </mat-toolbar>
