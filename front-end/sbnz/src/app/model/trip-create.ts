@@ -1,6 +1,6 @@
-export interface Trip {
-  id: number;
+export interface TripCreate {
   name: string;
   price: number;
   description: string;
+  arrangementId: number;
 }

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ArrangementCreate } from '../model/arrangement-create';
 import { Observable } from 'rxjs';
 import { environment } from '../env/environment';
+import { TripCreate } from '../model/trip-create';
 
 @Injectable({
   providedIn: 'root',
@@ -21,5 +22,9 @@ export class ArrangementService {
     return this.http.get<any>(
       environment.apiHost + 'arrangements/allWithTrips'
     );
+  }
+
+  addTrip(t: TripCreate): Observable<any> {
+    return this.http.post<any>(environment.apiHost + 'trips', t);
   }
 }
