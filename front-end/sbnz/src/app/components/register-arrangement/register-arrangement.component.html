@@ -43,6 +43,15 @@
       required
     ></textarea>
 
+    <label for="type">Trip type:</label>
+    <mat-select [(ngModel)]="trip.type" id="type" name="type">
+      <mat-option value="HISTORY">History</mat-option>
+      <mat-option value="ADVENTURE">Adventure</mat-option>
+      <mat-option value="SOCIAL">Social</mat-option>
+      <mat-option value="EXTREME">Extreme</mat-option>
+    </mat-select>
+    <br>
+
     <button type="submit" (click)="AddTrip()">Add Trip</button>
   </form>
 </div>

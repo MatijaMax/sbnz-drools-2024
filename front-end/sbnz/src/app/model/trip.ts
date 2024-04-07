@@ -3,4 +3,5 @@ export interface Trip {
   name: string;
   price: number;
   description: string;
+  type: string;
 }
