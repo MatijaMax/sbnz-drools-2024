@@ -2,25 +2,33 @@ package sbnz.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sbnz.domain.Arrangement;
 import sbnz.domain.ArrangementReservation;
 import sbnz.domain.TripReservation;
+import sbnz.domain.User;
 import sbnz.dto.ArrangementReservationDTO;
 import sbnz.dto.TripReservationDTO;
+import sbnz.repository.ArrangementRepository;
 import sbnz.repository.ArrangementReservationRepository;
 import sbnz.repository.TripReservationRepository;
+import sbnz.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class ArrangementReservationService {
-
     @Autowired
     private ArrangementReservationRepository arrangementReservationRepository;
 
     @Autowired
+    private ArrangementRepository arrangementRepository;
+
+    @Autowired
     private TripReservationRepository tripReservationRepository;
 
+    @Autowired
+    private UserRepository userRepository;
     public ArrangementReservationDTO findById(Integer id) {
         ArrangementReservation arrangementReservation = arrangementReservationRepository.findById(id).orElse(null);
         return arrangementReservation != null ? toDTO(arrangementReservation) : null;
@@ -58,21 +66,46 @@ public class ArrangementReservationService {
                 .map(this::toTripDTO)
                 .collect(Collectors.toList());
         dto.setTripReservations(tripReservationDTOs);
-        // Mapping other fields if needed
+        dto.setUserId(arrangementReservation.getUser().getId());
+        dto.setArrangementId(arrangementReservation.getArrangement().getId());
         return dto;
     }
 
     private ArrangementReservation toEntity(ArrangementReservationDTO dto) {
         ArrangementReservation arrangementReservation = new ArrangementReservation();
-        arrangementReservation.setId(dto.getId());
         arrangementReservation.setNumberOfPeople(dto.getNumberOfPeople());
-        // Mapping other fields if needed
+
+        // Fetching arrangement from repository
+        Arrangement arrangement = arrangementRepository.findById(dto.getArrangementId()).orElse(null);
+        if (arrangement == null) {
+            // Handle if arrangement is not found
+        }
+        arrangementReservation.setArrangement(arrangement);
+
+        // Fetching user from repository
+        User user = userRepository.findById(dto.getUserId()).orElse(null);
+        if (user == null) {
+            // Handle if user is not found
+        }
+        arrangementReservation.setUser(user);
+
+        // Fetching trip reservations from repository
+        List<TripReservation> tripReservations = dto.getTripReservations().stream()
+                .map(tripReservationDTO -> {
+                    TripReservation tripReservation = new TripReservation();
+                    tripReservation.setNumberOfGuests(tripReservationDTO.getNumberOfGuests());
+                    // Map other fields if needed
+                    return tripReservation;
+                })
+                .collect(Collectors.toList());
+        arrangementReservation.setTripReservations(tripReservations);
+
         return arrangementReservation;
     }
 
+
     private TripReservationDTO toTripDTO(TripReservation tripReservation) {
         TripReservationDTO dto = new TripReservationDTO();
-        dto.setId(tripReservation.getId());
         dto.setNumberOfGuests(tripReservation.getNumberOfGuests());
         // Map other fields
         return dto;
@@ -82,7 +115,7 @@ public class ArrangementReservationService {
         TripReservation tripReservation = new TripReservation();
         tripReservation.setId(dto.getId());
         tripReservation.setNumberOfGuests(dto.getNumberOfGuests());
-        // Map other fields
+
         return tripReservation;
     }
 }
