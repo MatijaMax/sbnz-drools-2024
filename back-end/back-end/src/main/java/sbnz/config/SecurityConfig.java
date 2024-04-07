@@ -42,6 +42,8 @@ public class SecurityConfig {
             "/api/arrangements/**",
             "/api/trips",
             "/api/trips/**",
+            "/api/students",
+            "/api/students/**",
             // other public endpoints of your API may be appended to this array
     };
     @Bean
