@@ -8,11 +8,9 @@ import sbnz.domain.TripReservation;
 import sbnz.domain.User;
 import sbnz.dto.ArrangementReservationDTO;
 import sbnz.dto.TripReservationDTO;
-import sbnz.repository.ArrangementRepository;
-import sbnz.repository.ArrangementReservationRepository;
-import sbnz.repository.TripReservationRepository;
-import sbnz.repository.UserRepository;
+import sbnz.repository.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +24,9 @@ public class ArrangementReservationService {
 
     @Autowired
     private TripReservationRepository tripReservationRepository;
+
+    @Autowired
+    private TripRepository tripRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -90,7 +91,7 @@ public class ArrangementReservationService {
         arrangementReservation.setUser(user);
 
         // Fetching trip reservations from repository
-        List<TripReservation> tripReservations = dto.getTripReservations().stream()
+       List<TripReservation> tripReservations = dto.getTripReservations().stream()
                 .map(tripReservationDTO -> {
                     TripReservation tripReservation = new TripReservation();
                     tripReservation.setNumberOfGuests(tripReservationDTO.getNumberOfGuests());
@@ -113,8 +114,8 @@ public class ArrangementReservationService {
 
     private TripReservation toEntity(TripReservationDTO dto) {
         TripReservation tripReservation = new TripReservation();
-        tripReservation.setId(dto.getId());
         tripReservation.setNumberOfGuests(dto.getNumberOfGuests());
+        tripReservation.setTrip(tripRepository.getById(dto.getId()));
 
         return tripReservation;
     }
