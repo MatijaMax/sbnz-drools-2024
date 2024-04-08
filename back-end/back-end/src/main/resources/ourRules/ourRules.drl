@@ -1,0 +1,52 @@
+package ourRules;
+import sbnz.domain.ArrangementReservation
+import sbnz.domain.TripReservation;
+dialect  "mvel"
+
+rule "Simple discount"
+    lock-on-active
+    when
+        $r: ArrangementReservation(totalPrice > 1000)
+    then
+        $r.changePrice();
+        update($r)
+    end
+
+rule "Arr rule 1"
+    lock-on-active
+    when
+        $r: ArrangementReservation()
+        eval($r.getTripReservationsSize() >= 3)
+    then
+        $r.changeReservationPriceRuleOne();
+        update($r);
+end
+
+rule "Arr rule 2"
+    lock-on-active
+    when
+        $r: ArrangementReservation()
+        eval($r.getTripReservationsSize() >= 5)
+    then
+        $r.changeReservationPriceRuleTwo();
+        update($r);
+end
+
+/* rule "Trip rule 1"
+    lock-on-active
+    when
+        $r: ArrangementReservation( $tr : tripReservations )
+
+then
+    for ( TripReservation reservation : $tr ) {
+        totalEventPrice += reservation.getDiscountedPrice();
+    }
+    $r.calculateTotalPrice(totalEventPrice);
+    update($r)
+end */
+
+
+
+
+
+

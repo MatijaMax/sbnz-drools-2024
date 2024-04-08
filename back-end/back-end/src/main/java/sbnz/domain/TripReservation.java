@@ -20,14 +20,18 @@ public class TripReservation {
     @Column(name = "number_of_guests", nullable = false)
     private Integer numberOfGuests;
 
+    @Column(name = "total_price", nullable = false)
+    private Double totalPrice;
+
     public TripReservation() {
         super();
     }
 
-    public TripReservation(ArrangementReservation arrangementReservation, Trip trip, Integer numberOfGuests) {
+    public TripReservation(ArrangementReservation arrangementReservation, Trip trip, Integer numberOfGuests, Double totalPrice) {
         this.arrangementReservation = arrangementReservation;
         this.trip = trip;
         this.numberOfGuests = numberOfGuests;
+        this.totalPrice = totalPrice;
     }
 
     public Integer getId() {
@@ -60,5 +64,39 @@ public class TripReservation {
 
     public void setNumberOfGuests(Integer numberOfGuests) {
         this.numberOfGuests = numberOfGuests;
+    }
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public double getDiscountedPrice(){
+        double value = this.totalPrice;
+
+        if(this.totalPrice > 3000){
+            value = this.totalPrice*0.05;
+        }
+
+        if(this.totalPrice > 2000 && this.trip.getType()== Trip.TRIPTYPE.HISTORY){
+            value = this.totalPrice*0.07;
+        }
+
+        if(this.numberOfGuests>=2){
+            value = this.totalPrice*0.1;
+        }
+
+        return value;
+    }
+    @Override
+    public String toString() {
+        return "TripReservation{" +
+                "id=" + id +
+                ", numberOfGuests=" + numberOfGuests +
+                ", totalPrice=" + totalPrice +
+                '}';
     }
 }

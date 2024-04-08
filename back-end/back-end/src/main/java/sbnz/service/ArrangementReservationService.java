@@ -2,10 +2,7 @@ package sbnz.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sbnz.domain.Arrangement;
-import sbnz.domain.ArrangementReservation;
-import sbnz.domain.TripReservation;
-import sbnz.domain.User;
+import sbnz.domain.*;
 import sbnz.dto.ArrangementReservationDTO;
 import sbnz.dto.TripReservationDTO;
 import sbnz.repository.*;
@@ -119,4 +116,17 @@ public class ArrangementReservationService {
 
         return tripReservation;
     }
+
+    public ArrangementReservation save(ArrangementReservation e) {
+        return arrangementReservationRepository.save(e);
+    }
+
+    public ArrangementReservation getById(int id) {
+        return arrangementReservationRepository.getReferenceById(id);
+    }
+
+    public ArrangementReservation findOne(Integer id) {
+        return arrangementReservationRepository.findById(id).orElseGet(null);
+    }
+
 }

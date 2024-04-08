@@ -1,0 +1,48 @@
+
+INSERT INTO isa.role(
+	id, name)
+	VALUES (1, 'ROLE_Regular');
+
+INSERT INTO isa.role(
+	id, name)
+	VALUES (2, 'ROLE_Admin');
+
+INSERT INTO isa.users(
+	id, city, company_info, country, email, first_name, last_name, password, phone, profession)
+	VALUES (1, 'TEST', 'TEST', 'TEST', 'TEST', 'TEST', 'TEST','$2a$10$OOd9WmSOBqWXPgALtEQMd.pnyl.wTxjoyMx0wfBp8ahy2wJ8WxGXW', 123,'TEST');
+
+INSERT INTO isa.user_role(
+	user_id, role_id)
+	VALUES (1, 2);
+
+INSERT INTO isa.arrangements(
+	id, name, price)
+	VALUES (1, 'test', 300);
+
+INSERT INTO isa.trips(
+	id, description, name, price, type, arrangement_id)
+	VALUES (1, 'vatikan', 'test1', 300, 1, 1);
+INSERT INTO isa.trips(
+	id, description, name, price, type, arrangement_id)
+	VALUES (2, 'kruzer', 'test2', 600, 1, 1);
+
+
+INSERT INTO isa.arrangement_reservation(
+	id, arrangement_price, number_of_people, total_price, trip_price, arrangement_id, user_id)
+	VALUES (1, 0, 4, 0, 0, 1, 1);
+
+INSERT INTO isa.trip_reservation(
+	id, number_of_guests, total_price, arrangement_reservation_id, trip_id)
+	VALUES (1, 3, 300, 1, 1);
+
+INSERT INTO isa.trip_reservation(
+	id, number_of_guests,total_price, arrangement_reservation_id, trip_id)
+	VALUES (2, 6, 400, 1, 2);
+
+
+
+
+
+
+
+

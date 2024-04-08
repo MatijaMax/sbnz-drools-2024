@@ -98,4 +98,8 @@ public class Trip {
     public void setArrangement(Arrangement arrangement) {
         this.arrangement = arrangement;
     }
+
+    public void changePrice(){
+        this.price=price-100;
+    }
 }
