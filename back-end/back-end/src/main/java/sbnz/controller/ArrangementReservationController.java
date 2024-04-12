@@ -50,11 +50,7 @@ public class ArrangementReservationController {
         if (createdArrangementReservation == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-/*        // TODO: Creating trip reservations
-        for (TripReservationDTO tripReservationDTO : tripReservationsDTO) {
-            tripReservationDTO.setArrangementReservationId(createdArrangementReservation.getId());
-            tripReservationService.save(tripReservationDTO);
-        }*/
+
         return new ResponseEntity<>(createdArrangementReservation, HttpStatus.CREATED);
     }
 

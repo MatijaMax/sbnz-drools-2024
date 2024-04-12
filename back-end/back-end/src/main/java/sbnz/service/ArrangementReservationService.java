@@ -41,6 +41,7 @@ public class ArrangementReservationService {
 
     public ArrangementReservationDTO create(ArrangementReservationDTO arrangementReservationDTO) {
         ArrangementReservation arrangementReservation = toEntity(arrangementReservationDTO);
+        arrangementReservation.setTripReservations(null);
         arrangementReservation = arrangementReservationRepository.save(arrangementReservation);
         if (arrangementReservation.getId() != null) {
             // Creating trip reservations
@@ -98,6 +99,10 @@ public class ArrangementReservationService {
                 .collect(Collectors.toList());
         arrangementReservation.setTripReservations(tripReservations);
 
+        arrangementReservation.setTotalPrice((double) 0);
+        arrangementReservation.setTripPrice((double) 0);
+        arrangementReservation.setArrangementPrice((double) 0);
+
         return arrangementReservation;
     }
 
@@ -112,8 +117,9 @@ public class ArrangementReservationService {
     private TripReservation toEntity(TripReservationDTO dto) {
         TripReservation tripReservation = new TripReservation();
         tripReservation.setNumberOfGuests(dto.getNumberOfGuests());
-        tripReservation.setTrip(tripRepository.getById(dto.getId()));
-
+        Trip trip = tripRepository.getById(dto.getId());
+        tripReservation.setTrip(trip);
+        tripReservation.setTotalPrice((double) (tripReservation.getNumberOfGuests() * trip.getPrice()));
         return tripReservation;
     }
 
