@@ -2,20 +2,27 @@ package sbnz.dto;
 
 import sbnz.domain.ArrangementGrade;
 
-public class ArrangementGradeDTO {
+public class ArrangementGradeResponseDTO {
     private Integer id;
     private Integer userId;
     private Integer arrangementId;
     private Integer grade;
 
-    public ArrangementGradeDTO() {
+    public ArrangementGradeResponseDTO() {
     }
 
-    public ArrangementGradeDTO(Integer id, Integer userId, Integer arrangementId, Integer grade) {
+    public ArrangementGradeResponseDTO(Integer id, Integer userId, Integer arrangementId, Integer grade) {
         this.id = id;
         this.userId = userId;
         this.arrangementId = arrangementId;
         this.grade = grade;
+    }
+
+    public ArrangementGradeResponseDTO(ArrangementGrade arrangementGrade) {
+        this.id = arrangementGrade.getId();
+        this.arrangementId = arrangementGrade.getArrangement().getId();
+        this.grade = arrangementGrade.getGrade();
+        this.userId = arrangementGrade.getUser().getId();
     }
 
     public Integer getId() {
@@ -48,16 +55,5 @@ public class ArrangementGradeDTO {
 
     public void setGrade(Integer grade) {
         this.grade = grade;
-    }
-
-
-    // Static method to create DTO from entity
-    public static ArrangementGradeDTO fromEntity(ArrangementGrade arrangementGrade) {
-        return new ArrangementGradeDTO(
-                arrangementGrade.getId(),
-                arrangementGrade.getUser().getId(),
-                arrangementGrade.getArrangement().getId(),
-                arrangementGrade.getGrade()
-        );
     }
 }

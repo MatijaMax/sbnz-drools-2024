@@ -3,9 +3,11 @@ package sbnz.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sbnz.domain.ArrangementGrade;
-import sbnz.dto.ArrangementGradeDTO;
+import sbnz.dto.ArrangementGradeCreateDTO;
+import sbnz.dto.ArrangementGradeResponseDTO;
 import sbnz.service.ArrangementGradeService;
 
 import java.util.List;
@@ -20,26 +22,31 @@ public class ArrangementGradeController {
     private ArrangementGradeService arrangementGradeService;
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<ArrangementGradeDTO>> getAll() {
+    public ResponseEntity<List<ArrangementGradeResponseDTO>> getAll() {
         List<ArrangementGrade> arrangementGrades = arrangementGradeService.findAll();
-        List<ArrangementGradeDTO> arrangementGradeDTOs = arrangementGrades.stream()
-                .map(ArrangementGradeDTO::fromEntity)
+        List<ArrangementGradeResponseDTO> arrangementGradeDTOs = arrangementGrades.stream()
+                .map(ArrangementGradeResponseDTO::new)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(arrangementGradeDTOs, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ArrangementGradeDTO> getById(@PathVariable Integer id) {
+    public ResponseEntity<ArrangementGradeResponseDTO> getById(@PathVariable Integer id) {
         ArrangementGrade arrangementGrade = arrangementGradeService.findOne(id);
         if (arrangementGrade == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(ArrangementGradeDTO.fromEntity(arrangementGrade), HttpStatus.OK);
+        return new ResponseEntity<>(new ArrangementGradeResponseDTO(arrangementGrade), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('Regular')")
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<ArrangementGradeDTO> save(@RequestBody ArrangementGradeDTO arrangementGradeDTO) {
-        ArrangementGrade arrangementGrade = arrangementGradeService.save(arrangementGradeDTO);
-        return new ResponseEntity<>(ArrangementGradeDTO.fromEntity(arrangementGrade), HttpStatus.CREATED);
+    public ResponseEntity<ArrangementGradeResponseDTO> save(@RequestBody ArrangementGradeCreateDTO arrangementGradeCreateDTO) {
+        ArrangementGrade arrangementGrade = arrangementGradeService.save(arrangementGradeCreateDTO);
+        if(arrangementGrade != null){
+            return new ResponseEntity<>(new ArrangementGradeResponseDTO(arrangementGrade), HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

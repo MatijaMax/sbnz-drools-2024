@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../env/environment';
 import { TripCreate } from '../model/trip-create';
 import { ArrangementReservationCreate } from '../model/arrangement-reservation-create';
+import { ArrangementGradeCreate } from '../model/arrangement-grade-create';
 
 @Injectable({
   providedIn: 'root',
@@ -34,5 +35,12 @@ export class ArrangementService {
       environment.apiHost + 'arrangementReservations',
       arrangementReservation
     );
+  }
+
+  rateArrangement(arrangementGrade: ArrangementGradeCreate) : Observable<any> {
+    return this.http.post<any>(
+      environment.apiHost + 'arrangementGrades',
+      arrangementGrade
+    )
   }
 }

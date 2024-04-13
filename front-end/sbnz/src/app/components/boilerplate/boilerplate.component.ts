@@ -6,6 +6,8 @@ import { UserLogged } from 'src/app/model/user-logged.model';
 import { ArrangementService } from 'src/app/services/arrangement-service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ArrangementReservationCreate } from 'src/app/model/arrangement-reservation-create'; // Import the DTO model
+import { Arrangement } from 'src/app/model/arrangement';
+import { ArrangementGradeCreate } from 'src/app/model/arrangement-grade-create';
 
 @Component({
   selector: 'app-boilerplate',
@@ -16,7 +18,7 @@ export class BoilerplateComponent implements OnInit {
   arrangementsAll: ArrangementWithTrips[];
   loggedUser: UserLogged | undefined = undefined;
   subscription: Subscription;
-  tripNumberOfGuests: number[];
+  arrangementGrades: number[];
 
   constructor(
     private arrService: ArrangementService,
@@ -34,6 +36,7 @@ export class BoilerplateComponent implements OnInit {
     this.arrService.getAllWithTrips().subscribe({
       next: (result: ArrangementWithTrips[]) => {
         this.arrangementsAll = result;
+        this.arrangementGrades = Array.from({length: this.arrangementsAll.length}, () => 1);
       },
     });
   }
@@ -59,5 +62,21 @@ export class BoilerplateComponent implements OnInit {
         console.error('Error creating arrangement reservation:', error);
       },
     });
+  }
+
+  rateArrangement(arrangement: Arrangement, index: number){
+    let arrangementGrade: ArrangementGradeCreate = {
+      arrangementId: arrangement.id,
+      userId: this.loggedUser != undefined ? this.loggedUser?.id : -1,
+      grade: this.arrangementGrades[index],
+    }
+    this.arrService.rateArrangement(arrangementGrade).subscribe({
+      next: (response) => {
+        alert("Rated succesfully");
+      },
+      error: (error) => {
+        alert("Error rating arrangement");
+      }
+    })
   }
 }
