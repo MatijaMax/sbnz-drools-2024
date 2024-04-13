@@ -8,10 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sbnz.domain.ArrangementReservation;
-import sbnz.domain.Trip;
-import sbnz.dto.ArrangementReservationDTO;
-import sbnz.dto.TripDTO;
-import sbnz.dto.TripReservationDTO;
+import sbnz.dto.ArrangementReservationCreateDTO;
+import sbnz.dto.ArrangementReservationResponseDTO;
+import sbnz.dto.TripReservationCreateDTO;
 import sbnz.service.ArrangementReservationService;
 import sbnz.service.TripReservationService;
 
@@ -29,14 +28,14 @@ public class ArrangementReservationController {
     private TripReservationService tripReservationService;
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<ArrangementReservationDTO>> getAll() {
-        List<ArrangementReservationDTO> arrangementReservations = arrangementReservationService.getAll();
+    public ResponseEntity<List<ArrangementReservationResponseDTO>> getAll() {
+        List<ArrangementReservationResponseDTO> arrangementReservations = arrangementReservationService.getAll();
         return new ResponseEntity<>(arrangementReservations, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ArrangementReservationDTO> findById(@PathVariable Integer id) {
-        ArrangementReservationDTO arrangementReservation = arrangementReservationService.findById(id);
+    public ResponseEntity<ArrangementReservationResponseDTO> findById(@PathVariable Integer id) {
+        ArrangementReservationResponseDTO arrangementReservation = arrangementReservationService.findById(id);
         if (arrangementReservation == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -44,9 +43,8 @@ public class ArrangementReservationController {
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<ArrangementReservationDTO> create(@RequestBody ArrangementReservationDTO arrangementReservationDTO) {
-        List<TripReservationDTO> tripReservationsDTO = arrangementReservationDTO.getTripReservations();
-        ArrangementReservationDTO createdArrangementReservation = arrangementReservationService.create(arrangementReservationDTO);
+    public ResponseEntity<ArrangementReservationResponseDTO> create(@RequestBody ArrangementReservationCreateDTO arrangementReservationCreateDTO) {
+        ArrangementReservationResponseDTO createdArrangementReservation = arrangementReservationService.create(arrangementReservationCreateDTO);
         if (createdArrangementReservation == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

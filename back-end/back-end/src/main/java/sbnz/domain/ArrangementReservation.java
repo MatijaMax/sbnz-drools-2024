@@ -1,7 +1,9 @@
 package sbnz.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "arrangement_reservation", schema = "isa")
@@ -30,8 +32,8 @@ public class ArrangementReservation {
     @Column(name = "trip_price", nullable = false)
     private Double tripPrice;
 
-    @OneToMany(mappedBy = "arrangementReservation", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TripReservation> tripReservations;
+    @OneToMany(mappedBy = "arrangementReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<TripReservation> tripReservations = new HashSet<TripReservation>();
 
     public ArrangementReservation() {
         super();
@@ -78,11 +80,11 @@ public class ArrangementReservation {
         this.numberOfPeople = numberOfPeople;
     }
 
-    public List<TripReservation> getTripReservations() {
+    public Set<TripReservation> getTripReservations() {
         return tripReservations;
     }
 
-    public void setTripReservations(List<TripReservation> tripReservations) {
+    public void setTripReservations(Set<TripReservation> tripReservations) {
         this.tripReservations = tripReservations;
     }
 

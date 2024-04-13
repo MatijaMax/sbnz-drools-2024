@@ -1,19 +1,25 @@
 package sbnz.dto;
 
-public class TripReservationDTO {
+import sbnz.domain.TripReservation;
+
+public class TripReservationResponseDTO {
     private Integer id;
-    private Integer arrangementReservationId;
     private Integer tripId;
     private Integer numberOfGuests;
 
-    public TripReservationDTO() {
+    public TripReservationResponseDTO() {
     }
 
-    public TripReservationDTO(Integer id, Integer arrangementReservationId, Integer tripId, Integer numberOfGuests) {
+    public TripReservationResponseDTO(Integer id, Integer tripId, Integer numberOfGuests) {
         this.id = id;
-        this.arrangementReservationId = arrangementReservationId;
         this.tripId = tripId;
         this.numberOfGuests = numberOfGuests;
+    }
+
+    public TripReservationResponseDTO(TripReservation tripReservation){
+        this.id = tripReservation.getId();
+        this.tripId = tripReservation.getTrip().getId();
+        this.numberOfGuests = tripReservation.getNumberOfGuests();
     }
 
     public Integer getId() {
@@ -22,14 +28,6 @@ public class TripReservationDTO {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getArrangementReservationId() {
-        return arrangementReservationId;
-    }
-
-    public void setArrangementReservationId(Integer arrangementReservationId) {
-        this.arrangementReservationId = arrangementReservationId;
     }
 
     public Integer getTripId() {

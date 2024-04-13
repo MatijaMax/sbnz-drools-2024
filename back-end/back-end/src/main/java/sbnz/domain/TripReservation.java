@@ -9,7 +9,7 @@ public class TripReservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "arrangement_reservation_id", nullable = false)
     private ArrangementReservation arrangementReservation;
 

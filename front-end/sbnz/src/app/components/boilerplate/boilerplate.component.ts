@@ -13,10 +13,10 @@ import { ArrangementReservationCreate } from 'src/app/model/arrangement-reservat
   styleUrls: ['./boilerplate.component.css'],
 })
 export class BoilerplateComponent implements OnInit {
-  arrangement1: ArrangementWithTrips = { name: '', price: 0, id: 0, trips: [] };
   arrangementsAll: ArrangementWithTrips[];
   loggedUser: UserLogged | undefined = undefined;
   subscription: Subscription;
+  tripNumberOfGuests: number[];
 
   constructor(
     private arrService: ArrangementService,
@@ -39,30 +39,24 @@ export class BoilerplateComponent implements OnInit {
   }
 
   buyArrangement(arrangement: ArrangementWithTrips) {
-    // Construct the DTO object
     const arrangementReservation: ArrangementReservationCreate = {
-      id: 0, // This should be replaced by the actual ID if needed
       arrangementId: arrangement.id,
-      //TODO: FIX USER ID
-      userId: 1,
-      numberOfPeople: 1, // Assuming the default number of people is 1
+      userId: this.loggedUser != undefined? this.loggedUser?.id : -1,
+      numberOfPeople: arrangement.numberOfGuests,
       tripReservations: arrangement.trips.map((trip) => ({
-        id: 0, // This should be replaced by the actual ID if needed
-        arrangementReservationId: 0, // This will be replaced by the backend
         tripId: trip.id,
-        numberOfGuests: 1, // Assuming the default number of guests is 1
+        numberOfGuests: trip.numberOfGuests,
       })),
     };
 
-    // Send the DTO to the backend
     this.arrService.createArrangementReservation(arrangementReservation).subscribe({
       next: (response) => {
+        alert('Arrangement reservation succesfully created');
         console.log('Arrangement reservation created:', response);
-        // Optionally, you can redirect the user to a success page or do other actions
       },
       error: (error) => {
+        alert('Error creating arrangement reservation');
         console.error('Error creating arrangement reservation:', error);
-        // Handle the error as needed
       },
     });
   }
