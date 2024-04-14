@@ -1,0 +1,79 @@
+<h1>Arragements</h1>
+<table class="place-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Price of the arrangement (per person)</th>
+      <th>Average grade</th>
+      <th>Number of people going</th>
+      <th>Rate arrangement</th>
+      <th><h3>Trips that we offer</h3></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let arrangement of arrangementsAll; let i = index">
+      <td>{{ arrangement.id }}</td>
+      <td>{{ arrangement.name }}</td>
+      <td>{{ arrangement.price }}</td>
+      <td>{{ arrangement.averageGrade }}</td>
+      <td><input type="number" [(ngModel)]="arrangement.numberOfGuests" /></td>
+      <td>
+        <input
+          type="number"
+          min="1"
+          max="5"
+          [(ngModel)]="arrangementGrades[i]"
+        /><br />
+        <button
+          *ngIf="loggedUser"
+          [disabled]="loggedUser.role != 'ROLE_Regular'"
+          (click)="rateArrangement(arrangement, i)"
+        >
+          Rate
+        </button>
+      </td>
+      <td>
+        <tr>
+          <td colspan="3">
+            <div class="subtable">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Price of the trip (per person)</th>
+                    <th>Number of people going to the trip</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let trip of arrangement.trips">
+                    <td>{{ trip.id }}</td>
+                    <td>{{ trip.name }}</td>
+                    <td>{{ trip.description }}</td>
+                    <td>{{ trip.type }}</td>
+                    <td>{{ trip.price }}</td>
+                    <td>
+                      <input type="number" [(ngModel)]="trip.numberOfGuests" />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
+      </td>
+      <td>
+        <button
+          *ngIf="loggedUser"
+          [disabled]="loggedUser.role != 'ROLE_Regular'"
+          (click)="buyArrangement(arrangement)"
+        >
+          Buy this arrangement!
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
