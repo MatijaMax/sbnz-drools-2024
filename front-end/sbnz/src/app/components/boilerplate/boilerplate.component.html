@@ -5,6 +5,7 @@
       <th>ID</th>
       <th>Name</th>
       <th>Price of the arrangement (per person)</th>
+      <th>Average grade</th>
       <th>Number of people going</th>
       <th>Rate arrangement</th>
       <th><h3>Trips that we offer</h3></th>
@@ -15,10 +16,22 @@
       <td>{{ arrangement.id }}</td>
       <td>{{ arrangement.name }}</td>
       <td>{{ arrangement.price }}</td>
-      <td><input type="number" [(ngModel)]="arrangement.numberOfGuests"/></td>
+      <td>{{ arrangement.averageGrade }}</td>
+      <td><input type="number" [(ngModel)]="arrangement.numberOfGuests" /></td>
       <td>
-        <input type="number" min="1" max="5" [(ngModel)]="arrangementGrades[i]"/><br/>
-        <button  *ngIf="loggedUser" [disabled]="loggedUser.role!='ROLE_Regular'" (click)="rateArrangement(arrangement, i)">Rate</button>
+        <input
+          type="number"
+          min="1"
+          max="5"
+          [(ngModel)]="arrangementGrades[i]"
+        /><br />
+        <button
+          *ngIf="loggedUser"
+          [disabled]="loggedUser.role != 'ROLE_Regular'"
+          (click)="rateArrangement(arrangement, i)"
+        >
+          Rate
+        </button>
       </td>
       <td>
         <tr>
@@ -42,7 +55,9 @@
                     <td>{{ trip.description }}</td>
                     <td>{{ trip.type }}</td>
                     <td>{{ trip.price }}</td>
-                    <td><input type="number" [(ngModel)]="trip.numberOfGuests"/></td>
+                    <td>
+                      <input type="number" [(ngModel)]="trip.numberOfGuests" />
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -50,9 +65,15 @@
           </td>
         </tr>
       </td>
-      <td><button *ngIf="loggedUser" [disabled]="loggedUser.role!='ROLE_Regular'" (click)="buyArrangement(arrangement)">Buy this arrangement!</button></td>
+      <td>
+        <button
+          *ngIf="loggedUser"
+          [disabled]="loggedUser.role != 'ROLE_Regular'"
+          (click)="buyArrangement(arrangement)"
+        >
+          Buy this arrangement!
+        </button>
+      </td>
     </tr>
   </tbody>
 </table>
-
-<iframe visibiltity="false"width="110" height="100" src="https://www.myinstants.com/instant/majmunee-13114/embed/" frameborder="0" scrolling="no"></iframe>

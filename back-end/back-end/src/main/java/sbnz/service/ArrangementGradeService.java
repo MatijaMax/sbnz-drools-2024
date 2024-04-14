@@ -33,6 +33,22 @@ public class ArrangementGradeService {
         return arrangementGradeRepository.findAll();
     }
 
+    public double findAverageForArrangement(int idArr) {
+        List<ArrangementGrade> grades = arrangementGradeRepository.findAll();
+        if(grades == null || grades.isEmpty()){
+            return 0;
+        }
+        int sum = 0;
+        int count = 0;
+        for(ArrangementGrade g : grades){
+            if(g.getArrangement().getId() == idArr){
+                sum += g.getGrade();
+                count++;
+            }
+        }
+        return (double)sum/count;
+    }
+
     public ArrangementGrade save(ArrangementGradeCreateDTO arrangementGradeCreateDTO) {
         Optional<User> optionalUser = userRepository.findById(arrangementGradeCreateDTO.getUserId());
         Optional<Arrangement> optionalArrangement = arrangementRepository.findById(arrangementGradeCreateDTO.getArrangementId());

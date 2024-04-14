@@ -23,7 +23,7 @@ export class BoilerplateComponent implements OnInit {
   constructor(
     private arrService: ArrangementService,
     private router: Router,
-    private authService: AuthService,
+    private authService: AuthService
   ) {}
   ngOnInit(): void {
     this.GetArrangements();
@@ -36,7 +36,10 @@ export class BoilerplateComponent implements OnInit {
     this.arrService.getAllWithTrips().subscribe({
       next: (result: ArrangementWithTrips[]) => {
         this.arrangementsAll = result;
-        this.arrangementGrades = Array.from({length: this.arrangementsAll.length}, () => 1);
+        this.arrangementGrades = Array.from(
+          { length: this.arrangementsAll.length },
+          () => 1
+        );
       },
     });
   }
@@ -44,7 +47,7 @@ export class BoilerplateComponent implements OnInit {
   buyArrangement(arrangement: ArrangementWithTrips) {
     const arrangementReservation: ArrangementReservationCreate = {
       arrangementId: arrangement.id,
-      userId: this.loggedUser != undefined? this.loggedUser?.id : -1,
+      userId: this.loggedUser != undefined ? this.loggedUser?.id : -1,
       numberOfPeople: arrangement.numberOfGuests,
       tripReservations: arrangement.trips.map((trip) => ({
         tripId: trip.id,
@@ -52,31 +55,46 @@ export class BoilerplateComponent implements OnInit {
       })),
     };
 
-    this.arrService.createArrangementReservation(arrangementReservation).subscribe({
-      next: (response) => {
-        alert('Arrangement reservation succesfully created');
-        console.log('Arrangement reservation created:', response);
-      },
-      error: (error) => {
-        alert('Error creating arrangement reservation');
-        console.error('Error creating arrangement reservation:', error);
-      },
-    });
+    this.arrService
+      .createArrangementReservation(arrangementReservation)
+      .subscribe({
+        next: (response) => {
+          let priceBefore = arrangement.price * arrangement.numberOfGuests;
+          arrangement.trips.forEach((element) => {
+            priceBefore += element.price * element.numberOfGuests;
+          });
+          alert(
+            'Arrangement reservation succesfully created\noriginal price was: ' +
+              priceBefore +
+              '\nprice after discount is: '
+          );
+          console.log('Arrangement reservation created:', response);
+        },
+        error: (error) => {
+          alert('Error creating arrangement reservation');
+          console.error('Error creating arrangement reservation:', error);
+        },
+      });
   }
 
-  rateArrangement(arrangement: Arrangement, index: number){
+  rateArrangement(arrangement: Arrangement, index: number) {
     let arrangementGrade: ArrangementGradeCreate = {
       arrangementId: arrangement.id,
       userId: this.loggedUser != undefined ? this.loggedUser?.id : -1,
       grade: this.arrangementGrades[index],
+    };
+    if (arrangementGrade.grade > 5 || arrangementGrade.grade < 1) {
+      alert('Grade has to be from 1 to 5');
+      return;
     }
     this.arrService.rateArrangement(arrangementGrade).subscribe({
       next: (response) => {
-        alert("Rated succesfully");
+        alert('Rated succesfully');
+        this.GetArrangements();
       },
       error: (error) => {
-        alert("Error rating arrangement");
-      }
-    })
+        alert('Error rating arrangement');
+      },
+    });
   }
 }

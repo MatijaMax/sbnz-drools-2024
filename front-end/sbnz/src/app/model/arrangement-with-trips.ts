@@ -6,4 +6,5 @@ export interface ArrangementWithTrips {
   price: number;
   numberOfGuests: number;
   trips: Trip[];
+  averageGrade: number;
 }

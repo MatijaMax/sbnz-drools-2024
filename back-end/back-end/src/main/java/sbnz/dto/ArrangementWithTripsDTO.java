@@ -10,10 +10,19 @@ public class ArrangementWithTripsDTO {
     private Integer id;
     private String name;
     private Integer price;
+    private Double averageGrade;
     private Set<TripDTO> trips;
 
     public ArrangementWithTripsDTO() {
 
+    }
+
+    public Double getAverageGrade() {
+        return averageGrade;
+    }
+
+    public void setAverageGrade(Double averageGrade) {
+        this.averageGrade = averageGrade;
     }
 
     public ArrangementWithTripsDTO(Arrangement arrangement) {
