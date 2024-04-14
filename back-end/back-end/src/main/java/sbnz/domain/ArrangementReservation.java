@@ -26,6 +26,9 @@ public class ArrangementReservation {
     @Column(name = "total_price", nullable = false)
     private Double totalPrice;
 
+    @Column(name = "discount", nullable = false)
+    private Double discount;
+
     @Column(name = "arrangement_price", nullable = false)
     private Double arrangementPrice;
 
@@ -37,6 +40,33 @@ public class ArrangementReservation {
 
     public ArrangementReservation() {
         super();
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
+    }
+
+    public void setNewDiscount(Double discount) {
+        if(discount < this.discount){
+            return;
+        }
+        this.discount = discount;
+    }
+
+    public ArrangementReservation(Integer id, Arrangement arrangement, User user, Integer numberOfPeople, Double totalPrice, Double discount, Double arrangementPrice, Double tripPrice, Set<TripReservation> tripReservations) {
+        this.id = id;
+        this.arrangement = arrangement;
+        this.user = user;
+        this.numberOfPeople = numberOfPeople;
+        this.totalPrice = totalPrice;
+        this.discount = discount;
+        this.arrangementPrice = arrangementPrice;
+        this.tripPrice = tripPrice;
+        this.tripReservations = tripReservations;
     }
 
     public ArrangementReservation(Arrangement arrangement, User user, Integer numberOfPeople, Double arrangementPrice, Double tripPrice, double totalPrice) {

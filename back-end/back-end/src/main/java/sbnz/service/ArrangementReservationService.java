@@ -42,6 +42,7 @@ public class ArrangementReservationService {
     public ArrangementReservationResponseDTO create(ArrangementReservationCreateDTO arrangementReservationCreateDTO) {
         ArrangementReservation arrangementReservation = new ArrangementReservation();
         arrangementReservation.setNumberOfPeople(arrangementReservationCreateDTO.getNumberOfPeople());
+        arrangementReservation.setDiscount(0.0);
 
         // Fetching arrangement from repository
         Arrangement arrangement = arrangementRepository.findById(arrangementReservationCreateDTO.getArrangementId()).orElse(null);
@@ -71,6 +72,7 @@ public class ArrangementReservationService {
                 tripReservation.setTrip(trip);
                 tripReservation.setTotalPrice((double) (tripReservation.getNumberOfGuests() * trip.getPrice()));
                 tripReservation.setArrangementReservation(arrangementReservation);
+                tripReservation.setDiscount(0.0);
                 tripReservationRepository.save(tripReservation);
             }
             arrangementReservation = arrangementReservationRepository.findById(arrangementReservation.getId()) != null? arrangementReservationRepository.findById(arrangementReservation.getId()).orElse(null) : null;
