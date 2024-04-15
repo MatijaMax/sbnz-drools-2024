@@ -53,12 +53,12 @@ public class ArrangementReservationController {
     }
 
     @PutMapping(value = "/{id}")
-    public void calculatePrice(@PathVariable Integer id) {
+    public ResponseEntity<ArrangementReservationResponseDTO> calculatePrice(@PathVariable Integer id) {
         ArrangementReservation reservation= arrangementReservationService.findOne(id);
 
         if (reservation == null) {
             System.out.println("Reservation not found");
-            return;
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         KieServices ks = KieServices.Factory.get();
@@ -66,11 +66,28 @@ public class ArrangementReservationController {
         KieSession kSession = kieContainer.newKieSession("ourRules");
 
         kSession.insert(reservation);
+
+        kSession.getAgenda().getAgendaGroup("arrangement discount").setFocus();
         int fired = kSession.fireAllRules();
         System.out.println("Number of rules fired: " + fired);
         //System.out.println("Price: " + reservation.getTotalPrice());
         System.out.println("Reservation: " + reservation);
+
+        kSession.getAgenda().getAgendaGroup("trip discount").setFocus();
+        fired = kSession.fireAllRules();
+        System.out.println("Number of rules fired: " + fired);
+        //System.out.println("Price: " + reservation.getTotalPrice());
+        System.out.println("Reservation: " + reservation);
+
+        kSession.getAgenda().getAgendaGroup("final  discount").setFocus();
+        fired = kSession.fireAllRules();
+        System.out.println("Number of rules fired: " + fired);
+        //System.out.println("Price: " + reservation.getTotalPrice());
+        System.out.println("Reservation: " + reservation);
+
         arrangementReservationService.save(reservation);
+
+        return new ResponseEntity<>(new ArrangementReservationResponseDTO(reservation), HttpStatus.CREATED);
     }
 
 

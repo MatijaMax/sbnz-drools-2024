@@ -43,4 +43,11 @@ export class ArrangementService {
       arrangementGrade
     )
   }
+
+  calculateArrangementPrice(id: number): Observable<any> {
+    return this.http.put<any>(
+      environment.apiHost + 'arrangementReservations/' + id,
+      id
+    )
+  }
 }
