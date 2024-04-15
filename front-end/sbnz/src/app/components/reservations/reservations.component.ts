@@ -56,13 +56,30 @@ export class ReservationsComponent implements OnInit {
     return arrangement ? arrangement.name : 'Unknown';
   }
 
-  getTripNames(arrangementId: number): string[] {
-    const arrangement = this.arrangementsAll.find(a => a.id === arrangementId);
-    return arrangement ? arrangement.trips.map(trip => trip.name) : [];
-  }
 
-  getTotalNumberOfPeopleGoing(arrangementId: number): number {
-    const arrangementReservation = this.reservations.find(r => r.arrangementId === arrangementId);
-    return arrangementReservation ? arrangementReservation.numberOfPeople : 0;
+  getTripName(tripId: number): string {
+    const trip = this.getTripById(tripId);
+    return trip ? trip.name : 'Unknown';
+  }
+  
+  private getTripById(tripId: number): Trip | undefined {
+    for (var arrangement of this.arrangementsAll) {
+      var trip = arrangement.trips.find(t => t.id === tripId);
+      if (trip) {
+        return trip;
+      }
+    }
+    return undefined;
+  }
+  
+  getTripNumById(tripId: number, res: ArrangementReservationResponseDTO): number {
+      console.log(res);
+      console.log(tripId);
+      var trip = res.tripReservations.find(t => t.tripId === tripId);
+      if (trip) {
+        return trip.numberOfGuests;
+      }
+
+      return 0;
   }
 }

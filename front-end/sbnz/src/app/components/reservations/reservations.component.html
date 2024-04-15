@@ -9,17 +9,18 @@
       </td>
     </ng-container>
 
-<!-- Trip Names Column -->
-<ng-container matColumnDef="tripNames">
-  <th mat-header-cell *matHeaderCellDef> Trip Names </th>
-  <td mat-cell *matCellDef="let reservation">
-    <ul>
-      <li *ngFor="let tripName of getTripNames(reservation.arrangementId)">
-        {{ tripName }}
-      </li>
-    </ul>
-  </td>
-</ng-container>
+  <!-- Trip Names Column -->
+  <ng-container matColumnDef="tripNames">
+    <th mat-header-cell *matHeaderCellDef> Trip Names </th>
+    <td mat-cell *matCellDef="let reservation">
+      <ul>
+        <li *ngFor="let tripReservation of reservation.tripReservations">
+          {{ getTripName(tripReservation.tripId) }} - {{ getTripNumById(tripReservation.tripId,reservation) }} people
+        </li>
+      </ul>
+    </td>
+  </ng-container>
+
 
 
 
