@@ -1,0 +1,28 @@
+<div class="container">
+  <h2>Your Reservations</h2>
+  <table mat-table [dataSource]="reservations" class="mat-elevation-z8">
+    <!-- Arrangement Name Column -->
+    <ng-container matColumnDef="arrangementName">
+      <th mat-header-cell *matHeaderCellDef> Arrangement Name </th>
+      <td mat-cell *matCellDef="let reservation">
+        {{ getArrangementName(reservation.arrangementId) }}
+      </td>
+    </ng-container>
+
+    <!-- Number of People Column -->
+    <ng-container matColumnDef="numberOfPeople">
+      <th mat-header-cell *matHeaderCellDef> Number of People </th>
+      <td mat-cell *matCellDef="let reservation"> {{reservation.numberOfPeople}} </td>
+    </ng-container>
+
+    <!-- Total Price Column -->
+    <ng-container matColumnDef="totalPrice">
+      <th mat-header-cell *matHeaderCellDef> Total Price </th>
+      <td mat-cell *matCellDef="let reservation"> {{reservation.totalPrice | currency:'USD'}} </td>
+    </ng-container>
+
+    <!-- Define Columns -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
