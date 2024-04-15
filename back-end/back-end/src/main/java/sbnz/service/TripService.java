@@ -2,6 +2,7 @@ package sbnz.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sbnz.domain.Student;
 import sbnz.domain.Trip;
 import sbnz.repository.TripRepository;
 
@@ -26,6 +27,10 @@ public class TripService {
 
     public Trip getById(int id) {
         return tripRepository.getReferenceById(id);
+    }
+
+    public Trip findOne(Integer id) {
+        return tripRepository.findById(id).orElseGet(null);
     }
 
 }

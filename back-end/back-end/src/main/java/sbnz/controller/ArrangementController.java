@@ -21,6 +21,7 @@ import sbnz.model.Customer;
 import sbnz.model.Item;
 import sbnz.model.Order;
 import sbnz.model.OrderLine;
+import sbnz.service.ArrangementGradeService;
 import sbnz.service.ArrangementService;
 import sbnz.service.StudentService;
 import sbnz.util.DebugAgendaEventListener;
@@ -33,6 +34,9 @@ import java.util.*;
 public class ArrangementController {
     @Autowired
     private ArrangementService aService;
+
+    @Autowired
+    private ArrangementGradeService arrangementGradeService;
 
     @GetMapping(value = "/all")
     public ResponseEntity<List<ArrangementDTO>> getAll() {
@@ -196,6 +200,7 @@ public class ArrangementController {
             }
             ArrangementWithTripsDTO adto = new ArrangementWithTripsDTO(a);
             adto.setTrips(tripDTOS);
+            adto.setAverageGrade(arrangementGradeService.findAverageForArrangement(a.getId()));
             arrangementDTOs.add(adto);
         }
 

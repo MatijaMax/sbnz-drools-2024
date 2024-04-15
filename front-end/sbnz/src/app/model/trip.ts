@@ -4,4 +4,5 @@ export interface Trip {
   price: number;
   description: string;
   type: string;
+  numberOfGuests: number;
 }

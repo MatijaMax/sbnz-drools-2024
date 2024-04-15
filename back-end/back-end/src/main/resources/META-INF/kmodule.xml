@@ -30,6 +30,10 @@
     <kbase name="debuggKBase" packages="matchCanceled">
         <ksession name="matchCancelledKsession"/>
     </kbase>
+
+    <kbase name="ourRulesKT1" packages="ourRules">
+        <ksession name="ourRules"/>
+    </kbase>
     
     
     

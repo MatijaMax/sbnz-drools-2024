@@ -1,0 +1,14 @@
+package rules;
+import sbnz.domain.Trip;
+dialect  "mvel"
+
+rule "Simple discount"
+    lock-on-active
+    when
+        $t: Trip(price > 500)
+    then
+        $t.changePrice();
+        update($t)
+    end
+
+

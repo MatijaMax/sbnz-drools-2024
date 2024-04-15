@@ -17,6 +17,10 @@ public class TripDTO {
         this.type = e.getType();
     }
 
+    public TripDTO() {
+
+    }
+
     public TripDTO(Integer id, String name, String description, Integer price, Trip.TRIPTYPE type) {
         this.id = id;
         this.name = name;

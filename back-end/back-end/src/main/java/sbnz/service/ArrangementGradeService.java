@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import sbnz.domain.Arrangement;
 import sbnz.domain.ArrangementGrade;
 import sbnz.domain.User;
-import sbnz.dto.ArrangementGradeDTO;
+import sbnz.dto.ArrangementGradeCreateDTO;
 import sbnz.repository.ArrangementGradeRepository;
 import sbnz.repository.ArrangementRepository;
 import sbnz.repository.UserRepository;
@@ -33,26 +33,37 @@ public class ArrangementGradeService {
         return arrangementGradeRepository.findAll();
     }
 
-    public ArrangementGrade save(ArrangementGradeDTO arrangementGradeDTO) {
-        // Retrieve User and Arrangement by their IDs
-        Optional<User> optionalUser = userRepository.findById(arrangementGradeDTO.getUserId());
-        Optional<Arrangement> optionalArrangement = arrangementRepository.findById(arrangementGradeDTO.getArrangementId());
+    public double findAverageForArrangement(int idArr) {
+        List<ArrangementGrade> grades = arrangementGradeRepository.findAll();
+        if(grades == null || grades.isEmpty()){
+            return 0;
+        }
+        int sum = 0;
+        int count = 0;
+        for(ArrangementGrade g : grades){
+            if(g.getArrangement().getId() == idArr){
+                sum += g.getGrade();
+                count++;
+            }
+        }
+        return (double)sum/count;
+    }
 
-        // Check if User and Arrangement exist
+    public ArrangementGrade save(ArrangementGradeCreateDTO arrangementGradeCreateDTO) {
+        Optional<User> optionalUser = userRepository.findById(arrangementGradeCreateDTO.getUserId());
+        Optional<Arrangement> optionalArrangement = arrangementRepository.findById(arrangementGradeCreateDTO.getArrangementId());
+
         if (optionalUser.isPresent() && optionalArrangement.isPresent()) {
             User user = optionalUser.get();
             Arrangement arrangement = optionalArrangement.get();
 
-            // Create ArrangementGrade
             ArrangementGrade arrangementGrade = new ArrangementGrade();
             arrangementGrade.setUser(user);
             arrangementGrade.setArrangement(arrangement);
-            arrangementGrade.setGrade(arrangementGradeDTO.getGrade());
-            arrangementGrade.setId(arrangementGradeDTO.getId());
-            // Save ArrangementGrade
+            arrangementGrade.setGrade(arrangementGradeCreateDTO.getGrade());
             return arrangementGradeRepository.save(arrangementGrade);
         } else {
-            return null; // User or Arrangement not found
+            return null;
         }
     }
 }
