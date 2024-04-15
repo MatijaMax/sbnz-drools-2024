@@ -123,6 +123,7 @@ public class TripReservation {
                 "id=" + id +
                 ", numberOfGuests=" + numberOfGuests +
                 ", totalPrice=" + totalPrice +
+                ", discount=" + discount +
                 '}';
     }
 }

@@ -59,7 +59,7 @@ public class ArrangementReservationService {
 
         arrangementReservation.setTotalPrice((double) 0);
         arrangementReservation.setTripPrice((double) 0);
-        arrangementReservation.setArrangementPrice((double) 0);
+        arrangementReservation.setArrangementPrice((double) arrangementReservation.getNumberOfPeople()*arrangement.getPrice());
 
         arrangementReservation = arrangementReservationRepository.save(arrangementReservation);
 

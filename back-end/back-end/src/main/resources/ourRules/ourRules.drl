@@ -4,39 +4,31 @@ import sbnz.domain.TripReservation;
 import sbnz.domain.Trip;
 dialect  "mvel"
 
-rule "Simple discount"
-    lock-on-active
-    when
-        $r: ArrangementReservation(totalPrice > 1000)
-    then
-        $r.changePrice();
-        update($r)
-    end
-
 rule "Arrangmane with 3 or more trips => 10%"
     lock-on-active
+    agenda-group "arrangement discount"
     when
         $r: ArrangementReservation()
         eval($r.getTripReservationsSize() >= 3 && $r.getTripReservationsSize() < 5)
     then
-        $r.setNewDiscount(0.1);
-        $r.changeReservationPriceRuleOne();
-        update($r);
+        $r.setDiscount(0.1);
+        System.out.println("Opalio sam Matiju jednom");
 end
 
 rule "Arrangmane with 5 or more trips => 15%"
     lock-on-active
+    agenda-group "arrangement discount"
     when
         $r: ArrangementReservation()
         eval($r.getTripReservationsSize() >= 5)
     then
-        $r.setNewDiscount(0.15);
-        $r.changeReservationPriceRuleTwo();
-        update($r);
+        $r.setDiscount(0.15);
+        System.out.println("Opalio sam Matiju dva puta");
 end
 
 rule "Trip with 2 or more guests => 10%"
     lock-on-active
+    agenda-group "trip discount"
     when
         $r: ArrangementReservation( $tres : tripReservations )
         $t: TripReservation($numPeople : numberOfGuests) from $tres
@@ -48,6 +40,7 @@ end
 
 rule "Trip total price greater than 3000 => 5%"
     lock-on-active
+    agenda-group "trip discount"
     when
         $r: ArrangementReservation( $tres : tripReservations )
         $t: TripReservation($numPeople : numberOfGuests, $price : trip.price) from $tres
@@ -59,6 +52,7 @@ end
 
 rule "History trip total price greater than 2000 => 7%"
     lock-on-active
+    agenda-group "trip discount"
     when
         $r: ArrangementReservation( $tres : tripReservations )
         $t: TripReservation(trip.type == Trip.TRIPTYPE.HISTORY, $numPeople : numberOfGuests, $price : trip.price) from $tres
@@ -68,8 +62,38 @@ rule "History trip total price greater than 2000 => 7%"
         System.out.println("IZLET PRAVILO 3");
 end
 
+rule "Trip discount is greater"
+    agenda-group "final  discount"
+    when
+        $r: ArrangementReservation($tres: tripReservations)
+        Number( $totalTripDiscount: doubleValue > ($r.discount * $r.arrangementPrice) ) from accumulate(
+            TripReservation(
+                $d: discount,
+                $p: totalPrice
+            ) from $tres,
+            init(double res = 0.0;),
+            action(res += ($d * $p)),
+            result(res)
+        )
+    then
+        System.out.println("Ostaju tripovi, popust na tripove = " + $totalTripDiscount + ", a popust na aranzman = " + ($r.discount * $r.arrangementPrice));
+        $r.deleteArrangementDiscount();
+end
 
-
-
-
-
+rule "Arrangement discount is greater"
+    agenda-group "final  discount"
+    when
+        $r: ArrangementReservation($tres: tripReservations)
+        Number( $totalTripDiscount: doubleValue <= ($r.discount * $r.arrangementPrice)) from accumulate(
+            TripReservation(
+                $d: discount,
+                $p: totalPrice
+            ) from $tres,
+            init(double res = 0.0;),
+            action(res += ($d * $p)),
+            result(res)
+        )
+    then
+        System.out.println("Ostaju aranzmani, popust na tripove = " + $totalTripDiscount + ", a popust na aranzman = " + ($r.discount * $r.arrangementPrice));
+        $r.deleteTripDiscount();
+end

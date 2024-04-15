@@ -172,6 +172,7 @@ public class ArrangementReservation {
                 ", arrangement=" + arrangement +
                 ", user=" + user +
                 ", numberOfPeople=" + numberOfPeople +
+                ", discount=" + discount +
                 ", totalPrice=" + totalPrice +
                 ", arrangementPrice=" + arrangementPrice +
                 ", tripPrice=" + tripPrice +
@@ -181,5 +182,23 @@ public class ArrangementReservation {
 
     public int getTripReservationsSize() {
         return this.tripReservations.size();
+    }
+
+    public void deleteArrangementDiscount(){
+        this.discount = 0.0;
+        this.tripPrice = 0.0;
+        for (TripReservation tr: this.tripReservations){
+            this.tripPrice += tr.getTotalPrice() * (1-tr.getDiscount());
+        }
+        this.totalPrice = this.arrangementPrice + this.tripPrice;
+    }
+
+    public void deleteTripDiscount(){
+        this.tripPrice = 0.0;
+        for (TripReservation tr: this.tripReservations){
+            tr.setDiscount(0.0);
+            this.tripPrice += tr.getTotalPrice();
+        }
+        this.totalPrice = this.arrangementPrice * (1 - this.getDiscount()) + this.tripPrice;
     }
 }
