@@ -6,6 +6,7 @@ import { environment } from '../env/environment';
 import { TripCreate } from '../model/trip-create';
 import { ArrangementReservationCreate } from '../model/arrangement-reservation-create';
 import { ArrangementGradeCreate } from '../model/arrangement-grade-create';
+import { ArrangementReservationResponseDTO } from '../model/arrangement-reservation-responce';
 
 @Injectable({
   providedIn: 'root',
@@ -49,5 +50,11 @@ export class ArrangementService {
       environment.apiHost + 'arrangementReservations/' + id,
       id
     )
+  }
+
+  getReservationsByUserId(userId: number): Observable<ArrangementReservationResponseDTO[]> {
+    return this.http.get<ArrangementReservationResponseDTO[]>(
+      environment.apiHost + 'arrangementReservations/user/' + userId
+    );
   }
 }
