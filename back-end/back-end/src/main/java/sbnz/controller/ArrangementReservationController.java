@@ -53,12 +53,12 @@ public class ArrangementReservationController {
     }
 
     @PutMapping(value = "/{id}")
-    public void calculatePrice(@PathVariable Integer id) {
+    public ResponseEntity<ArrangementReservationResponseDTO> calculatePrice(@PathVariable Integer id) {
         ArrangementReservation reservation= arrangementReservationService.findOne(id);
 
         if (reservation == null) {
             System.out.println("Reservation not found");
-            return;
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         KieServices ks = KieServices.Factory.get();
@@ -86,6 +86,8 @@ public class ArrangementReservationController {
         System.out.println("Reservation: " + reservation);
 
         arrangementReservationService.save(reservation);
+
+        return new ResponseEntity<>(new ArrangementReservationResponseDTO(reservation), HttpStatus.CREATED);
     }
 
 

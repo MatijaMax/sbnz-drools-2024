@@ -58,17 +58,24 @@ export class BoilerplateComponent implements OnInit {
     this.arrService
       .createArrangementReservation(arrangementReservation)
       .subscribe({
-        next: (response) => {
-          let priceBefore = arrangement.price * arrangement.numberOfGuests;
-          arrangement.trips.forEach((element) => {
-            priceBefore += element.price * element.numberOfGuests;
+        next: (response1) => {
+          this.arrService.calculateArrangementPrice(response1.id).subscribe({
+            next: (response2) => {
+              let priceBefore = arrangement.price * arrangement.numberOfGuests;
+              arrangement.trips.forEach((element) => {
+                priceBefore += element.price * element.numberOfGuests;
           });
           alert(
             'Arrangement reservation succesfully created\noriginal price was: ' +
               priceBefore +
-              '\nprice after discount is: '
+              '\nprice after discount is: ' + response2.totalPrice
           );
-          console.log('Arrangement reservation created:', response);
+            },
+            error: (error2) => {
+              alert("Nece")
+            }
+          })
+          console.log('Arrangement reservation created:', response1);
         },
         error: (error) => {
           alert('Error creating arrangement reservation');

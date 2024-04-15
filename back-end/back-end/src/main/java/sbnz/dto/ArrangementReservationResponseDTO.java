@@ -10,16 +10,18 @@ public class ArrangementReservationResponseDTO {private Integer id;
     private Integer arrangementId;
     private Integer userId;
     private Integer numberOfPeople;
+    private Double totalPrice;
     private List<TripReservationResponseDTO> tripReservations;
 
     public ArrangementReservationResponseDTO() {
     }
 
-    public ArrangementReservationResponseDTO(Integer id, Integer arrangementId, Integer userId, Integer numberOfPeople, List<TripReservationResponseDTO> tripReservations) {
+    public ArrangementReservationResponseDTO(Integer id, Integer arrangementId, Integer userId, Integer numberOfPeople, Double totalPrice, List<TripReservationResponseDTO> tripReservations) {
         this.id = id;
         this.arrangementId = arrangementId;
         this.userId = userId;
         this.numberOfPeople = numberOfPeople;
+        this.totalPrice = totalPrice;
         this.tripReservations = tripReservations;
     }
 
@@ -29,6 +31,7 @@ public class ArrangementReservationResponseDTO {private Integer id;
         this.userId = arrangementReservation.getUser().getId();
         this.numberOfPeople = arrangementReservation.getNumberOfPeople();
         this.tripReservations = new ArrayList<>();
+        this.totalPrice = arrangementReservation.getTotalPrice();
         for(TripReservation t: arrangementReservation.getTripReservations()){
             tripReservations.add(new TripReservationResponseDTO(t));
         }
@@ -64,6 +67,14 @@ public class ArrangementReservationResponseDTO {private Integer id;
 
     public void setNumberOfPeople(Integer numberOfPeople) {
         this.numberOfPeople = numberOfPeople;
+    }
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public List<TripReservationResponseDTO> getTripReservations() {

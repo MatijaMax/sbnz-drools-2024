@@ -12,7 +12,7 @@ rule "Arrangmane with 3 or more trips => 10%"
         eval($r.getTripReservationsSize() >= 3 && $r.getTripReservationsSize() < 5)
     then
         $r.setDiscount(0.1);
-        System.out.println("Opalio sam Matiju jednom");
+        System.out.println("Opalio sam Aranzman pravilo 1");
 end
 
 rule "Arrangmane with 5 or more trips => 15%"
@@ -23,7 +23,7 @@ rule "Arrangmane with 5 or more trips => 15%"
         eval($r.getTripReservationsSize() >= 5)
     then
         $r.setDiscount(0.15);
-        System.out.println("Opalio sam Matiju dva puta");
+        System.out.println("Opalio sam Aranzman pravilo 2");
 end
 
 rule "Trip with 2 or more guests => 10%"
