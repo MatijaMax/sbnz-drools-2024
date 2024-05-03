@@ -90,5 +90,14 @@ public class ArrangementReservationController {
         return new ResponseEntity<>(new ArrangementReservationResponseDTO(reservation), HttpStatus.CREATED);
     }
 
+    @GetMapping(value = "/user/{userId}")
+    public ResponseEntity<List<ArrangementReservationResponseDTO>> findByUserId(@PathVariable Integer userId) {
+        List<ArrangementReservationResponseDTO> userReservations = arrangementReservationService.findByUserId(userId);
+        if (userReservations.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(userReservations, HttpStatus.OK);
+    }
+
 
 }
