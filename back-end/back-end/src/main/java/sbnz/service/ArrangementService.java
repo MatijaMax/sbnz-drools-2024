@@ -1,15 +1,12 @@
 package sbnz.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sbnz.domain.Arrangement;
-import sbnz.domain.Student;
-import sbnz.domain.Trip;
 import sbnz.repository.ArrangementRepository;
-import sbnz.repository.StudentRepository;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -38,6 +35,7 @@ public class ArrangementService {
     }
 
     public Arrangement save(Arrangement arrangement) {
+        arrangement.setDateAdded(LocalDate.now());
         return arrangementRepository.save(arrangement);
     }
 }

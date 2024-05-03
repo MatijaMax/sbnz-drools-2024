@@ -1,0 +1,17 @@
+.place-table {
+    border-collapse: collapse;
+    width: 40%;
+    margin: 20px;
+  }
+
+  
+.place-table th,
+.place-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.place-table th {
+  background-color: #f2f2f2;
+}

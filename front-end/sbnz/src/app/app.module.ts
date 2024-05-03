@@ -19,13 +19,18 @@ import { TokenInterceptor } from './interceptor/TokenInterceptor';
 import { UserServiceService } from './services/user-service.service';
 import { RegisterArrangementComponent } from './components/register-arrangement/register-arrangement.component';
 import { MatSelectModule } from '@angular/material/select';
+import { ReservationsComponent } from './components/reservations/reservations.component';
+import { MatTableModule } from '@angular/material/table';
+import { RecommendationComponent } from './components/recommendation/recommendation.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'companies', pathMatch: 'full' },
   { path: 'boilerplate', component: BoilerplateComponent },
+  { path: 'reservations', component: ReservationsComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent},
   { path: 'register-arrangement', component: RegisterArrangementComponent },
+  { path: 'recommendations', component: RecommendationComponent },
 ];
 
 @NgModule({
@@ -36,6 +41,8 @@ const appRoutes: Routes = [
     BoilerplateComponent,
     LoginComponent,
     RegisterArrangementComponent,
+    ReservationsComponent,
+    RecommendationComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,6 +57,7 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     MatSelectModule,
+    MatTableModule,
     RouterModule.forRoot(appRoutes),
   ],
   providers: [

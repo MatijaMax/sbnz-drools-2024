@@ -8,6 +8,7 @@ import sbnz.dto.ArrangementReservationResponseDTO;
 import sbnz.dto.TripReservationCreateDTO;
 import sbnz.repository.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,16 @@ public class ArrangementReservationService {
         ArrangementReservation arrangementReservation = arrangementReservationRepository.findById(id).orElse(null);
         return arrangementReservation != null ? new ArrangementReservationResponseDTO(arrangementReservation) : null;
     }
+
+    public List<ArrangementReservationResponseDTO> findByUserId(Integer userId) {
+        List<ArrangementReservation> reservations = arrangementReservationRepository.findByUserId(userId);
+        List<ArrangementReservationResponseDTO> responseDTOs = new ArrayList<>();
+        for (ArrangementReservation reservation : reservations) {
+            responseDTOs.add(new ArrangementReservationResponseDTO(reservation));
+        }
+        return responseDTOs;
+    }
+
 
     public List<ArrangementReservationResponseDTO> getAll() {
         List<ArrangementReservation> arrangementReservations = arrangementReservationRepository.findAll();
