@@ -11,22 +11,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sbnz.domain.Arrangement;
+import sbnz.domain.ArrangementGrade;
 import sbnz.domain.Student;
 import sbnz.domain.Trip;
-import sbnz.dto.ArrangementDTO;
-import sbnz.dto.ArrangementWithTripsDTO;
-import sbnz.dto.StudentDTO;
-import sbnz.dto.TripDTO;
+import sbnz.dto.*;
 import sbnz.model.Customer;
 import sbnz.model.Item;
 import sbnz.model.Order;
 import sbnz.model.OrderLine;
 import sbnz.service.ArrangementGradeService;
+import sbnz.service.ArrangementRecommendationService;
 import sbnz.service.ArrangementService;
 import sbnz.service.StudentService;
 import sbnz.util.DebugAgendaEventListener;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RestController
@@ -205,5 +205,49 @@ public class ArrangementController {
         }
 
         return new ResponseEntity<>(arrangementDTOs, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/homepageRecommendations")
+    public ResponseEntity<List<ArrangementHomepageRecommendationDTO>> getHomepageRecommendation() {
+        KieServices ks = KieServices.Factory.get();
+        KieContainer kieContainer = ks.getKieClasspathContainer();
+        KieSession kSession = kieContainer.newKieSession("arrangementRecommendation");
+
+        kSession.setGlobal("recommendations", new ArrangementRecommendationService());
+        for(Arrangement a: aService.findAll()){
+            kSession.insert(a);
+        }
+        for(ArrangementGrade g: arrangementGradeService.findAll()){
+            kSession.insert(g);
+        }
+
+
+        kSession.getAgenda().getAgendaGroup("new arrangements").setFocus();
+        int fired = kSession.fireAllRules();
+        System.out.println("Number of rules fired: " + fired);
+
+        kSession.getAgenda().getAgendaGroup("popular arrangements").setFocus();
+        fired = kSession.fireAllRules();
+        System.out.println("Number of rules fired: " + fired);
+
+        kSession.getAgenda().getAgendaGroup("average grade").setFocus();
+        fired = kSession.fireAllRules();
+        System.out.println("Number of rules fired: " + fired);
+
+        kSession.getAgenda().getAgendaGroup("filter1").setFocus();
+        fired = kSession.fireAllRules();
+        System.out.println("Number of rules fired: " + fired);
+
+        kSession.getAgenda().getAgendaGroup("filter2").setFocus();
+        fired = kSession.fireAllRules();
+        System.out.println("Number of rules fired: " + fired);
+
+        kSession.getAgenda().getAgendaGroup("filter3").setFocus();
+        fired = kSession.fireAllRules();
+        System.out.println("Number of rules fired: " + fired);
+
+        ArrangementRecommendationService recommendations = (ArrangementRecommendationService) kSession.getGlobal("recommendations");
+
+        return new ResponseEntity<>(recommendations.getArrangements(), HttpStatus.OK);
     }
 }

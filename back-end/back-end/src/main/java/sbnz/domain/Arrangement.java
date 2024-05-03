@@ -2,6 +2,7 @@ package sbnz.domain;
 
 import javax.persistence.*;
 import java.util.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name="arrangements", schema = "isa")
@@ -16,6 +17,9 @@ public class Arrangement {
     @Column(name = "price", nullable = false)
     private Integer price;
 
+    @Column(name = "dateAdded", nullable = false)
+    private LocalDate dateAdded;
+
     @OneToMany(mappedBy = "arrangement", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Trip> trips = new HashSet<Trip>();
 
@@ -28,6 +32,7 @@ public class Arrangement {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.dateAdded = LocalDate.now();
     }
 
     public Arrangement(Integer id, String name, Integer price, Set<Trip> trips) {
@@ -35,6 +40,7 @@ public class Arrangement {
         this.name = name;
         this.price = price;
         this.trips = trips;
+        this.dateAdded = LocalDate.now();
     }
 
     public Set<Trip> getTrips() {
@@ -60,6 +66,22 @@ public class Arrangement {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public LocalDate getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(LocalDate dateAdded) {
+        this.dateAdded = dateAdded;
+    }
+
+    public boolean isNew(){
+        System.out.println("Ovo proveravam");
+        System.out.println(dateAdded);
+        System.out.println(LocalDate.now().minusMonths(1));
+        System.out.println(dateAdded.isAfter(LocalDate.now().minusMonths(1)));
+        return dateAdded.isAfter(LocalDate.now().minusMonths(1));
     }
 
     /*

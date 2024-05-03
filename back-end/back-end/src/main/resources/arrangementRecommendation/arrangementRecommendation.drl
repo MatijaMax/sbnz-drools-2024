@@ -1,0 +1,93 @@
+package arrangementRecommendation;
+
+import sbnz.domain.Arrangement;
+import sbnz.domain.ArrangementGrade;
+import sbnz.service.ArrangementRecommendationService;
+import sbnz.dto.ArrangementHomepageRecommendationDTO;
+import java.util.List;
+import java.time.LocalDate;
+
+global ArrangementRecommendationService recommendations;
+
+rule "Arrangement published in last month"
+    agenda-group "new arrangements"
+    when
+        $a: Arrangement($a.isNew())
+    then
+        recommendations.addArrangement($a, "new");
+end
+
+rule "Arrangement have 20 grades"
+    agenda-group "popular arrangements"
+    when
+        $a: Arrangement()
+        $grades: List()
+                from collect( ArrangementGrade(arrangement == $a) )
+        eval($grades.size() > 20 || ($grades.size() > 10 && $a.isNew()))
+    then
+        recommendations.addArrangement($a, "popular");
+end
+
+rule "Arrangement average grade if good"
+    agenda-group "average grade"
+    when
+        $a: Arrangement()
+        Number( doubleValue >= 4 ) from accumulate (
+            ArrangementGrade(arrangement == $a, $grade: grade),
+            average($grade)
+        )
+    then
+        recommendations.addArrangement($a, "good grade");
+end
+
+rule "Arrangement average grade if neutral"
+    agenda-group "average grade"
+    when
+        $a: Arrangement()
+        Number( $avg: doubleValue ) from accumulate (
+            ArrangementGrade(arrangement == $a, $grade: grade),
+            average($grade)
+        )
+        eval($avg < 4 && $avg > 2.5)
+    then
+        recommendations.addArrangement($a, "neutral grade");
+end
+
+rule "Arrangement average grade if bad"
+    agenda-group "average grade"
+    when
+        $a: Arrangement()
+        Number( doubleValue <= 2.5 ) from accumulate (
+            ArrangementGrade(arrangement == $a, $grade: grade),
+            average($grade)
+        )
+    then
+        recommendations.addArrangement($a, "bad grade");
+end
+
+rule "Filter new and popular with good grades"
+    agenda-group "filter1"
+    when
+        $a: ArrangementHomepageRecommendationDTO($tags: tags) from recommendations.arrangements
+        eval(!($tags.contains("new") || ($tags.contains("popular") && $tags.contains("good grade"))))
+    then
+        recommendations.removeArrangement($a);
+end
+
+rule "If more than 10 recommendations, remove ones with bad grades"
+    agenda-group "filter2"
+    when
+        $a: ArrangementHomepageRecommendationDTO($tags: tags) from recommendations.arrangements
+        eval(recommendations.arrangements.size() > 10 && $tags.contains("bad grade"))
+    then
+        recommendations.removeArrangement($a);
+end
+
+rule "If still more than 10 recommendations, remove random"
+    agenda-group "filter3"
+    when
+        $a: ArrangementHomepageRecommendationDTO() from recommendations.arrangements
+        eval(recommendations.arrangements.size() > 10)
+    then
+        recommendations.removeArrangement($a);
+end
