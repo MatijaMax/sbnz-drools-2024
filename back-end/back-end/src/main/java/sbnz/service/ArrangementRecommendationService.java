@@ -34,4 +34,12 @@ public class ArrangementRecommendationService {
     public void removeArrangement(ArrangementHomepageRecommendationDTO arrangement) {
         arrangements.remove(arrangement);
     }
+
+    public int getSize(){
+        return arrangements.size();
+    }
+
+    public void removeRandomArrangement() {
+        arrangements.remove(0);
+    }
 }

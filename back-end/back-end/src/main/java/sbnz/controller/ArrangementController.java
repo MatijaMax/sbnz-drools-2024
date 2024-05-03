@@ -238,6 +238,10 @@ public class ArrangementController {
         fired = kSession.fireAllRules();
         System.out.println("Number of rules fired: " + fired);
 
+
+        ArrangementRecommendationService recommendations = (ArrangementRecommendationService) kSession.getGlobal("recommendations");
+        kSession.insert(recommendations);
+
         kSession.getAgenda().getAgendaGroup("filter2").setFocus();
         fired = kSession.fireAllRules();
         System.out.println("Number of rules fired: " + fired);
@@ -245,8 +249,6 @@ public class ArrangementController {
         kSession.getAgenda().getAgendaGroup("filter3").setFocus();
         fired = kSession.fireAllRules();
         System.out.println("Number of rules fired: " + fired);
-
-        ArrangementRecommendationService recommendations = (ArrangementRecommendationService) kSession.getGlobal("recommendations");
 
         return new ResponseEntity<>(recommendations.getArrangements(), HttpStatus.OK);
     }

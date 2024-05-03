@@ -23,12 +23,12 @@ rule "Arrangement have 20 grades"
         $a: Arrangement()
         $grades: List()
                 from collect( ArrangementGrade(arrangement == $a) )
-        eval($grades.size() > 20 || ($grades.size() > 10 && $a.isNew()))
+        eval($grades.size() > 3 || ($grades.size() > 2 && $a.isNew()))
     then
         recommendations.addArrangement($a, "popular");
 end
 
-rule "Arrangement average grade if good"
+rule "Arrangement average grade is good"
     agenda-group "average grade"
     when
         $a: Arrangement()
@@ -40,7 +40,7 @@ rule "Arrangement average grade if good"
         recommendations.addArrangement($a, "good grade");
 end
 
-rule "Arrangement average grade if neutral"
+rule "Arrangement average grade is neutral"
     agenda-group "average grade"
     when
         $a: Arrangement()
@@ -53,7 +53,7 @@ rule "Arrangement average grade if neutral"
         recommendations.addArrangement($a, "neutral grade");
 end
 
-rule "Arrangement average grade if bad"
+rule "Arrangement average grade is bad"
     agenda-group "average grade"
     when
         $a: Arrangement()
@@ -63,6 +63,18 @@ rule "Arrangement average grade if bad"
         )
     then
         recommendations.addArrangement($a, "bad grade");
+end
+
+rule "There are no arrangement average so grade is neutral"
+    agenda-group "average grade"
+    when
+        $a: Arrangement()
+        Number( intValue == 0 ) from accumulate (
+            ArrangementGrade(arrangement == $a, $grade: grade),
+            count($grade)
+        )
+    then
+        recommendations.addArrangement($a, "neutral grade");
 end
 
 rule "Filter new and popular with good grades"
@@ -77,17 +89,16 @@ end
 rule "If more than 10 recommendations, remove ones with bad grades"
     agenda-group "filter2"
     when
-        $a: ArrangementHomepageRecommendationDTO($tags: tags) from recommendations.arrangements
-        eval(recommendations.arrangements.size() > 10 && $tags.contains("bad grade"))
+        $s: ArrangementRecommendationService($s.getSize() > 10, $arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO(tags.contains("bad grade")) from $arrangements
     then
-        recommendations.removeArrangement($a);
+        modify($s){removeArrangement($a)}
 end
 
 rule "If still more than 10 recommendations, remove random"
     agenda-group "filter3"
     when
-        $a: ArrangementHomepageRecommendationDTO() from recommendations.arrangements
-        eval(recommendations.arrangements.size() > 10)
+        $s: ArrangementRecommendationService($s.getSize() > 10)
     then
-        recommendations.removeArrangement($a);
+        modify($s){removeRandomArrangement()}
 end

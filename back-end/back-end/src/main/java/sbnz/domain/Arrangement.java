@@ -77,10 +77,6 @@ public class Arrangement {
     }
 
     public boolean isNew(){
-        System.out.println("Ovo proveravam");
-        System.out.println(dateAdded);
-        System.out.println(LocalDate.now().minusMonths(1));
-        System.out.println(dateAdded.isAfter(LocalDate.now().minusMonths(1)));
         return dateAdded.isAfter(LocalDate.now().minusMonths(1));
     }
 
