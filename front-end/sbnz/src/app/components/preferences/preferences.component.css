@@ -1,0 +1,19 @@
+.preferences-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+.preferences-container {
+display: flex;
+}
+
+.table-container {
+margin-right: 20px; /* Adjust the margin as needed */
+}
+  
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+  }
