@@ -1,0 +1,52 @@
+package arrangementRecommendation;
+
+import sbnz.domain.Arrangement;
+import sbnz.domain.ArrangementGrade;
+import sbnz.service.ArrangementRecommendationService;
+import sbnz.dto.ArrangementHomepageRecommendationDTO;
+import java.util.List;
+import java.time.LocalDate;
+
+global ArrangementRecommendationService recommendations;
+
+rule "Novo"
+    agenda-group "novo"
+    when
+        $a: Arrangement($a.isNew())
+    then
+        recommendations.addArrangement($a, "new");
+end
+
+rule "Pirson"
+    agenda-group "pirson"
+    when
+        $a: Arrangement($a.getPrice() > 500)
+    then
+        recommendations.addArrangement($a, "pirson");
+end
+
+rule "Slicnost"
+    agenda-group "slicnost"
+    when
+        $a: Arrangement($a.getPrice() > 500)
+    then
+        recommendations.addArrangement($a, "slicnost");
+end
+
+rule "Preferenca"
+    agenda-group "preferenca"
+    when
+        $a: Arrangement($a.getPrice() > 1000)
+    then
+        recommendations.addArrangement($a, "preferenca");
+end
+
+rule "Izbaci nove aranzmane bez bodova"
+    agenda-group "filter bez bodova"
+    when
+        $a: ArrangementHomepageRecommendationDTO($tags: tags) from recommendations.arrangements
+        eval(!($tags.contains("pirson") || $tags.contains("slicnost") || $tags.contains("preferenca")))
+    then
+        recommendations.removeArrangement($a);
+end
+

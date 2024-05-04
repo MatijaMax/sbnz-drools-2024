@@ -66,4 +66,16 @@ public class ArrangementGradeService {
             return null;
         }
     }
+
+    public boolean isUserNew(Integer id) {
+        List<ArrangementGrade> grades = findAll();
+        int gradeCounter = 0;
+        for (ArrangementGrade grade : grades) {
+            if (grade.getUser().getId().equals(id)){
+                gradeCounter++;
+            }
+        }
+        return (gradeCounter < 3);
+    }
+
 }

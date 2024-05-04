@@ -10,19 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import sbnz.domain.Arrangement;
-import sbnz.domain.ArrangementGrade;
-import sbnz.domain.Student;
-import sbnz.domain.Trip;
+import sbnz.domain.*;
 import sbnz.dto.*;
 import sbnz.model.Customer;
 import sbnz.model.Item;
 import sbnz.model.Order;
 import sbnz.model.OrderLine;
-import sbnz.service.ArrangementGradeService;
-import sbnz.service.ArrangementRecommendationService;
-import sbnz.service.ArrangementService;
-import sbnz.service.StudentService;
+import sbnz.service.*;
 import sbnz.util.DebugAgendaEventListener;
 
 import java.util.*;
@@ -37,6 +31,9 @@ public class ArrangementController {
 
     @Autowired
     private ArrangementGradeService arrangementGradeService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping(value = "/all")
     public ResponseEntity<List<ArrangementDTO>> getAll() {
@@ -252,4 +249,62 @@ public class ArrangementController {
 
         return new ResponseEntity<>(recommendations.getArrangements(), HttpStatus.OK);
     }
+
+    /*
+    @GetMapping(value = "/{userId}/newUserRecommendations")
+    public ResponseEntity<List<ArrangementHomepageRecommendationDTO>> getHomepageRecommendation() {
+
+
+        return new ResponseEntity<>(recommendations.getArrangements(), HttpStatus.OK);
+    }
+    */
+
+
+
+    @GetMapping(value = "/{userId}/oldUserRecommendations")
+    public ResponseEntity<List<ArrangementHomepageRecommendationDTO>> getOldUserRecommendation(@PathVariable Integer userId) {
+        User user = userService.findById(userId);
+        KieServices ks = KieServices.Factory.get();
+        KieContainer kieContainer = ks.getKieClasspathContainer();
+        KieSession kSession = kieContainer.newKieSession("arrangementRecommendation");
+
+        kSession.setGlobal("recommendations", new ArrangementRecommendationService());
+        for(Arrangement a: aService.findAll()){
+            kSession.insert(a);
+        }
+        for(ArrangementGrade g: arrangementGradeService.findAll()){
+            kSession.insert(g);
+        }
+
+        kSession.getAgenda().getAgendaGroup("novo").setFocus();
+        int fired = kSession.fireAllRules();
+        System.out.println("Number of rules fired: " + fired);
+
+        kSession.getAgenda().getAgendaGroup("pirson").setFocus();
+        fired = kSession.fireAllRules();
+        System.out.println("Number of rules fired: " + fired);
+
+        kSession.getAgenda().getAgendaGroup("slicnost").setFocus();
+        fired = kSession.fireAllRules();
+        System.out.println("Number of rules fired: " + fired);
+
+        kSession.getAgenda().getAgendaGroup("preferenca").setFocus();
+        fired = kSession.fireAllRules();
+        System.out.println("Number of rules fired: " + fired);
+
+        kSession.getAgenda().getAgendaGroup("filter bez bodova").setFocus();
+        fired = kSession.fireAllRules();
+        System.out.println("Number of rules fired: " + fired);
+
+        ArrangementRecommendationService recommendations = (ArrangementRecommendationService) kSession.getGlobal("recommendations");
+        kSession.insert(recommendations);
+
+
+        return new ResponseEntity<>(recommendations.getArrangements(), HttpStatus.OK);
+    }
+
+
+
+
+
 }
