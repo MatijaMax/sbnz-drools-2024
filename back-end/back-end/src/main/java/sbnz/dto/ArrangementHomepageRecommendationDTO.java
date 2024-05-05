@@ -8,11 +8,14 @@ public class ArrangementHomepageRecommendationDTO {
     ArrangementDTO arrangement;
     Set<String> tags;
 
+    Integer filterGrade;
+
     public ArrangementHomepageRecommendationDTO() {}
 
     public ArrangementHomepageRecommendationDTO(Arrangement arrangement, Set<String> tags) {
         this.arrangement = new ArrangementDTO(arrangement);
         this.tags = tags;
+        this.filterGrade = 0;
     }
 
     public ArrangementDTO getArrangementDTO() {
@@ -40,6 +43,22 @@ public class ArrangementHomepageRecommendationDTO {
         return "ArrangementHomepageRecommendationDTO{" +
                 "arrangement=" + arrangement +
                 ", tags=" + tags +
+                ", filterGrade=" + filterGrade +
                 '}';
     }
+
+    public Integer getFilterGrade() {
+        return filterGrade;
+    }
+
+    public void setFilterGrade(Integer filterGrade) {
+        this.filterGrade = filterGrade;
+    }
+    public void countGrade(){
+        this.filterGrade= this.tags.size();
+        if(this.tags.contains("new")){
+            this.filterGrade = this.filterGrade - 1;
+        }
+    }
+
 }
