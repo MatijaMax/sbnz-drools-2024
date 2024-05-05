@@ -12,13 +12,17 @@ import { ArrangementService } from 'src/app/services/arrangement-service';
   styleUrls: ['./register-arrangement.component.css'],
 })
 export class RegisterArrangementComponent {
-  arrangement: ArrangementCreate = { name: '', price: 0 };
-  createdArrangement: Arrangement = { name: '', price: 0, id: 0 };
+  arrangement: ArrangementCreate = { name: '', price: 0 , location: ''};
+  createdArrangement: Arrangement = { name: '', price: 0, id: 0 ,location: ''};
   trip: TripCreate = { name: '', price: 0, description: '', arrangementId: 0, type: '' };
   registerForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
     price: new FormControl(0, [Validators.required]),
+    location: new FormControl('', [Validators.required]),
   });
+  destinations: string[] = [
+    'Paris', 'Rome', 'Barcelona', 'Tokyo', 'New York', 'Sydney', 'Dubai', 'London', 'Athens', 'Cairo'
+  ];
 
   constructor(private arrService: ArrangementService, private router: Router) {}
   ngOnInit(): void {}
@@ -37,6 +41,7 @@ export class RegisterArrangementComponent {
   fillArr() {
     this.arrangement.name = this.registerForm.value.name || '';
     this.arrangement.price = this.registerForm.value.price || 0;
+    this.arrangement.location = this.registerForm.value.location || '';
   }
   AddTrip() {
     console.log(this.trip);

@@ -35,6 +35,8 @@
         <ksession name="ourRules"/>
     </kbase>
     
-    
+    <kbase name="regularUserArrangementRecommendations" packages="arrangementRecommendation">
+        <ksession name="arrangementRecommendation"/>
+    </kbase>
     
 </kmodule>

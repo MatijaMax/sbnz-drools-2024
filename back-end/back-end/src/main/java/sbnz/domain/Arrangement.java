@@ -2,6 +2,7 @@ package sbnz.domain;
 
 import javax.persistence.*;
 import java.util.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name="arrangements", schema = "isa")
@@ -16,6 +17,11 @@ public class Arrangement {
     @Column(name = "price", nullable = false)
     private Integer price;
 
+    @Column(name = "dateAdded", nullable = false)
+    private LocalDate dateAdded;
+    @Column(name = "location", nullable = false) // Added location field
+    private String location;
+
     @OneToMany(mappedBy = "arrangement", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Trip> trips = new HashSet<Trip>();
 
@@ -23,18 +29,15 @@ public class Arrangement {
         super();
     }
 
-    public Arrangement(Integer id, String name, Integer price) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.price = price;
-    }
 
-    public Arrangement(Integer id, String name, Integer price, Set<Trip> trips) {
+
+    public Arrangement(Integer id, String name, Integer price,String location, Set<Trip> trips) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.trips = trips;
+        this.location = location;
+        this.dateAdded = LocalDate.now();
     }
 
     public Set<Trip> getTrips() {
@@ -60,6 +63,18 @@ public class Arrangement {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public LocalDate getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(LocalDate dateAdded) {
+        this.dateAdded = dateAdded;
+    }
+
+    public boolean isNew(){
+        return dateAdded.isAfter(LocalDate.now().minusMonths(1));
     }
 
     /*
@@ -108,5 +123,13 @@ public class Arrangement {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

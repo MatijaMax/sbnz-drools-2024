@@ -21,14 +21,18 @@ import { RegisterArrangementComponent } from './components/register-arrangement/
 import { MatSelectModule } from '@angular/material/select';
 import { ReservationsComponent } from './components/reservations/reservations.component';
 import { MatTableModule } from '@angular/material/table';
+import { RecommendationComponent } from './components/recommendation/recommendation.component';
+import { PreferencesComponent } from './components/preferences/preferences.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'companies', pathMatch: 'full' },
   { path: 'boilerplate', component: BoilerplateComponent },
   { path: 'reservations', component: ReservationsComponent },
+  { path: 'preferences', component: PreferencesComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent},
   { path: 'register-arrangement', component: RegisterArrangementComponent },
+  { path: 'recommendations', component: RecommendationComponent },
 ];
 
 @NgModule({
@@ -40,6 +44,8 @@ const appRoutes: Routes = [
     LoginComponent,
     RegisterArrangementComponent,
     ReservationsComponent,
+    RecommendationComponent,
+    PreferencesComponent,
   ],
   imports: [
     BrowserModule,

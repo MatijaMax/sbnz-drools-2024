@@ -7,6 +7,8 @@ import { TripCreate } from '../model/trip-create';
 import { ArrangementReservationCreate } from '../model/arrangement-reservation-create';
 import { ArrangementGradeCreate } from '../model/arrangement-grade-create';
 import { ArrangementReservationResponseDTO } from '../model/arrangement-reservation-responce';
+import { ArrangementRecommendation } from '../model/arrangment-recommendation';
+import { UserPreferences } from '../model/user-preferences';
 
 @Injectable({
   providedIn: 'root',
@@ -57,4 +59,24 @@ export class ArrangementService {
       environment.apiHost + 'arrangementReservations/user/' + userId
     );
   }
+
+  getArrangementRecommendationsWithoutUser(): Observable<ArrangementRecommendation[]> {
+    return this.http.get<ArrangementRecommendation[]>(
+      environment.apiHost + 'arrangements/homepageRecommendations'
+    )
+  }
+
+  getUserPreferencesByUserId(userId: number): Observable<UserPreferences> {
+    return this.http.get<UserPreferences>(
+      environment.apiHost + 'user/preferences/' + userId
+    );
+  }
+
+  createUserPreferences(userId: number, userPreferences: UserPreferences): Observable<UserPreferences> {
+    return this.http.post<UserPreferences>(
+      environment.apiHost + 'user/preferences/' + userId,
+      userPreferences
+    );
+  }
+
 }

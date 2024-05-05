@@ -1,0 +1,61 @@
+<div class="preferences-form" *ngIf="loggedUser">
+    <h2>User Preferences</h2>
+    
+    <!-- Display existing preferences -->
+    <div *ngIf="userPreferences" class="preferences-container">
+        <!-- Destination Table -->
+        <div class="table-container">
+          <h3>Your Destinations</h3>
+          <table mat-table [dataSource]="userPreferences.destinations" class="mat-elevation-z8">
+            <!-- Columns -->
+            <ng-container matColumnDef="destination">
+              <th mat-header-cell *matHeaderCellDef> Destination </th>
+              <td mat-cell *matCellDef="let destination"> {{ destination }} </td>
+            </ng-container>
+            <!-- Table rows -->
+            <tr mat-row *matRowDef="let row; columns: ['destination'];"></tr>
+          </table>
+        </div>
+      
+        <!-- Trip Table -->
+        <div class="table-container">
+          <h3>Your Trip Types</h3>
+          <table mat-table [dataSource]="userPreferences.trips" class="mat-elevation-z8">
+            <!-- Columns -->
+            <ng-container matColumnDef="trip">
+              <th mat-header-cell *matHeaderCellDef> Trip types </th>
+              <td mat-cell *matCellDef="let trip"> {{ trip }} </td>
+            </ng-container>
+            <!-- Table rows -->
+            <tr mat-row *matRowDef="let row; columns: ['trip'];"></tr>
+          </table>
+        </div>
+      </div>
+    
+    <!-- Form to select preferences -->
+    <div class="preferences-form" *ngIf="!userPreferences">
+      <h3>Select Your Preferences</h3>
+      <mat-form-field appearance="fill">
+        <mat-label>Favorite Destinations</mat-label>
+        <mat-select [(ngModel)]="selectedDestinations" multiple>
+          <mat-option *ngFor="let destination of destinations" [value]="destination">{{ destination }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="selectedDestinations.length < 7 || selectedDestinations.length > 10" class="error-message">
+        Please select 7-10 favorite destinations.
+      </div>
+      <br>
+      <mat-form-field appearance="fill">
+        <mat-label>Favorite Trip Types</mat-label>
+        <mat-select [(ngModel)]="selectedTripTypes" multiple>
+          <mat-option *ngFor="let tripType of tripTypes" [value]="tripType.value">{{ tripType.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="selectedTripTypes.length !== 3" class="error-message">
+        Please select exactly 3 types of trips.
+      </div>
+      <br>
+      <button mat-raised-button color="primary" (click)="saveUserPreferences()" [disabled]="!isFormValid()">Save Preferences</button>
+    </div>
+  </div>
+  
