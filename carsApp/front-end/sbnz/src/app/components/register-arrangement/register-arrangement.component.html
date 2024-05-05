@@ -1,0 +1,33 @@
+<div class="register-container" style="margin-top: 40px">
+  <h1>Add a New Arragement</h1>
+  <form [formGroup]="registerForm">
+    <mat-form-field>
+      <mat-label>Brand</mat-label>
+      <input matInput formControlName="brand" />
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <mat-label>Model</mat-label>
+      <input matInput formControlName="model" />
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <mat-label>Price</mat-label>
+      <input matInput formControlName="price" />
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <mat-label>Type</mat-label>
+      <input matInput formControlName="type" />
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <mat-label>Engine type</mat-label>
+      <input matInput formControlName="engineType" />
+    </mat-form-field>
+    <br />
+    <button mat-flat-button color="primary" (click)="RegisterCar()">
+      Register
+    </button>
+  </form>
+</div>

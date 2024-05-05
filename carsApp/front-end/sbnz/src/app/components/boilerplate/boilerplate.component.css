@@ -1,0 +1,41 @@
+.place-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.place-table th,
+.place-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.place-table th {
+  background-color: #f2f2f2;
+}
+
+.subtable {
+  margin-top: 20px;
+}
+
+.subtable h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.subtable table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.subtable th,
+.subtable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.subtable th {
+  background-color: #f2f2f2;
+}

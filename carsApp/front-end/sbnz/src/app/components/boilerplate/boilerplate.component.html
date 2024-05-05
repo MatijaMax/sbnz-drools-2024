@@ -1,0 +1,23 @@
+<h1>Arragements</h1>
+<table class="place-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Brand</th>
+      <th>Model</th>
+      <th>Price</th>
+      <th>Type</th>
+      <th>Engine type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let arrangement of arrangementsAll; let i = index">
+      <td>{{ arrangement.id }}</td>
+      <td>{{ arrangement.brand }}</td>
+      <td>{{ arrangement.model }}</td>
+      <td>{{ arrangement.price }}</td>
+      <td>{{ arrangement.type }}</td>
+      <td>{{ arrangement.engineType }}</td>
+    </tr>
+  </tbody>
+</table>
