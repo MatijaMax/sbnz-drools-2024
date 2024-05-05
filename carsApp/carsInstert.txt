@@ -1,0 +1,11 @@
+INSERT INTO sbnz.role(
+	id, name)
+	VALUES (1, 'ROLE_Regular');
+
+INSERT INTO sbnz.role(
+	id, name)
+	VALUES (2, 'ROLE_Admin');
+
+INSERT INTO sbnz.cars(
+	id, brand, engine_type, model, price, type)
+	VALUES (-1, 'toyota', 'hybrid', 'prius', 2500.50, 'hatchback');
