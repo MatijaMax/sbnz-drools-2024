@@ -41,12 +41,63 @@ rule "Preferenca"
         recommendations.addArrangement($a, "preferenca");
 end
 
-rule "Izbaci nove aranzmane bez bodova"
+rule "Izbaci nove aranzmane bez bodova i izracunaj filter ocene"
     agenda-group "filter bez bodova"
     when
         $a: ArrangementHomepageRecommendationDTO($tags: tags) from recommendations.arrangements
         eval(!($tags.contains("pirson") || $tags.contains("slicnost") || $tags.contains("preferenca")))
     then
         recommendations.removeArrangement($a);
+        recommendations.countGrades();
 end
+
+rule "Filter by grade 3"
+    agenda-group "filterByGrade3New"
+    when
+        $s: ArrangementRecommendationService($s.getSizeByGrade(3) > 20, $arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO(!tags.contains("new") && filterGrade==3) from $arrangements
+    then
+        modify($s){removeArrangement($a)}
+end
+
+rule "Filter by grade 2"
+    agenda-group "filterByGrade2New"
+    when
+        $s: ArrangementRecommendationService($s.getSizeByGrade(2) > 20, $arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO(!tags.contains("new") && filterGrade==2) from $arrangements
+    then
+        modify($s){removeArrangement($a)}
+end
+
+rule "Filter by grade 1"
+    agenda-group "filterByGrade1New"
+    when
+        $s: ArrangementRecommendationService($s.getSizeByGrade(1) > 20, $arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO(!tags.contains("new") && filterGrade==1) from $arrangements
+    then
+        modify($s){removeArrangement($a)}
+end
+
+rule "Filter by grade 1 final"
+    agenda-group "filterByGrade1Final"
+    when
+        $s: ArrangementRecommendationService($s.size() > 20, $arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO(filterGrade==1) from $arrangements
+    then
+        modify($s){removeArrangement($a)}
+end
+
+rule "Filter by grade 2 final"
+    agenda-group "filterByGrade2Final"
+    when
+        $s: ArrangementRecommendationService($s.size() > 20, $arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO(filterGrade==2) from $arrangements
+    then
+        modify($s){removeArrangement($a)}
+end
+
+
+
+
+
 

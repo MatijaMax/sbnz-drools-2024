@@ -54,4 +54,11 @@ public class ArrangementHomepageRecommendationDTO {
     public void setFilterGrade(Integer filterGrade) {
         this.filterGrade = filterGrade;
     }
+    public void countGrade(){
+        this.filterGrade= this.tags.size();
+        if(this.tags.contains("new")){
+            this.filterGrade = this.filterGrade - 1;
+        }
+    }
+
 }

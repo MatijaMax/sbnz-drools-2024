@@ -1,0 +1,18 @@
+package arrangementRecommendation;
+
+import sbnz.domain.Arrangement;
+import sbnz.domain.ArrangementGrade;
+import sbnz.service.ArrangementRecommendationService;
+import sbnz.dto.ArrangementHomepageRecommendationDTO;
+import java.util.List;
+import java.time.LocalDate;
+
+global ArrangementRecommendationService recommendations;
+
+rule "Novo"
+    agenda-group "novo"
+    when
+        $a: Arrangement($a.isNew())
+    then
+        recommendations.addArrangement($a, "uf uf uf");
+end

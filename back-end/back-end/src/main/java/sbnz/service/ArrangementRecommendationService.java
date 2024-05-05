@@ -18,6 +18,10 @@ public class ArrangementRecommendationService {
         return arrangements;
     }
 
+    public List<ArrangementHomepageRecommendationDTO> getArrangementsByGrade() {
+        return arrangements;
+    }
+
     public void addArrangement(Arrangement arrangement, String tag) {
         ArrangementHomepageRecommendationDTO recommendationDTO = arrangements.stream()
                                                                     .filter(recomendation -> recomendation.getArrangementDTO().getId() == arrangement.getId())
@@ -37,6 +41,18 @@ public class ArrangementRecommendationService {
 
     public int getSize(){
         return arrangements.size();
+    }
+
+    public int getSizeByGrade(int grade){
+        return (int) arrangements.stream()
+                .filter(element -> element.getFilterGrade() == grade)
+                .count();
+    }
+
+    public void countGrades() {
+        for (ArrangementHomepageRecommendationDTO arr:arrangements) {
+            arr.countGrade();
+        }
     }
 
     public void removeRandomArrangement() {

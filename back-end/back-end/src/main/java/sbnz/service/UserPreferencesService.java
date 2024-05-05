@@ -28,8 +28,8 @@ public class UserPreferencesService {
     }
 
     // Read operation - Get user preferences by ID
-    public Optional<UserPreferences> getUserPreferencesById(Integer id) {
-        return userPreferencesRepository.findById(id);
+    public UserPreferences getUserPreferencesById(Integer id) {
+        return userPreferencesRepository.findById(id).orElse(null);
     }
 
     // Update operation

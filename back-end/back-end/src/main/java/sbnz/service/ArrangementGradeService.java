@@ -78,4 +78,15 @@ public class ArrangementGradeService {
         return (gradeCounter < 3);
     }
 
+    public boolean noGrade(Integer id) {
+        List<ArrangementGrade> grades = findAll();
+        boolean noGrade = true;
+        for (ArrangementGrade grade : grades) {
+            if (grade.getArrangement().getId().equals(id)){
+                noGrade = false;
+            }
+        }
+        return noGrade;
+    }
+
 }

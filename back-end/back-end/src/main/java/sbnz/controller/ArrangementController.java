@@ -33,8 +33,11 @@ public class ArrangementController {
     private ArrangementGradeService arrangementGradeService;
 
     @Autowired
+
     private UserService userService;
 
+    @Autowired
+    private UserPreferencesService userPreferencesService;
     @GetMapping(value = "/all")
     public ResponseEntity<List<ArrangementDTO>> getAll() {
 
@@ -204,17 +207,16 @@ public class ArrangementController {
         return new ResponseEntity<>(arrangementDTOs, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/homepageRecommendations")
-    public ResponseEntity<List<ArrangementHomepageRecommendationDTO>> getHomepageRecommendation() {
+    public ResponseEntity<List<ArrangementHomepageRecommendationDTO>> getVisitorRecommendation() {
         KieServices ks = KieServices.Factory.get();
         KieContainer kieContainer = ks.getKieClasspathContainer();
         KieSession kSession = kieContainer.newKieSession("arrangementRecommendation");
 
         kSession.setGlobal("recommendations", new ArrangementRecommendationService());
-        for(Arrangement a: aService.findAll()){
+        for (Arrangement a : aService.findAll()) {
             kSession.insert(a);
         }
-        for(ArrangementGrade g: arrangementGradeService.findAll()){
+        for (ArrangementGrade g : arrangementGradeService.findAll()) {
             kSession.insert(g);
         }
 
@@ -250,57 +252,97 @@ public class ArrangementController {
         return new ResponseEntity<>(recommendations.getArrangements(), HttpStatus.OK);
     }
 
-    /*
-    @GetMapping(value = "/{userId}/newUserRecommendations")
+    @GetMapping(value = "/homepageRecommendations")
     public ResponseEntity<List<ArrangementHomepageRecommendationDTO>> getHomepageRecommendation() {
 
-
-        return new ResponseEntity<>(recommendations.getArrangements(), HttpStatus.OK);
+        return getVisitorRecommendation();
     }
-    */
 
 
+    @GetMapping(value = "/{userId}/loggedUserRecommendations")
+    public ResponseEntity<List<ArrangementHomepageRecommendationDTO>> getLoggedUserRecommendation(@PathVariable Integer userId) {
+        boolean isUserNew = arrangementGradeService.isUserNew(userId);
+        UserPreferences preference = userPreferencesService.getUserPreferencesById(userId);
+        if(isUserNew){
+            //DODATI PRAVILA KAD JE NOV
+            if(userPreferencesService.getUserPreferencesByUserId(userId) == null){
+                return getVisitorRecommendation();
+            }
+            //Smatracemo da je polje name u arrangmentu zapravo naziv destinacije-polja nisu strogo definisana u specifikaciji
+            KieServices ks = KieServices.Factory.get();
+            KieContainer kieContainer = ks.getKieClasspathContainer();
+            KieSession kSession = kieContainer.newKieSession("arrangementRecommendation");
+            kSession.setGlobal("recommendations", new ArrangementRecommendationService());
 
-    @GetMapping(value = "/{userId}/oldUserRecommendations")
-    public ResponseEntity<List<ArrangementHomepageRecommendationDTO>> getOldUserRecommendation(@PathVariable Integer userId) {
-        User user = userService.findById(userId);
-        KieServices ks = KieServices.Factory.get();
-        KieContainer kieContainer = ks.getKieClasspathContainer();
-        KieSession kSession = kieContainer.newKieSession("arrangementRecommendation");
-
-        kSession.setGlobal("recommendations", new ArrangementRecommendationService());
-        for(Arrangement a: aService.findAll()){
-            kSession.insert(a);
+            for(Arrangement a: aService.findAll()){
+                kSession.insert(a);
+            }
+            for(ArrangementGrade g: arrangementGradeService.findAll()){
+                kSession.insert(g);
+            }
+            ArrangementRecommendationService recommendations = (ArrangementRecommendationService) kSession.getGlobal("recommendations");
+            return new ResponseEntity<>(recommendations.getArrangements(), HttpStatus.OK);
         }
-        for(ArrangementGrade g: arrangementGradeService.findAll()){
-            kSession.insert(g);
+        else{
+            //PRAVILA ZA STAROG KORISNIKA
+            KieServices ks = KieServices.Factory.get();
+            KieContainer kieContainer = ks.getKieClasspathContainer();
+            KieSession kSession = kieContainer.newKieSession("arrangementRecommendation");
+            kSession.setGlobal("recommendations", new ArrangementRecommendationService());
+
+            for(Arrangement a: aService.findAll()){
+                kSession.insert(a);
+            }
+            for(ArrangementGrade g: arrangementGradeService.findAll()){
+                kSession.insert(g);
+            }
+
+            kSession.getAgenda().getAgendaGroup("novo").setFocus();
+            int fired = kSession.fireAllRules();
+            System.out.println("Number of rules fired: " + fired);
+
+            kSession.getAgenda().getAgendaGroup("pirson").setFocus();
+            fired = kSession.fireAllRules();
+            System.out.println("Number of rules fired: " + fired);
+
+            kSession.getAgenda().getAgendaGroup("slicnost").setFocus();
+            fired = kSession.fireAllRules();
+            System.out.println("Number of rules fired: " + fired);
+
+            kSession.getAgenda().getAgendaGroup("preferenca").setFocus();
+            fired = kSession.fireAllRules();
+            System.out.println("Number of rules fired: " + fired);
+
+            kSession.getAgenda().getAgendaGroup("filter bez bodova").setFocus();
+            fired = kSession.fireAllRules();
+            System.out.println("Number of rules fired: " + fired);
+
+            ArrangementRecommendationService recommendations = (ArrangementRecommendationService) kSession.getGlobal("recommendations");
+            kSession.insert(recommendations);
+
+            kSession.getAgenda().getAgendaGroup("filterByGrade3New").setFocus();
+            fired = kSession.fireAllRules();
+            System.out.println("Number of rules fired: " + fired);
+
+            kSession.getAgenda().getAgendaGroup("filterByGrade2New").setFocus();
+            fired = kSession.fireAllRules();
+            System.out.println("Number of rules fired: " + fired);
+
+            kSession.getAgenda().getAgendaGroup("filterByGrade1New").setFocus();
+            fired = kSession.fireAllRules();
+            System.out.println("Number of rules fired: " + fired);
+
+            kSession.getAgenda().getAgendaGroup("filterByGrade1Final").setFocus();
+            fired = kSession.fireAllRules();
+            System.out.println("Number of rules fired: " + fired);
+
+            kSession.getAgenda().getAgendaGroup("filterByGrade2Final").setFocus();
+            fired = kSession.fireAllRules();
+            System.out.println("Number of rules fired: " + fired);
+
+
+            return new ResponseEntity<>(recommendations.getArrangements(), HttpStatus.OK);
         }
-
-        kSession.getAgenda().getAgendaGroup("novo").setFocus();
-        int fired = kSession.fireAllRules();
-        System.out.println("Number of rules fired: " + fired);
-
-        kSession.getAgenda().getAgendaGroup("pirson").setFocus();
-        fired = kSession.fireAllRules();
-        System.out.println("Number of rules fired: " + fired);
-
-        kSession.getAgenda().getAgendaGroup("slicnost").setFocus();
-        fired = kSession.fireAllRules();
-        System.out.println("Number of rules fired: " + fired);
-
-        kSession.getAgenda().getAgendaGroup("preferenca").setFocus();
-        fired = kSession.fireAllRules();
-        System.out.println("Number of rules fired: " + fired);
-
-        kSession.getAgenda().getAgendaGroup("filter bez bodova").setFocus();
-        fired = kSession.fireAllRules();
-        System.out.println("Number of rules fired: " + fired);
-
-        ArrangementRecommendationService recommendations = (ArrangementRecommendationService) kSession.getGlobal("recommendations");
-        kSession.insert(recommendations);
-
-
-        return new ResponseEntity<>(recommendations.getArrangements(), HttpStatus.OK);
     }
 
 
