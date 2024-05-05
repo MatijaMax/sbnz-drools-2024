@@ -3,7 +3,7 @@
   <thead>
     <tr>
       <th>ID</th>
-      <th>Name</th>
+      <th>Name and location</th>
       <th>Price of the arrangement (per person)</th>
       <th>Average grade</th>
       <th>Number of people going</th>
@@ -14,7 +14,7 @@
   <tbody>
     <tr *ngFor="let arrangement of arrangementsAll; let i = index">
       <td>{{ arrangement.id }}</td>
-      <td>{{ arrangement.name }}</td>
+      <td>{{ arrangement.name }} - {{ arrangement.location }} </td>
       <td>{{ arrangement.price }}</td>
       <td>{{ arrangement.averageGrade }}</td>
       <td><input type="number" [(ngModel)]="arrangement.numberOfGuests" /></td>

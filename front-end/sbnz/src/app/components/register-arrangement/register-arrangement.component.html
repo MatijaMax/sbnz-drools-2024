@@ -1,5 +1,5 @@
 <div class="register-container" style="margin-top: 40px">
-  <h1>Add a New Arragement</h1>
+  <h1>Add a New Arrangement</h1>
   <form [formGroup]="registerForm">
     <mat-form-field>
       <mat-label>Name</mat-label>
@@ -9,6 +9,14 @@
     <mat-form-field>
       <mat-label>Price</mat-label>
       <input matInput formControlName="price" />
+    </mat-form-field>
+    <br />
+
+    <mat-form-field>
+      <mat-label>Location</mat-label>
+      <mat-select formControlName="location">
+        <mat-option *ngFor="let destination of destinations" [value]="destination">{{ destination }}</mat-option>
+      </mat-select>
     </mat-form-field>
     <br />
 

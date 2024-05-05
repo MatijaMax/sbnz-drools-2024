@@ -142,6 +142,7 @@ public class ArrangementController {
         Arrangement arrangement = new Arrangement();
         arrangement.setName(arrangementDTO.getName());
         arrangement.setPrice(arrangementDTO.getPrice());
+        arrangement.setLocation(arrangementDTO.getLocation());
 
         arrangement = aService.save(arrangement);
         return new ResponseEntity<>(new ArrangementDTO(arrangement), HttpStatus.CREATED);

@@ -4,6 +4,7 @@
       <tr>
         <th>ID</th>
         <th>Name</th>
+        <th>Location</th>
         <th>Price of the arrangement (per person)</th>
         <th>Tags</th>
       </tr>
@@ -12,6 +13,7 @@
         <tr *ngFor="let ar of arrangementRecommendations">
           <td>{{ ar.arrangementDTO.id }}</td>
           <td>{{ ar.arrangementDTO.name }}</td>
+          <td>{{ ar.arrangementDTO.location }}</td>
           <td>{{ ar.arrangementDTO.price }}</td>
           <td><ul *ngFor="let tag of ar.tags">{{tag}}</ul></td>
         </tr>
