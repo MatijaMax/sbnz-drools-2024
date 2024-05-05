@@ -16,7 +16,7 @@ public class Trip {
     private Integer price;
     @Column(name = "type", nullable = false)
     private TRIPTYPE type;
-    public enum TRIPTYPE {HISTORY, ADVENTURE, SOCIAL, EXTREME};
+    public enum TRIPTYPE {HISTORY, CULTURAL, GASTRONOMIC, SPORTS,RELAXATION,DIVING,HIKING};
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "arrangementId", nullable = true)

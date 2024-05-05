@@ -23,7 +23,7 @@ export class PreferencesComponent implements OnInit {
     'Paris', 'Rome', 'Barcelona', 'Tokyo', 'New York', 'Sydney', 'Dubai', 'London', 'Athens', 'Cairo'
   ];
   tripTypes = [
-    { label: 'Historical', value: 'HISTORICAL' },
+    { label: 'History', value: 'HISTORY' },
     { label: 'Cultural', value: 'CULTURAL' },
     { label: 'Gastronomic', value: 'GASTRONOMIC' },
     { label: 'Sports', value: 'SPORTS' },
