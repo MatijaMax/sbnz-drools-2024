@@ -46,11 +46,13 @@ rule "Slicnost"
 end
 
 rule "Preferenca_arr"
+    lock-on-active
     agenda-group "preferenca-arr"
     when
-        $a: Arrangement($a.isNew())
+        $s: ArrangementRecommendationService($arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO() from $arrangements
     then
-        recommendationsOld.addArrangement($a, "preferencaArr");
+        modify($s){checkArrPref($a)}
 end
 
 rule "Preferenca_trip"

@@ -345,9 +345,9 @@ public class ArrangementController {
             fired = kSession.fireAllRules();
             System.out.println("Number of rules fired staaari slicnost: " + fired);
 
-//            kSession.getAgenda().getAgendaGroup("preferenca").setFocus();
-//            fired = kSession.fireAllRules();
-//            System.out.println("Number of rules fired staaari: " + fired);
+            kSession.getAgenda().getAgendaGroup("preferenca-arr").setFocus();
+            fired = kSession.fireAllRules();
+            System.out.println("Number of rules fired staaari preferenca-arr: " + fired);
 
             kSession.getAgenda().getAgendaGroup("filterbezbodova").setFocus();
             fired = kSession.fireAllRules();

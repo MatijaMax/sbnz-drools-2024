@@ -102,6 +102,25 @@ public class ArrangementRecommendationService {
         arrangement.setPopularGrade(counter);
     }
 
+    public void checkArrPref(ArrangementHomepageRecommendationDTO arrangement) {
+            if(destinationsRec().contains(arrangement.getArrangement().getLocation())){
+                System.out.println("AAAAAA");
+                arrangement.addTag("preferenca-arr");
+            }
+    }
+
+    private Set<String> destinationsRec(){
+        Set<String> uniqueDestinations = new HashSet<>();
+        Set<String> resultDestinations = new HashSet<>();
+        for(var res : reservations){
+            if(uniqueDestinations.contains(res.getArrangement().getLocation())){
+                resultDestinations.add(res.getArrangement().getLocation());
+            }
+            uniqueDestinations.add(res.getArrangement().getLocation());
+        }
+        return resultDestinations;
+    }
+
     public void checkSimilar(ArrangementHomepageRecommendationDTO arrangement) {
         for(var arr : arrangements){
             if(arr.getTags().contains("graded_like")){
