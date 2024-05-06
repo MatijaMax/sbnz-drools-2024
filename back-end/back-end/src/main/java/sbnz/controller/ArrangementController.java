@@ -224,19 +224,19 @@ public class ArrangementController {
 
         kSession.getAgenda().getAgendaGroup("new arrangements").setFocus();
         int fired = kSession.fireAllRules();
-        System.out.println("Number of rules fired: " + fired);
+        System.out.println("Number of rules fired new arrangements nonauth: " + fired);
 
         kSession.getAgenda().getAgendaGroup("popular arrangements").setFocus();
         fired = kSession.fireAllRules();
-        System.out.println("Number of rules fired: " + fired);
+        System.out.println("Number of rules fired nonauth: " + fired);
 
         kSession.getAgenda().getAgendaGroup("average grade").setFocus();
         fired = kSession.fireAllRules();
-        System.out.println("Number of rules fired: " + fired);
+        System.out.println("Number of rules fired nonauth: " + fired);
 
         kSession.getAgenda().getAgendaGroup("filter1").setFocus();
         fired = kSession.fireAllRules();
-        System.out.println("Number of rules fired: " + fired);
+        System.out.println("Number of rules fired nonauth: " + fired);
 
 
         ArrangementRecommendationService recommendations = (ArrangementRecommendationService) kSession.getGlobal("recommendations");
@@ -244,11 +244,11 @@ public class ArrangementController {
 
         kSession.getAgenda().getAgendaGroup("filter2").setFocus();
         fired = kSession.fireAllRules();
-        System.out.println("Number of rules fired: " + fired);
+        System.out.println("Number of rules fired nonauth: " + fired);
 
         kSession.getAgenda().getAgendaGroup("filter3").setFocus();
         fired = kSession.fireAllRules();
-        System.out.println("Number of rules fired: " + fired);
+        System.out.println("Number of rules fired nonauth: " + fired);
 
         return new ResponseEntity<>(recommendations.getArrangements(), HttpStatus.OK);
     }
@@ -263,10 +263,12 @@ public class ArrangementController {
     @GetMapping(value = "/{userId}/loggedUserRecommendations")
     public ResponseEntity<List<ArrangementHomepageRecommendationDTO>> getLoggedUserRecommendation(@PathVariable Integer userId) {
         boolean isUserNew = arrangementGradeService.isUserNew(userId);
-        UserPreferences preference = userPreferencesService.getUserPreferencesById(userId);
+        System.out.println("User new: " + isUserNew);
+        UserPreferences preference = userPreferencesService.getUserPreferencesByUserIdSafe(userId);
         if(isUserNew){
             //PRAVILA ZA NOVOG KORISNIKA
             if(preference == null){
+                System.out.println("Preferencija nula :* : " + preference);
                 return getVisitorRecommendation();
             }
             KieServices ks = KieServices.Factory.get();
@@ -284,22 +286,22 @@ public class ArrangementController {
 
             kSession.getAgenda().getAgendaGroup("graded").setFocus();
             int fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired: " + fired);
+            System.out.println("Number of rules fired gradede: " + fired);
 
             kSession.getAgenda().getAgendaGroup("popular").setFocus();
             fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired: " + fired);
+            System.out.println("Number of rules fired popular: " + fired);
 
             ArrangementRecommendationService recommendations = (ArrangementRecommendationService) kSession.getGlobal("recommendationsNew");
             kSession.insert(recommendations);
 
             kSession.getAgenda().getAgendaGroup("filter top destination").setFocus();
             fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired: " + fired);
+            System.out.println("Number of rules fired filter top destination: " + fired);
 
             kSession.getAgenda().getAgendaGroup("filter avg grade").setFocus();
             fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired: " + fired);
+            System.out.println("Number of rules fired filter avg grade: " + fired);
 
 
             return new ResponseEntity<>(recommendations.getArrangements(), HttpStatus.OK);
@@ -321,46 +323,46 @@ public class ArrangementController {
 
             kSession.getAgenda().getAgendaGroup("novo").setFocus();
             int fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired: " + fired);
+            System.out.println("Number of rules fired staaari: " + fired);
 
             kSession.getAgenda().getAgendaGroup("pirson").setFocus();
             fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired: " + fired);
+            System.out.println("Number of rules fired staaari: " + fired);
 
             kSession.getAgenda().getAgendaGroup("slicnost").setFocus();
             fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired: " + fired);
+            System.out.println("Number of rules fired staaari: " + fired);
 
             kSession.getAgenda().getAgendaGroup("preferenca").setFocus();
             fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired: " + fired);
+            System.out.println("Number of rules fired staaari: " + fired);
 
             kSession.getAgenda().getAgendaGroup("filter bez bodova").setFocus();
             fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired: " + fired);
+            System.out.println("Number of rules fired staaari: " + fired);
 
             ArrangementRecommendationService recommendations = (ArrangementRecommendationService) kSession.getGlobal("recommendationsOld");
             kSession.insert(recommendations);
 
             kSession.getAgenda().getAgendaGroup("filterByGrade3New").setFocus();
             fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired: " + fired);
+            System.out.println("Number of rules fired staaari: " + fired);
 
             kSession.getAgenda().getAgendaGroup("filterByGrade2New").setFocus();
             fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired: " + fired);
+            System.out.println("Number of rules fired staaari: " + fired);
 
             kSession.getAgenda().getAgendaGroup("filterByGrade1New").setFocus();
             fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired: " + fired);
+            System.out.println("Number of rules fired staaari: " + fired);
 
             kSession.getAgenda().getAgendaGroup("filterByGrade1Final").setFocus();
             fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired: " + fired);
+            System.out.println("Number of rules fired staaari: " + fired);
 
             kSession.getAgenda().getAgendaGroup("filterByGrade2Final").setFocus();
             fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired: " + fired);
+            System.out.println("Number of rules fired staaari: " + fired);
 
 
             return new ResponseEntity<>(recommendations.getArrangements(), HttpStatus.OK);

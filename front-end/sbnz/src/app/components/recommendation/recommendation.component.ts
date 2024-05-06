@@ -23,11 +23,26 @@ export class RecommendationComponent {
   ngOnInit(): void {
     this.subscription = this.authService.loggedUser.subscribe((user) => {
       this.loggedUser = user;
-      this.GetArrangementRecommendations();
+      console.log(this.loggedUser );
+      if(this.loggedUser.email.length == 0){
+        this.GetArrangementRecommendations();
+      }
+      else{
+        this.GetArrangementRecommendationsLogged(this.loggedUser.id);
+      }
     });
   }
   GetArrangementRecommendations() {
     this.arrService.getArrangementRecommendationsWithoutUser().subscribe({
+      next: (result: ArrangementRecommendation[]) => {
+        this.arrangementRecommendations = result;
+        console.log(this.arrangementRecommendations);
+      }
+    });
+  }
+
+  GetArrangementRecommendationsLogged(id: number) {
+    this.arrService.getArrangementRecommendationsWithUser(id).subscribe({
       next: (result: ArrangementRecommendation[]) => {
         this.arrangementRecommendations = result;
         console.log(this.arrangementRecommendations);

@@ -56,4 +56,11 @@ public class UserPreferencesService {
     public List<UserPreferences> getUserPreferencesByUserId(Integer userId) {
         return userPreferencesRepository.findByUserId(userId);
     }
+
+    public UserPreferences getUserPreferencesByUserIdSafe(Integer userId) {
+        var list = userPreferencesRepository.findByUserId(userId);
+        if (list.isEmpty()) return null;
+
+        return list.get(0);
+    }
 }

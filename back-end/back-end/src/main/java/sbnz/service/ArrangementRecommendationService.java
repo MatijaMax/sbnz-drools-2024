@@ -61,8 +61,9 @@ public class ArrangementRecommendationService {
 
     public void countPopularArrangement(ArrangementHomepageRecommendationDTO arrangement, UserPreferences preference) {
         String location = arrangement.getArrangementDTO().getLocation();
+        System.out.println("BILO STA POPULr");
         ArrayList<String> listOne = new ArrayList<String>();
-        ArrayList<String> listTwo = new ArrayList<String>();
+        ArrayList<String> listTwo ;
         for(Trip trip: arrangementRepository.findById(arrangement.getArrangementDTO().getId()).get().getTrips()){
             listOne.add(trip.getType().toString());
         }
@@ -79,6 +80,7 @@ public class ArrangementRecommendationService {
                 counter = 0;
             }
         }
+        System.out.println("BILO STA POPULr COUNTER "+location+" "+ counter);
         arrangement.setPopularGrade(counter);
     }
 

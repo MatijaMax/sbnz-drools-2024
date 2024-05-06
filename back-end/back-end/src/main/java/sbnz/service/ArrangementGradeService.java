@@ -75,6 +75,7 @@ public class ArrangementGradeService {
                 gradeCounter++;
             }
         }
+
         return (gradeCounter < 3);
     }
 
