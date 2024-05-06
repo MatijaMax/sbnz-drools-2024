@@ -335,7 +335,7 @@ public class ArrangementController {
 
             kSession.getAgenda().getAgendaGroup("graded_like").setFocus();
             fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired staaari: " + fired);
+            System.out.println("Number of rules fired staaari lajkovi: " + fired);
 
             kSession.getAgenda().getAgendaGroup("pirson").setFocus();
             fired = kSession.fireAllRules();
@@ -348,6 +348,10 @@ public class ArrangementController {
             kSession.getAgenda().getAgendaGroup("preferenca-arr").setFocus();
             fired = kSession.fireAllRules();
             System.out.println("Number of rules fired staaari preferenca-arr: " + fired);
+
+            kSession.getAgenda().getAgendaGroup("preferenca_trip").setFocus();
+            fired = kSession.fireAllRules();
+            System.out.println("Number of rules fired staaari preferenca-izl: " + fired);
 
             kSession.getAgenda().getAgendaGroup("filterbezbodova").setFocus();
             fired = kSession.fireAllRules();
@@ -362,6 +366,14 @@ public class ArrangementController {
             System.out.println("Number of rules fired staaari: " + fired);
 
             kSession.getAgenda().getAgendaGroup("filterByGrade3Final").setFocus();
+            fired = kSession.fireAllRules();
+            System.out.println("Number of rules fired staaari kraj: " + fired);
+
+            kSession.getAgenda().getAgendaGroup("filterByGrade4Final").setFocus();
+            fired = kSession.fireAllRules();
+            System.out.println("Number of rules fired staaari kraj: " + fired);
+
+            kSession.getAgenda().getAgendaGroup("filterByGrade5Final").setFocus();
             fired = kSession.fireAllRules();
             System.out.println("Number of rules fired staaari kraj: " + fired);
 

@@ -8,6 +8,7 @@ import sbnz.repository.ArrangementGradeRepository;
 import sbnz.repository.ArrangementRepository;
 import sbnz.repository.UserPreferencesRepository;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.sql.Array;
 import java.util.*;
 
@@ -102,9 +103,48 @@ public class ArrangementRecommendationService {
         arrangement.setPopularGrade(counter);
     }
 
+    public void checkTripPref(ArrangementHomepageRecommendationDTO arrangement) {
+        for(var a : realArrangements){
+            if(a.getId() == arrangement.getArrangement().getId()){
+                for(var t : a.getTrips()){
+                    if(tripsRec().contains(t.getType())){
+                        arrangement.addTag("preferenca-trip");
+                    }
+                }
+            }
+        }
+
+    }
+
+    private ArrayList<Trip.TRIPTYPE> tripsRec(){
+        ArrayList<Trip.TRIPTYPE> result = new ArrayList<>();
+        ArrayList<Trip> visitedTrips = new ArrayList<>();
+        for(var res : reservations){
+            visitedTrips.addAll(res.getArrangement().getTrips());
+        }
+        HashMap< Trip.TRIPTYPE, Integer> visits = new HashMap<>();
+        for(var v : visitedTrips){
+            visits.put(v.getType(), 0);
+        }
+        for(var v : visitedTrips){
+            visits.put(v.getType(), visits.get(v.getType()) + 1);
+        }
+        int total = 0;
+        for(var v : visits.entrySet()){
+            total += v.getValue();
+        }
+        for(var v : visits.entrySet()){
+            if(v.getValue()/(double)total >= 0.4){
+                result.add(v.getKey());
+            }
+
+        }
+        System.out.println(result + " " + total);
+        return result;
+    }
+
     public void checkArrPref(ArrangementHomepageRecommendationDTO arrangement) {
             if(destinationsRec().contains(arrangement.getArrangement().getLocation())){
-                System.out.println("AAAAAA");
                 arrangement.addTag("preferenca-arr");
             }
     }

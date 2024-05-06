@@ -56,11 +56,13 @@ rule "Preferenca_arr"
 end
 
 rule "Preferenca_trip"
+    lock-on-active
     agenda-group "preferenca_trip"
     when
-        $a: Arrangement($a.getPrice() > 1000)
+        $s: ArrangementRecommendationService($arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO() from $arrangements
     then
-        recommendationsOld.addArrangement($a, "preferencaTrip");
+        modify($s){checkTripPref($a)}
 end
 
 rule "Izracunaj bodove na osnovu tagova za sve aranzmane"
@@ -71,7 +73,6 @@ rule "Izracunaj bodove na osnovu tagova za sve aranzmane"
     then
         recommendationsOld.countGradesA($a);
 end
-
 
 
 rule "Filter by grade 1 final"
@@ -97,6 +98,24 @@ rule "Filter by grade 3 final"
     when
         $s: ArrangementRecommendationService($s.getSize()> 20, $arrangements: getArrangements())
         $a: ArrangementHomepageRecommendationDTO(filterGrade==3) from $arrangements
+    then
+        modify($s){removeArrangement($a)}
+end
+
+rule "Filter by grade 4 final"
+    agenda-group "filterByGrade4Final"
+    when
+        $s: ArrangementRecommendationService($s.getSize()> 20, $arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO(filterGrade==4) from $arrangements
+    then
+        modify($s){removeArrangement($a)}
+end
+
+rule "Filter by grade 5 final"
+    agenda-group "filterByGrade5Final"
+    when
+        $s: ArrangementRecommendationService($s.getSize()> 20, $arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO(filterGrade==5) from $arrangements
     then
         modify($s){removeArrangement($a)}
 end
