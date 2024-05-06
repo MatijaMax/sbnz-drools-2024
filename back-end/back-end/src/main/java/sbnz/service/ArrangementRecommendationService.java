@@ -2,9 +2,7 @@ package sbnz.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sbnz.domain.Arrangement;
-import sbnz.domain.Trip;
-import sbnz.domain.UserPreferences;
+import sbnz.domain.*;
 import sbnz.dto.ArrangementHomepageRecommendationDTO;
 import sbnz.repository.ArrangementGradeRepository;
 import sbnz.repository.ArrangementRepository;
@@ -17,10 +15,14 @@ import java.util.*;
 public class ArrangementRecommendationService {
     List<ArrangementHomepageRecommendationDTO> arrangements;
     List<Arrangement> realArrangements;
+    List<ArrangementGrade> grades;
+    List<ArrangementReservation> reservations;
 
-    public ArrangementRecommendationService(List<Arrangement> realArrangements) {
+    public ArrangementRecommendationService(List<Arrangement> realArrangements, List<ArrangementGrade> grades, List<ArrangementReservation> reservations) {
         arrangements = new ArrayList<>();
         this.realArrangements = realArrangements;
+        this.grades = grades;
+        this.reservations = reservations;
     }
 
     public List<ArrangementHomepageRecommendationDTO> getArrangements() {
@@ -94,10 +96,54 @@ public class ArrangementRecommendationService {
         }
 
 
+
+
         System.out.println("Popular COUNTER "+location+" "+ counter);
         arrangement.setPopularGrade(counter);
     }
 
+    public void checkSimilar(ArrangementHomepageRecommendationDTO arrangement) {
+        for(var arr : arrangements){
+            if(arr.getTags().contains("graded_like")){
+                if(areSimmilar(arr, arrangement)){
+                    arrangement.addTag("slican");
+                }
+            }
+        }
+    }
+
+    private Boolean areSimmilar(ArrangementHomepageRecommendationDTO ar1, ArrangementHomepageRecommendationDTO ar2){
+        ArrayList<ArrangementGrade> grades1 = new ArrayList<>();
+        ArrayList<ArrangementGrade> grades2 = new ArrayList<>();
+        for(var g : grades){
+            if(g.getArrangement().getId() == ar1.getArrangement().getId()){
+                grades1.add(g);
+            }
+        }
+        for(var g : grades){
+            if(g.getArrangement().getId() == ar2.getArrangement().getId()){
+                grades2.add(g);
+            }
+        }
+        double counterSimilar = 0;
+        double counterTotal = 0;
+        for(var g1 : grades1){
+            for(var g2 : grades2){
+                if(g1.getUser().getId() == g2.getUser().getId()){
+                    if((g1.getGrade() == g2.getGrade()) ||
+                            (g1.getGrade() == g2.getGrade() + 1) ||
+                            (g1.getGrade() == g2.getGrade() - 1)){
+                        counterSimilar++;
+                    }
+                    counterTotal++;
+                }
+            }
+        }
+        if(counterTotal == 0){
+            return false;
+        }
+        return counterSimilar/counterTotal > 0.7;
+    }
     public int getSize(){
         return arrangements.size();
     }
@@ -122,14 +168,25 @@ public class ArrangementRecommendationService {
     }
 
     public int getSizeByGrade(int grade){
-        return (int) arrangements.stream()
+        var b = (int) arrangements.stream()
                 .filter(element -> element.getFilterGrade() == grade)
                 .count();
+        System.out.println("RRRRRRRRRRRRRR"+b);
+        return b;
     }
 
     public void countGrades() {
         for (ArrangementHomepageRecommendationDTO arr:arrangements) {
             arr.countGrade();
+            System.out.println("NNNNNNNNN"+arr.getFilterGrade());
+        }
+    }
+
+    public void countGradesA(ArrangementHomepageRecommendationDTO a) {
+        for (ArrangementHomepageRecommendationDTO arr:arrangements) {
+            if(arr.getArrangement().getId() == a.getArrangement().getId()){
+                arr.countGrade();
+            }
         }
     }
 

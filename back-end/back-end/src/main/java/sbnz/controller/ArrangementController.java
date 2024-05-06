@@ -30,6 +30,9 @@ public class ArrangementController {
     private ArrangementService aService;
 
     @Autowired
+    private ArrangementReservationService aResService;
+
+    @Autowired
     private ArrangementGradeService arrangementGradeService;
 
     @Autowired
@@ -213,7 +216,7 @@ public class ArrangementController {
         KieContainer kieContainer = ks.getKieClasspathContainer();
         KieSession kSession = kieContainer.newKieSession("arrangementRecommendation");
 
-        kSession.setGlobal("recommendations", new ArrangementRecommendationService(aService.findAll()));
+        kSession.setGlobal("recommendations", new ArrangementRecommendationService(aService.findAll(), arrangementGradeService.findAll(), new ArrayList<>()));
         for (Arrangement a : aService.findAll()) {
             kSession.insert(a);
         }
@@ -274,7 +277,7 @@ public class ArrangementController {
             KieServices ks = KieServices.Factory.get();
             KieContainer kieContainer = ks.getKieClasspathContainer();
             KieSession kSession = kieContainer.newKieSession("arrangementRecommendation");
-            kSession.setGlobal("recommendationsNew", new ArrangementRecommendationService(aService.findAll()));
+            kSession.setGlobal("recommendationsNew", new ArrangementRecommendationService(aService.findAll(), arrangementGradeService.findAll(), aResService.getByUserId(userId)));
             kSession.setGlobal("preference", preference);
 
             for(Arrangement a: aService.findAll()){
@@ -313,7 +316,7 @@ public class ArrangementController {
             KieServices ks = KieServices.Factory.get();
             KieContainer kieContainer = ks.getKieClasspathContainer();
             KieSession kSession = kieContainer.newKieSession("arrangementRecommendation");
-            kSession.setGlobal("recommendationsOld", new ArrangementRecommendationService(aService.findAll()));
+            kSession.setGlobal("recommendationsOld", new ArrangementRecommendationService(aService.findAll(), arrangementGradeService.findAll(), aResService.getByUserId(userId)));
             kSession.setGlobal("preferenceOld", preference);
 
             for(Arrangement a: aService.findAll()){
@@ -327,36 +330,28 @@ public class ArrangementController {
             int fired = kSession.fireAllRules();
             System.out.println("Number of rules fired staaari: " + fired);
 
+            ArrangementRecommendationService recommendations = (ArrangementRecommendationService) kSession.getGlobal("recommendationsOld");
+            kSession.insert(recommendations);
+
+            kSession.getAgenda().getAgendaGroup("graded_like").setFocus();
+            fired = kSession.fireAllRules();
+            System.out.println("Number of rules fired staaari: " + fired);
+
             kSession.getAgenda().getAgendaGroup("pirson").setFocus();
             fired = kSession.fireAllRules();
             System.out.println("Number of rules fired staaari: " + fired);
 
             kSession.getAgenda().getAgendaGroup("slicnost").setFocus();
             fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired staaari: " + fired);
+            System.out.println("Number of rules fired staaari slicnost: " + fired);
 
-            kSession.getAgenda().getAgendaGroup("preferenca").setFocus();
+//            kSession.getAgenda().getAgendaGroup("preferenca").setFocus();
+//            fired = kSession.fireAllRules();
+//            System.out.println("Number of rules fired staaari: " + fired);
+
+            kSession.getAgenda().getAgendaGroup("filterbezbodova").setFocus();
             fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired staaari: " + fired);
-
-            kSession.getAgenda().getAgendaGroup("filter bez bodova").setFocus();
-            fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired staaari: " + fired);
-
-            ArrangementRecommendationService recommendations = (ArrangementRecommendationService) kSession.getGlobal("recommendationsOld");
-            kSession.insert(recommendations);
-
-            kSession.getAgenda().getAgendaGroup("filterByGrade3New").setFocus();
-            fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired staaari: " + fired);
-
-            kSession.getAgenda().getAgendaGroup("filterByGrade2New").setFocus();
-            fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired staaari: " + fired);
-
-            kSession.getAgenda().getAgendaGroup("filterByGrade1New").setFocus();
-            fired = kSession.fireAllRules();
-            System.out.println("Number of rules fired staaari: " + fired);
+            System.out.println("Number of rules fired staaari filter: " + fired);
 
             kSession.getAgenda().getAgendaGroup("filterByGrade1Final").setFocus();
             fired = kSession.fireAllRules();
@@ -365,6 +360,10 @@ public class ArrangementController {
             kSession.getAgenda().getAgendaGroup("filterByGrade2Final").setFocus();
             fired = kSession.fireAllRules();
             System.out.println("Number of rules fired staaari: " + fired);
+
+            kSession.getAgenda().getAgendaGroup("filterByGrade3Final").setFocus();
+            fired = kSession.fireAllRules();
+            System.out.println("Number of rules fired staaari kraj: " + fired);
 
 
             return new ResponseEntity<>(recommendations.getArrangements(), HttpStatus.OK);
