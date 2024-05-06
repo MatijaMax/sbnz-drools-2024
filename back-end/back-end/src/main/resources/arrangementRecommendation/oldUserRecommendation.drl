@@ -2,19 +2,21 @@ package arrangementRecommendation;
 
 import sbnz.domain.Arrangement;
 import sbnz.domain.ArrangementGrade;
+import sbnz.domain.UserPreferences;
 import sbnz.service.ArrangementRecommendationService;
 import sbnz.dto.ArrangementHomepageRecommendationDTO;
 import java.util.List;
 import java.time.LocalDate;
 
-global ArrangementRecommendationService recommendations;
+global ArrangementRecommendationService recommendationsOld;
+global UserPreferences preferenceOld;
 
 rule "Novo"
     agenda-group "novo"
     when
         $a: Arrangement($a.isNew())
     then
-        recommendations.addArrangement($a, "new");
+        recommendationsOld.addArrangement($a, "new");
 end
 
 rule "Pirson"
@@ -22,7 +24,7 @@ rule "Pirson"
     when
         $a: Arrangement($a.getPrice() > 500)
     then
-        recommendations.addArrangement($a, "pirson");
+        recommendationsOld.addArrangement($a, "pirson");
 end
 
 rule "Slicnost"
@@ -30,7 +32,7 @@ rule "Slicnost"
     when
         $a: Arrangement($a.getPrice() > 500)
     then
-        recommendations.addArrangement($a, "slicnost");
+        recommendationsOld.addArrangement($a, "slicnost");
 end
 
 rule "Preferenca"
@@ -38,17 +40,17 @@ rule "Preferenca"
     when
         $a: Arrangement($a.getPrice() > 1000)
     then
-        recommendations.addArrangement($a, "preferenca");
+        recommendationsOld.addArrangement($a, "preferenca");
 end
 
 rule "Izbaci nove aranzmane bez bodova i izracunaj filter ocene"
     agenda-group "filter bez bodova"
     when
-        $a: ArrangementHomepageRecommendationDTO($tags: tags) from recommendations.arrangements
+        $a: ArrangementHomepageRecommendationDTO($tags: tags) from recommendationsOld.arrangements
         eval(!($tags.contains("pirson") || $tags.contains("slicnost") || $tags.contains("preferenca")))
     then
-        recommendations.removeArrangement($a);
-        recommendations.countGrades();
+        recommendationsOld.removeArrangement($a);
+        recommendationsOld.countGrades();
 end
 
 rule "Filter by grade 3"
@@ -81,7 +83,7 @@ end
 rule "Filter by grade 1 final"
     agenda-group "filterByGrade1Final"
     when
-        $s: ArrangementRecommendationService($s.size() > 20, $arrangements: getArrangements())
+        $s: ArrangementRecommendationService($s.getSize() > 20, $arrangements: getArrangements())
         $a: ArrangementHomepageRecommendationDTO(filterGrade==1) from $arrangements
     then
         modify($s){removeArrangement($a)}
@@ -90,7 +92,7 @@ end
 rule "Filter by grade 2 final"
     agenda-group "filterByGrade2Final"
     when
-        $s: ArrangementRecommendationService($s.size() > 20, $arrangements: getArrangements())
+        $s: ArrangementRecommendationService($s.getSize()> 20, $arrangements: getArrangements())
         $a: ArrangementHomepageRecommendationDTO(filterGrade==2) from $arrangements
     then
         modify($s){removeArrangement($a)}

@@ -10,12 +10,18 @@ public class ArrangementHomepageRecommendationDTO {
 
     Integer filterGrade;
 
+    Double averageGrade;
+
+    Integer popularGrade;
+
     public ArrangementHomepageRecommendationDTO() {}
 
     public ArrangementHomepageRecommendationDTO(Arrangement arrangement, Set<String> tags) {
         this.arrangement = new ArrangementDTO(arrangement);
         this.tags = tags;
         this.filterGrade = 0;
+        this.popularGrade = 0;
+        this.averageGrade = arrangement.calculateAverage();
     }
 
     public ArrangementDTO getArrangementDTO() {
@@ -51,6 +57,8 @@ public class ArrangementHomepageRecommendationDTO {
         return filterGrade;
     }
 
+    public Integer getPopularGrade() { return popularGrade; }
+
     public void setFilterGrade(Integer filterGrade) {
         this.filterGrade = filterGrade;
     }
@@ -61,4 +69,23 @@ public class ArrangementHomepageRecommendationDTO {
         }
     }
 
+    public void setPopularGrade(Integer popularGrade) {
+        this.popularGrade = popularGrade;
+    }
+
+    public ArrangementDTO getArrangement() {
+        return arrangement;
+    }
+
+    public void setArrangement(ArrangementDTO arrangement) {
+        this.arrangement = arrangement;
+    }
+
+    public Double getAverageGrade() {
+        return averageGrade;
+    }
+
+    public void setAverageGrade(Double averageGrade) {
+        this.averageGrade = averageGrade;
+    }
 }

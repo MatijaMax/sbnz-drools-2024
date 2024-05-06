@@ -2,17 +2,53 @@ package arrangementRecommendation;
 
 import sbnz.domain.Arrangement;
 import sbnz.domain.ArrangementGrade;
+import sbnz.domain.UserPreferences;
 import sbnz.service.ArrangementRecommendationService;
 import sbnz.dto.ArrangementHomepageRecommendationDTO;
 import java.util.List;
 import java.time.LocalDate;
 
-global ArrangementRecommendationService recommendations;
+global ArrangementRecommendationService recommendationsNew;
+global UserPreferences preference;
 
-rule "Novo"
-    agenda-group "novo"
+rule "Graded"
+    agenda-group "graded"
     when
-        $a: Arrangement($a.isNew())
+        $a: Arrangement($a.hasGrades())
     then
-        recommendations.addArrangement($a, "uf uf uf");
+        recommendationsNew.addArrangement($a, "graded");
 end
+
+rule "Is popular"
+    agenda-group "popular"
+    when
+        $s: ArrangementRecommendationService($arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO() from $arrangements
+    then
+        modify($s){countPopularArrangement($a, preference)}
+end
+
+rule "Filter by top destination"
+    agenda-group "filter top destination"
+    when
+        $s: ArrangementRecommendationService($limiterGrade: getLimiterGrade(), $arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO() from $arrangements
+        eval(($a.getPopularGrade()<$limiterGrade) && ($limiterGrade != -1))
+    then
+        modify($s){removeArrangement($a)}
+end
+
+rule "Filter by best avg grade"
+    agenda-group "filter avg grade"
+    when
+        $s: ArrangementRecommendationService($s.getSize() > 10, $lowestGrade: getLowestAverageGrade(), $arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO() from $arrangements
+        eval(($a.getAverageGrade()==$lowestGrade))
+    then
+        modify($s){removeArrangement($a)}
+end
+
+
+
+
+

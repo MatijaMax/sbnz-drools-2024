@@ -77,6 +77,15 @@ public class Arrangement {
         return dateAdded.isAfter(LocalDate.now().minusMonths(1));
     }
 
+    @OneToMany(mappedBy = "arrangement", fetch = FetchType.EAGER)
+    private List<ArrangementGrade> arrangementGrades = new ArrayList<>();
+    public List<ArrangementGrade> getArrangementGrades() {
+        return arrangementGrades;
+    }
+    public void setArrangementGrades(List<ArrangementGrade> arrangementGrades) {
+        this.arrangementGrades = arrangementGrades;
+    }
+
     /*
      * Pri implementaciji equals and hashCode metoda treba obratiti paznju da se
      * one razlikuju kada se koristi ORM (Hibernate) i kada se klase posmatraju kao
@@ -132,4 +141,20 @@ public class Arrangement {
     public void setLocation(String location) {
         this.location = location;
     }
+
+    public boolean hasGrades(){
+        if (getArrangementGrades() == null){
+            return false;
+        }
+        return !getArrangementGrades().isEmpty();
+    }
+
+    public double calculateAverage() {
+        return this.getArrangementGrades().stream()
+                .mapToInt(ArrangementGrade::getGrade)
+                .average()
+                .orElse(0.0);
+    }
+
+
 }
