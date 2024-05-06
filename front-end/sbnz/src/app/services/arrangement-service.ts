@@ -66,6 +66,12 @@ export class ArrangementService {
     )
   }
 
+  getArrangementRecommendationsWithUser(userId: number): Observable<ArrangementRecommendation[]> {
+    return this.http.get<ArrangementRecommendation[]>(
+      environment.apiHost + 'arrangements/'+userId+'/loggedUserRecommendations'
+    )
+  }
+
   getUserPreferencesByUserId(userId: number): Observable<UserPreferences> {
     return this.http.get<UserPreferences>(
       environment.apiHost + 'user/preferences/' + userId

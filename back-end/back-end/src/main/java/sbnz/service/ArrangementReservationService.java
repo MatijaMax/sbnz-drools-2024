@@ -42,6 +42,11 @@ public class ArrangementReservationService {
         return responseDTOs;
     }
 
+    public List<ArrangementReservation> getByUserId(Integer userId) {
+
+        return arrangementReservationRepository.findByUserId(userId);
+    }
+
 
     public List<ArrangementReservationResponseDTO> getAll() {
         List<ArrangementReservation> arrangementReservations = arrangementReservationRepository.findAll();

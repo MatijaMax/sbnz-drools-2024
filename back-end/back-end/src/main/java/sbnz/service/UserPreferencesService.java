@@ -28,8 +28,8 @@ public class UserPreferencesService {
     }
 
     // Read operation - Get user preferences by ID
-    public Optional<UserPreferences> getUserPreferencesById(Integer id) {
-        return userPreferencesRepository.findById(id);
+    public UserPreferences getUserPreferencesById(Integer id) {
+        return userPreferencesRepository.findById(id).orElse(null);
     }
 
     // Update operation
@@ -55,5 +55,12 @@ public class UserPreferencesService {
 
     public List<UserPreferences> getUserPreferencesByUserId(Integer userId) {
         return userPreferencesRepository.findByUserId(userId);
+    }
+
+    public UserPreferences getUserPreferencesByUserIdSafe(Integer userId) {
+        var list = userPreferencesRepository.findByUserId(userId);
+        if (list.isEmpty()) return null;
+
+        return list.get(0);
     }
 }

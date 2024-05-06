@@ -1,0 +1,127 @@
+package arrangementRecommendation;
+
+import sbnz.domain.Arrangement;
+import sbnz.domain.ArrangementGrade;
+import sbnz.domain.UserPreferences;
+import sbnz.service.ArrangementRecommendationService;
+import sbnz.dto.ArrangementHomepageRecommendationDTO;
+import java.util.List;
+import java.time.LocalDate;
+
+global ArrangementRecommendationService recommendationsOld;
+global UserPreferences preferenceOld;
+
+rule "Novo"
+    agenda-group "novo"
+    when
+        $a: Arrangement($a.isNew())
+    then
+        recommendationsOld.addArrangement($a, "new");
+end
+
+rule "Pirson"
+    agenda-group "pirson"
+    when
+        $a: Arrangement($a.getPrice() > 500)
+    then
+        recommendationsOld.addArrangement($a, "pirson");
+end
+
+rule "Graded_like"
+    agenda-group "graded_like"
+    when
+        $a: Arrangement($a.hasGrade4or5())
+    then
+        recommendationsOld.addArrangement($a, "graded_like");
+end
+
+rule "Slicnost"
+    lock-on-active
+    agenda-group "slicnost"
+    when
+            $s: ArrangementRecommendationService($arrangements: getArrangements())
+            $a: ArrangementHomepageRecommendationDTO() from $arrangements
+        then
+            modify($s){checkSimilar($a)}
+end
+
+rule "Preferenca_arr"
+    lock-on-active
+    agenda-group "preferenca-arr"
+    when
+        $s: ArrangementRecommendationService($arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO() from $arrangements
+    then
+        modify($s){checkArrPref($a)}
+end
+
+rule "Preferenca_trip"
+    lock-on-active
+    agenda-group "preferenca_trip"
+    when
+        $s: ArrangementRecommendationService($arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO() from $arrangements
+    then
+        modify($s){checkTripPref($a)}
+end
+
+rule "Izracunaj bodove na osnovu tagova za sve aranzmane"
+    agenda-group "filterbezbodova"
+    when
+        $a: ArrangementHomepageRecommendationDTO($tags: tags) from recommendationsOld.arrangements
+        eval(($tags.contains("new")))
+    then
+        recommendationsOld.countGradesA($a);
+end
+
+
+rule "Filter by grade 1 final"
+    agenda-group "filterByGrade1Final"
+    when
+        $s: ArrangementRecommendationService($s.getSize() > 20, $arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO(filterGrade==1) from $arrangements
+    then
+        modify($s){removeArrangement($a)}
+end
+
+rule "Filter by grade 2 final"
+    agenda-group "filterByGrade2Final"
+    when
+        $s: ArrangementRecommendationService($s.getSize()> 20, $arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO(filterGrade==2) from $arrangements
+    then
+        modify($s){removeArrangement($a)}
+end
+
+rule "Filter by grade 3 final"
+    agenda-group "filterByGrade3Final"
+    when
+        $s: ArrangementRecommendationService($s.getSize()> 20, $arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO(filterGrade==3) from $arrangements
+    then
+        modify($s){removeArrangement($a)}
+end
+
+rule "Filter by grade 4 final"
+    agenda-group "filterByGrade4Final"
+    when
+        $s: ArrangementRecommendationService($s.getSize()> 20, $arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO(filterGrade==4) from $arrangements
+    then
+        modify($s){removeArrangement($a)}
+end
+
+rule "Filter by grade 5 final"
+    agenda-group "filterByGrade5Final"
+    when
+        $s: ArrangementRecommendationService($s.getSize()> 20, $arrangements: getArrangements())
+        $a: ArrangementHomepageRecommendationDTO(filterGrade==5) from $arrangements
+    then
+        modify($s){removeArrangement($a)}
+end
+
+
+
+
+
+
