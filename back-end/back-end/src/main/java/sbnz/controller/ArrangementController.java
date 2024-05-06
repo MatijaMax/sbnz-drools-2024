@@ -213,7 +213,7 @@ public class ArrangementController {
         KieContainer kieContainer = ks.getKieClasspathContainer();
         KieSession kSession = kieContainer.newKieSession("arrangementRecommendation");
 
-        kSession.setGlobal("recommendations", new ArrangementRecommendationService());
+        kSession.setGlobal("recommendations", new ArrangementRecommendationService(aService.findAll()));
         for (Arrangement a : aService.findAll()) {
             kSession.insert(a);
         }
@@ -274,7 +274,7 @@ public class ArrangementController {
             KieServices ks = KieServices.Factory.get();
             KieContainer kieContainer = ks.getKieClasspathContainer();
             KieSession kSession = kieContainer.newKieSession("arrangementRecommendation");
-            kSession.setGlobal("recommendationsNew", new ArrangementRecommendationService());
+            kSession.setGlobal("recommendationsNew", new ArrangementRecommendationService(aService.findAll()));
             kSession.setGlobal("preference", preference);
 
             for(Arrangement a: aService.findAll()){
@@ -288,12 +288,14 @@ public class ArrangementController {
             int fired = kSession.fireAllRules();
             System.out.println("Number of rules fired gradede: " + fired);
 
+
+            ArrangementRecommendationService recommendations = (ArrangementRecommendationService) kSession.getGlobal("recommendationsNew");
+            kSession.insert(recommendations);
+
             kSession.getAgenda().getAgendaGroup("popular").setFocus();
             fired = kSession.fireAllRules();
             System.out.println("Number of rules fired popular: " + fired);
 
-            ArrangementRecommendationService recommendations = (ArrangementRecommendationService) kSession.getGlobal("recommendationsNew");
-            kSession.insert(recommendations);
 
             kSession.getAgenda().getAgendaGroup("filter top destination").setFocus();
             fired = kSession.fireAllRules();
@@ -311,7 +313,7 @@ public class ArrangementController {
             KieServices ks = KieServices.Factory.get();
             KieContainer kieContainer = ks.getKieClasspathContainer();
             KieSession kSession = kieContainer.newKieSession("arrangementRecommendation");
-            kSession.setGlobal("recommendationsOld", new ArrangementRecommendationService());
+            kSession.setGlobal("recommendationsOld", new ArrangementRecommendationService(aService.findAll()));
             kSession.setGlobal("preferenceOld", preference);
 
             for(Arrangement a: aService.findAll()){

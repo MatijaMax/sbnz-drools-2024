@@ -13,18 +13,14 @@ import sbnz.repository.UserPreferencesRepository;
 import java.sql.Array;
 import java.util.*;
 
-@Service
+
 public class ArrangementRecommendationService {
     List<ArrangementHomepageRecommendationDTO> arrangements;
+    List<Arrangement> realArrangements;
 
-    @Autowired
-    private ArrangementRepository arrangementRepository;
-
-    @Autowired
-    private UserPreferencesRepository userPreferencesRepository;
-
-    public ArrangementRecommendationService() {
+    public ArrangementRecommendationService(List<Arrangement> realArrangements) {
         arrangements = new ArrayList<>();
+        this.realArrangements = realArrangements;
     }
 
     public List<ArrangementHomepageRecommendationDTO> getArrangements() {
@@ -59,28 +55,46 @@ public class ArrangementRecommendationService {
                 .count();
     }
 
+    private Arrangement findArrangementById( int id) {
+        for (Arrangement arrangement : realArrangements) {
+            if (arrangement.getId() == id) {
+                return arrangement;
+            }
+        }
+        return null; // Return null if no arrangement with the specified ID is found
+    }
+
     public void countPopularArrangement(ArrangementHomepageRecommendationDTO arrangement, UserPreferences preference) {
         String location = arrangement.getArrangementDTO().getLocation();
-        System.out.println("BILO STA POPULr");
         ArrayList<String> listOne = new ArrayList<String>();
-        ArrayList<String> listTwo ;
-        for(Trip trip: arrangementRepository.findById(arrangement.getArrangementDTO().getId()).get().getTrips()){
-            listOne.add(trip.getType().toString());
+        ArrayList<String> listTwo = new ArrayList<String>();
+        Arrangement karr = findArrangementById(arrangement.getArrangementDTO().getId());
+        if(karr != null){
+            for(Trip trip: karr.getTrips()){
+                listOne.add(trip.getType().toString());
+            }
         }
-        listTwo = (ArrayList<String>) List.of(preference.getTrips().split("\\|"));
+
+        listTwo.addAll( List.of(preference.getTrips().split("\\|")) );
         int counter = 0;
         int blocker = countMatchingStrings(listOne, listTwo);
-        for (Arrangement arr: arrangementRepository.findAll()) {
+
+        if (blocker<2){
+            counter = 0;
+        }
+        else{
+            for (Arrangement arr: realArrangements) {
 
 
-            if(arr.getLocation().equals(location)){
-                counter += arr.getArrangementGrades().size();
-            }
-            if (blocker<2){
-                counter = 0;
+                if(arr.getLocation().equals(location)){
+                    counter += arr.getArrangementGrades().size();
+                }
+
             }
         }
-        System.out.println("BILO STA POPULr COUNTER "+location+" "+ counter);
+
+
+        System.out.println("Popular COUNTER "+location+" "+ counter);
         arrangement.setPopularGrade(counter);
     }
 

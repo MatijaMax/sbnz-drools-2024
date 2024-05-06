@@ -20,6 +20,7 @@ rule "Graded"
 end
 
 rule "Is popular"
+    lock-on-active
     agenda-group "popular"
     when
         $s: ArrangementRecommendationService($arrangements: getArrangements())
