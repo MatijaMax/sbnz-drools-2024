@@ -216,7 +216,7 @@ public class ArrangementController {
         KieContainer kieContainer = ks.getKieClasspathContainer();
         KieSession kSession = kieContainer.newKieSession("arrangementRecommendation");
 
-        kSession.setGlobal("recommendations", new ArrangementRecommendationService(aService.findAll(), arrangementGradeService.findAll(), new ArrayList<>()));
+        kSession.setGlobal("recommendations", new ArrangementRecommendationService(aService.findAll(), arrangementGradeService.findAll(), new ArrayList<>(), 0));
         for (Arrangement a : aService.findAll()) {
             kSession.insert(a);
         }
@@ -277,7 +277,7 @@ public class ArrangementController {
             KieServices ks = KieServices.Factory.get();
             KieContainer kieContainer = ks.getKieClasspathContainer();
             KieSession kSession = kieContainer.newKieSession("arrangementRecommendation");
-            kSession.setGlobal("recommendationsNew", new ArrangementRecommendationService(aService.findAll(), arrangementGradeService.findAll(), aResService.getByUserId(userId)));
+            kSession.setGlobal("recommendationsNew", new ArrangementRecommendationService(aService.findAll(), arrangementGradeService.findAll(), aResService.getByUserId(userId), userId));
             kSession.setGlobal("preference", preference);
 
             for(Arrangement a: aService.findAll()){
@@ -316,7 +316,7 @@ public class ArrangementController {
             KieServices ks = KieServices.Factory.get();
             KieContainer kieContainer = ks.getKieClasspathContainer();
             KieSession kSession = kieContainer.newKieSession("arrangementRecommendation");
-            kSession.setGlobal("recommendationsOld", new ArrangementRecommendationService(aService.findAll(), arrangementGradeService.findAll(), aResService.getByUserId(userId)));
+            kSession.setGlobal("recommendationsOld", new ArrangementRecommendationService(aService.findAll(), arrangementGradeService.findAll(), aResService.getByUserId(userId), userId));
             kSession.setGlobal("preferenceOld", preference);
 
             for(Arrangement a: aService.findAll()){

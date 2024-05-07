@@ -18,12 +18,15 @@ public class ArrangementRecommendationService {
     List<Arrangement> realArrangements;
     List<ArrangementGrade> grades;
     List<ArrangementReservation> reservations;
+    Integer userId;
 
-    public ArrangementRecommendationService(List<Arrangement> realArrangements, List<ArrangementGrade> grades, List<ArrangementReservation> reservations) {
+    public ArrangementRecommendationService(List<Arrangement> realArrangements, List<ArrangementGrade> grades, List<ArrangementReservation> reservations,
+                                            Integer userId) {
         arrangements = new ArrayList<>();
         this.realArrangements = realArrangements;
         this.grades = grades;
         this.reservations = reservations;
+        this.userId = userId;
     }
 
     public List<ArrangementHomepageRecommendationDTO> getArrangements() {
@@ -45,6 +48,25 @@ public class ArrangementRecommendationService {
             return;
         }
         recommendationDTO.addTag(tag);
+    }
+
+    public void addArrangementGL(Arrangement arrangement, String tag) {
+        for(var g : grades){
+            if(arrangement.getId() == g.getArrangement().getId()){
+                if(g.getUser().getId() == userId){
+                    ArrangementHomepageRecommendationDTO recommendationDTO = arrangements.stream()
+                            .filter(recomendation -> recomendation.getArrangementDTO().getId() == arrangement.getId())
+                            .findFirst().orElse(null);
+                    if (recommendationDTO == null){
+                        recommendationDTO = new ArrangementHomepageRecommendationDTO(arrangement, new HashSet<String>());
+                        recommendationDTO.addTag(tag);
+                        arrangements.add(recommendationDTO);
+                        return;
+                    }
+                    recommendationDTO.addTag(tag);
+                }
+            }
+        }
     }
 
     public void removeArrangement(ArrangementHomepageRecommendationDTO arrangement) {

@@ -154,9 +154,9 @@ public class Arrangement {
             return false;
         }
         for(var g : getArrangementGrades()){
-            if(g.getGrade() == 4 || g.getGrade() == 5){
-                return true;
-            }
+                if(g.getGrade() == 4 || g.getGrade() == 5){
+                    return true;
+                }
         }
         return false;
     }

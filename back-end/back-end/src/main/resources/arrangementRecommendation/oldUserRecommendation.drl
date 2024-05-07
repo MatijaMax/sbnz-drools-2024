@@ -32,7 +32,7 @@ rule "Graded_like"
     when
         $a: Arrangement($a.hasGrade4or5())
     then
-        recommendationsOld.addArrangement($a, "graded_like");
+        recommendationsOld.addArrangementGL($a, "graded_like");
 end
 
 rule "Slicnost"
