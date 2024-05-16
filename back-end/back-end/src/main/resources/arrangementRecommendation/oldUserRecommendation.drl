@@ -3,13 +3,20 @@ package arrangementRecommendation;
 import sbnz.domain.Arrangement;
 import sbnz.domain.ArrangementGrade;
 import sbnz.domain.UserPreferences;
+import sbnz.domain.User;
 import sbnz.service.ArrangementRecommendationService;
 import sbnz.dto.ArrangementHomepageRecommendationDTO;
 import java.util.List;
-import java.time.LocalDate;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.time.LocalDate
+import java.util.Objects
+import java.util.stream.Collectors;
 
 global ArrangementRecommendationService recommendationsOld;
 global UserPreferences preferenceOld;
+global Integer oldUserId;
 
 rule "Novo"
     agenda-group "novo"
@@ -19,13 +26,13 @@ rule "Novo"
         recommendationsOld.addArrangement($a, "new");
 end
 
-rule "Pirson"
-    agenda-group "pirson"
-    when
-        $a: Arrangement($a.getPrice() > 500)
-    then
-        recommendationsOld.addArrangement($a, "pirson");
-end
+//rule "Pirson"
+//    agenda-group "pirson"
+//    when
+//        $a: Arrangement($a.getPrice() > 500)
+//    then
+//        recommendationsOld.addArrangement($a, "pirson");
+//end
 
 rule "Graded_like"
     agenda-group "graded_like"
@@ -118,6 +125,89 @@ rule "Filter by grade 5 final"
         $a: ArrangementHomepageRecommendationDTO(filterGrade==5) from $arrangements
     then
         modify($s){removeArrangement($a)}
+end
+
+
+
+
+
+///////////////////////
+///////////////////////
+///////////////////////
+///Pirson krece ovde///
+///////////////////////
+///////////////////////
+///////////////////////
+
+rule "Idemo pirsone"
+    agenda-group "pirson"
+    when
+        $u: User($u.getId() != oldUserId) //Get different user
+
+        $u1Grades: List() from collect( ArrangementGrade(user.getId() == $u.getId()) )
+        $u2Grades: List() from collect( ArrangementGrade(user.getId() == oldUserId) )
+
+        $possibleSuggestions: List() from collect ( ArrangementGrade( grade >= 4 ) from $u1Grades)
+        eval($possibleSuggestions.size() > 0)
+
+        Number($u1avg: doubleValue) from accumulate( //Average grade for user we are comparing against
+            ArrangementGrade(user.getId() == $u.getId(), $grade: grade),
+            average($grade)
+        )
+        Number($u2avg: doubleValue) from accumulate( //Average grade of user we are finding recommendations
+            ArrangementGrade(user.getId() == oldUserId, $grade: grade),
+            average($grade)
+        )
+
+        $map: HashMap()
+            from accumulate( $ArrGradeU1 : ArrangementGrade() from $u1Grades and $ArrGradeU2: ArrangementGrade(arrangement.getId() == $ArrGradeU1.getArrangement().getId(), $ArrGradeU2 memberOf $u2Grades),
+                 init( Map m = new HashMap(); ),
+                 action( List t = new ArrayList();
+                         t.add((double)$ArrGradeU1.getGrade());
+                         t.add((double)$ArrGradeU2.getGrade());
+                 m.put( $ArrGradeU1.getArrangement().getId(), t); ),
+                 reverse( m.remove( $ArrGradeU1.getArrangement().getId() ); ),
+                 result( m ) )
+
+        Number($upTerm: doubleValue()) from accumulate( $e: Map.Entry() from $map.entrySet(),
+            init( double res = 0; ),
+            action( res += ((double)(((ArrayList)$e.getValue()).get(0)) - (double)$u1avg) * ((double)(((ArrayList)$e.getValue()).get(1)) - (double)$u2avg); ),
+            reverse( res -= ((double)(((ArrayList)$e.getValue()).get(0)) - (double)$u1avg) * ((double)(((ArrayList)$e.getValue()).get(1)) - (double)$u2avg); ),
+            result( res ) )
+        Number($u1SumSquare : doubleValue()) from accumulate( $e: Map.Entry() from $map.entrySet(),
+            init( double res = 0; ),
+            action( res += ((double)(((ArrayList)$e.getValue()).get(0)) - (double)$u1avg) * ((double)(((ArrayList)$e.getValue()).get(0)) - (double)$u1avg); ),
+            reverse( res -= ((double)(((ArrayList)$e.getValue()).get(0)) - (double)$u1avg) * ((double)(((ArrayList)$e.getValue()).get(0)) - (double)$u1avg); ),
+            result( res ) )
+        Number($u2SumSquare : doubleValue()) from accumulate( $e: Map.Entry() from $map.entrySet(),
+            init( double res = 0; ),
+            action( res += ((double)(((ArrayList)$e.getValue()).get(1)) - (double)$u2avg) * ((double)(((ArrayList)$e.getValue()).get(1)) - (double)$u2avg); ),
+            reverse( res -= ((double)(((ArrayList)$e.getValue()).get(1)) - (double)$u2avg) * ((double)(((ArrayList)$e.getValue()).get(1)) - (double)$u2avg); ),
+            result( res ) )
+        eval($upTerm/(Math.sqrt($u1SumSquare) * Math.sqrt($u2SumSquare)) > 0.5)
+    then
+        System.out.println($u.getEmail());
+        System.out.println($map);
+        System.out.println($u1avg);
+        System.out.println($u2avg);
+        System.out.println($upTerm);
+        System.out.println($u1SumSquare);
+        System.out.println($u2SumSquare);
+        System.out.println("Pirson =" + $upTerm/(Math.sqrt($u1SumSquare) * Math.sqrt($u2SumSquare)));
+        System.out.println($possibleSuggestions);
+        for(Object o: $possibleSuggestions){
+            ArrangementGrade grade = (ArrangementGrade) o;
+            boolean found = false;
+            for(Object o2: $u1Grades){
+                if(grade.getArrangement().getId() == ((ArrangementGrade)o2).getArrangement().getId()){
+                    found = true;
+                }
+            }
+            if(!found){
+                recommendationsOld.addArrangement(grade.getArrangement(), "pirson");
+            }
+            System.out.println(((ArrangementGrade)o).getArrangement().toString());
+        }
 end
 
 
