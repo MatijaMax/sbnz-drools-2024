@@ -5,6 +5,7 @@ import { Car } from 'src/app/model/car';
 import { UserLogged } from 'src/app/model/user-logged.model';
 import { CarService } from 'src/app/services/cars-service';
 import { AuthService } from 'src/app/services/auth.service';
+import { RentRequest } from 'src/app/model/rentRequest';
 
 @Component({
   selector: 'app-boilerplate',
@@ -16,6 +17,18 @@ export class BoilerplateComponent implements OnInit {
   loggedUser: UserLogged | undefined = undefined;
   subscription: Subscription;
   arrangementGrades: number[];
+  rentRequest: RentRequest = {
+    userId: 0,
+    carId: 0,
+    beginDT: new Date(),
+    cancelDT: new Date(),
+    cancelReason: '',
+    isCanceled: false,
+    isLate: false,
+    returnDT: new Date(),
+    returnState: '',
+    scheduleDT: new Date(),
+  };
 
   constructor(
     private carrService: CarService,
@@ -37,6 +50,19 @@ export class BoilerplateComponent implements OnInit {
           { length: this.arrangementsAll.length },
           () => 1
         );
+      },
+    });
+  }
+
+  rentCar(c: Car) {
+    if (this.loggedUser?.id == undefined) {
+      return;
+    }
+    this.rentRequest.userId = this.loggedUser?.id;
+    this.rentRequest.carId = c.id;
+    this.carrService.rentRequestCreate(this.rentRequest).subscribe({
+      next: (result: RentRequest) => {
+        console.log('AD');
       },
     });
   }
