@@ -16,6 +16,14 @@
     [routerLink]="['/rentings']"
     >Rentings</a
   >
+
+  <a
+    *ngIf="user && user.role == 'ROLE_Admin'"
+    mat-button
+    [routerLink]="['/admin-users-panel']"
+    >Users panel</a
+  >
+
   <a *ngIf="!user || user.email == ''" mat-button [routerLink]="['/login']"
     >Log in</a
   >
