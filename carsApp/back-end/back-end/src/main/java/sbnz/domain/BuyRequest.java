@@ -2,6 +2,7 @@ package sbnz.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import org.kie.api.definition.type.Position;
 
 @Entity
 @Table(name="BUYREQUEST")
@@ -13,6 +14,7 @@ public class BuyRequest {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @Position(0)
     User user;
 
     @Column(name="userAge",  nullable = false)
@@ -37,4 +39,7 @@ public class BuyRequest {
     //Ako je zaposlen na određeno vreme, datum isteka ugovora o radu
     @Column(name="employmentEnd")
     LocalDate employmentEnd;
+
+    @Column(name="leftToPay", nullable = false)
+    Long leftToPay;
 }
