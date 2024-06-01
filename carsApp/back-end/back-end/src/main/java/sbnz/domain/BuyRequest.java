@@ -40,11 +40,6 @@ public class BuyRequest {
     @Column(name="employmentEnd")
     LocalDate employmentEnd;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
     @Column(name="leftToPay", nullable = false)
     Long leftToPay;
 
@@ -53,24 +48,11 @@ public class BuyRequest {
 
     public BuyRequest() { }
 
-    public BuyRequest(Long id, User user, Long userAge, Car car, Long numberOfCreditPayments, USEREMPLOYMENTTYPE useremploymenttype, LocalDate employmentStart, LocalDate employmentEnd, Long leftToPay, LocalDate dateUntilToPay) {
-        this.id = id;
-        this.user = user;
-        this.userAge = userAge;
-        this.car = car;
-        this.numberOfCreditPayments = numberOfCreditPayments;
-        this.useremploymenttype = useremploymenttype;
-        this.employmentStart = employmentStart;
-        this.employmentEnd = employmentEnd;
-        this.leftToPay = leftToPay;
-        this.dateUntilToPay = dateUntilToPay;
-    }
-
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -87,11 +69,6 @@ public class BuyRequest {
     }
 
     public void setUserAge(Integer userAge) {
-    public Long getUserAge() {
-        return userAge;
-    }
-
-    public void setUserAge(Long userAge) {
         this.userAge = userAge;
     }
 
@@ -108,11 +85,6 @@ public class BuyRequest {
     }
 
     public void setNumberOfCreditPayments(Integer numberOfCreditPayments) {
-    public Long getNumberOfCreditPayments() {
-        return numberOfCreditPayments;
-    }
-
-    public void setNumberOfCreditPayments(Long numberOfCreditPayments) {
         this.numberOfCreditPayments = numberOfCreditPayments;
     }
 

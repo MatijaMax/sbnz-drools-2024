@@ -3,6 +3,7 @@ package sbnz.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sbnz.domain.BuyRequest;
 import sbnz.dto.BuyRequestDTO;
 import sbnz.service.BuyRequestService;
 
@@ -14,10 +15,10 @@ public class BuyRequestController {
     private BuyRequestService buyRequestService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<BuyRequestDTO> getBuyRequest(@PathVariable Long id) {
-        BuyRequestDTO buyRequestDTO = new BuyRequestDTO(buyRequestService.getBuyRequestById(id));
-        if (buyRequestDTO != null) {
-            return ResponseEntity.ok(buyRequestDTO);
+    public ResponseEntity<BuyRequestDTO> getBuyRequest(@PathVariable Integer id) {
+        BuyRequest buyRequest = buyRequestService.getBuyRequestById(id);
+        if (buyRequest != null) {
+            return ResponseEntity.ok(new BuyRequestDTO(buyRequest));
         } else {
             return ResponseEntity.notFound().build();
         }

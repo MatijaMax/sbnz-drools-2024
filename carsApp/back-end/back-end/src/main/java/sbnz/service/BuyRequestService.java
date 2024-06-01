@@ -22,7 +22,7 @@ public class BuyRequestService {
     @Autowired
     private CarRepository carRepository;
 
-    public BuyRequest getBuyRequestById(Long id) {
+    public BuyRequest getBuyRequestById(Integer id) {
         Optional<BuyRequest> buyRequestOptional = buyRequestRepository.findById(id);
         if (buyRequestOptional.isPresent()) {
             BuyRequest buyRequest = buyRequestOptional.get();
@@ -48,6 +48,7 @@ public class BuyRequestService {
         buyRequest.setUseremploymenttype(BuyRequest.USEREMPLOYMENTTYPE.valueOf(dto.getUseremploymenttype()));
         buyRequest.setEmploymentStart(dto.getEmploymentStart());
         buyRequest.setEmploymentEnd(dto.getEmploymentEnd());
+        buyRequest.setLeftToPay(0L);
         return buyRequest;
     }
 }
