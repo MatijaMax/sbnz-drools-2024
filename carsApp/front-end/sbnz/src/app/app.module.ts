@@ -13,6 +13,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { BoilerplateComponent } from './components/boilerplate/boilerplate.component';
 import { LoginComponent } from './components/login/login.component';
 import { TokenInterceptor } from './interceptor/TokenInterceptor';
@@ -21,6 +23,8 @@ import { RegisterArrangementComponent } from './components/register-arrangement/
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { RentingsComponent } from './components/rentings/rentings.component';
+import { AdminUsersPanelComponent } from './components/admin-users-panel/admin-users-panel.component';
+import { BuyCarComponent } from './components/buy-car/buy-car.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'companies', pathMatch: 'full' },
@@ -29,6 +33,8 @@ const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register-car', component: RegisterArrangementComponent },
+  { path: 'admin-users-panel', component: AdminUsersPanelComponent },
+  { path: 'buy-car/:id', component: BuyCarComponent },
 ];
 
 @NgModule({
@@ -41,6 +47,8 @@ const appRoutes: Routes = [
     RegisterArrangementComponent,
     RentingsComponent,
     RentingsComponent,
+    AdminUsersPanelComponent,
+    BuyCarComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +60,8 @@ const appRoutes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     FormsModule,
     ReactiveFormsModule,
     MatSelectModule,

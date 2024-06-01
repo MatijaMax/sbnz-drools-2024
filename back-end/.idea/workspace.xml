@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2838f5b8-0482-4dcb-ae45-6f72649c94a2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../carsApp/back-end/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../carsApp/back-end/.idea/vcs.xml" afterDir="false" />
-    </list>
+    <list default="true" id="2838f5b8-0482-4dcb-ae45-6f72649c94a2" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,6 +33,7 @@
     "git-widget-placeholder": "carRenting",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/ivanm/Desktop/Docs/SBNZ/SBNZ24/carsApp/back-end",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -45,6 +44,19 @@
   }
 }]]></component>
   <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="dr" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="dr" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="SpringBootExampleApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="isa" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="sbnz.SpringBootExampleApplication" />
@@ -80,5 +92,12 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="sbnz.domain.ArrangementReservation" memberName="tripReservations" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>
