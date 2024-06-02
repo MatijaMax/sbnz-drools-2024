@@ -21,10 +21,14 @@ import { RegisterArrangementComponent } from './components/register-arrangement/
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { RentingsComponent } from './components/rentings/rentings.component';
+import { MyRentingsComponent } from './components/my-rentings/my-rentings.component';
+import { RetutningRentingsComponent } from './components/retutning-rentings/retutning-rentings.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'companies', pathMatch: 'full' },
   { path: 'boilerplate', component: BoilerplateComponent },
+  { path: 'my-rentings', component: MyRentingsComponent },
+  { path: 'return-rentings', component: RetutningRentingsComponent },
   { path: 'rentings', component: RentingsComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
@@ -41,6 +45,8 @@ const appRoutes: Routes = [
     RegisterArrangementComponent,
     RentingsComponent,
     RentingsComponent,
+    MyRentingsComponent,
+    RetutningRentingsComponent,
   ],
   imports: [
     BrowserModule,

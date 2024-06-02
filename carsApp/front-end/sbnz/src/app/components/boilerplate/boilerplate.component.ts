@@ -19,13 +19,15 @@ export class BoilerplateComponent implements OnInit {
   subscription: Subscription;
   arrangementGrades: number[];
   rentRequest: RentRequest = {
+    returnStateHelp: '',
+    id: 0,
     userId: 0,
     carId: 0,
     beginDT: new Date(),
     cancelDT: new Date(),
     cancelReason: '',
-    isCanceled: false,
-    isLate: false,
+    canceled: false,
+    late: false,
     returnDT: new Date(),
     returnState: '',
     scheduleDT: new Date(),
@@ -43,8 +45,6 @@ export class BoilerplateComponent implements OnInit {
       timeB: [''],
       dateR: [''],
       timeR: [''],
-      dateC: [''],
-      timeC: [''],
     });
   }
   ngOnInit(): void {
@@ -84,13 +84,6 @@ export class BoilerplateComponent implements OnInit {
     timeZoneDifference = (d.getTimezoneOffset() / 60) * -1;
     d.setTime(d.getTime() + timeZoneDifference * 60 * 60 * 1000);
     this.rentRequest.returnDT = d;
-
-    date = this.dateTimeForm.value.dateC;
-    time = this.dateTimeForm.value.timeC;
-    d = new Date(date + 'T' + time);
-    timeZoneDifference = (d.getTimezoneOffset() / 60) * -1;
-    d.setTime(d.getTime() + timeZoneDifference * 60 * 60 * 1000);
-    this.rentRequest.cancelDT = d;
 
     console.log(d);
     // return;

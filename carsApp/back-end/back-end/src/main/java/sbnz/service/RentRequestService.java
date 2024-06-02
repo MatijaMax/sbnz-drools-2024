@@ -18,6 +18,10 @@ public class RentRequestService {
         return rentRequestRepository.findAll();
     }
 
+    public List<RentRequest> findAllByUser(Integer id) {
+        return rentRequestRepository.findAllByUserId(id);
+    }
+
     public RentRequest save(RentRequest r) {
         return rentRequestRepository.save(r);
     }

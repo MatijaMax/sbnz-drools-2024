@@ -22,4 +22,20 @@ export class CarService {
   rentRequestCreate(r: RentRequest): Observable<any> {
     return this.http.post<any>(environment.apiHost + 'rents', r);
   }
+
+  cancelRRequest(r: RentRequest): Observable<any> {
+    return this.http.post<any>(environment.apiHost + 'rents/cancel', r);
+  }
+
+  returnRRequest(r: RentRequest): Observable<any> {
+    return this.http.post<any>(environment.apiHost + 'rents/returnRenting', r);
+  }
+
+  getAllRentRequests(): Observable<any> {
+    return this.http.get<any>(environment.apiHost + 'rents/all');
+  }
+
+  getAllRentRequestsByUser(id: number): Observable<any> {
+    return this.http.get<any>(environment.apiHost + 'rents/all/' + id);
+  }
 }
