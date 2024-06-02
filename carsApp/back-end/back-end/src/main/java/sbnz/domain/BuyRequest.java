@@ -10,7 +10,7 @@ public class BuyRequest {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -18,7 +18,7 @@ public class BuyRequest {
     User user;
 
     @Column(name="userAge",  nullable = false)
-    Long userAge;
+    Integer userAge;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id", nullable = false)
@@ -26,7 +26,7 @@ public class BuyRequest {
 
     //Broj rata kredita
     @Column(name="numberOfCreditPayments", nullable = false)
-    Long numberOfCreditPayments;
+    Integer numberOfCreditPayments;
 
     public enum USEREMPLOYMENTTYPE { UNEMPLOYED, EMPLOYED_UNSPECIFIC_TIME, EMPLOYED_SPECIFIC_TIME }
     @Column(name="useremploymenttype", nullable = false)
@@ -48,24 +48,11 @@ public class BuyRequest {
 
     public BuyRequest() { }
 
-    public BuyRequest(Long id, User user, Long userAge, Car car, Long numberOfCreditPayments, USEREMPLOYMENTTYPE useremploymenttype, LocalDate employmentStart, LocalDate employmentEnd, Long leftToPay, LocalDate dateUntilToPay) {
-        this.id = id;
-        this.user = user;
-        this.userAge = userAge;
-        this.car = car;
-        this.numberOfCreditPayments = numberOfCreditPayments;
-        this.useremploymenttype = useremploymenttype;
-        this.employmentStart = employmentStart;
-        this.employmentEnd = employmentEnd;
-        this.leftToPay = leftToPay;
-        this.dateUntilToPay = dateUntilToPay;
-    }
-
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -77,11 +64,11 @@ public class BuyRequest {
         this.user = user;
     }
 
-    public Long getUserAge() {
+    public Integer getUserAge() {
         return userAge;
     }
 
-    public void setUserAge(Long userAge) {
+    public void setUserAge(Integer userAge) {
         this.userAge = userAge;
     }
 
@@ -93,11 +80,11 @@ public class BuyRequest {
         this.car = car;
     }
 
-    public Long getNumberOfCreditPayments() {
+    public Integer getNumberOfCreditPayments() {
         return numberOfCreditPayments;
     }
 
-    public void setNumberOfCreditPayments(Long numberOfCreditPayments) {
+    public void setNumberOfCreditPayments(Integer numberOfCreditPayments) {
         this.numberOfCreditPayments = numberOfCreditPayments;
     }
 
