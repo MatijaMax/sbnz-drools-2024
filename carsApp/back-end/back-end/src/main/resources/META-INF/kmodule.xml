@@ -34,7 +34,9 @@
     <kbase name="ourRulesKT1" packages="ourRules">
         <ksession name="ourRules"/>
     </kbase>
-    
-    
+
+    <kbase name="buyRule" packages="buyRules">
+        <ksession name="buyRules"/>
+    </kbase>
     
 </kmodule>

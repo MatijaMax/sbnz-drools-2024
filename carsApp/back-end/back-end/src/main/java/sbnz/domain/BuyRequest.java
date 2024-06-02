@@ -127,4 +127,12 @@ public class BuyRequest {
     public void setDateUntilToPay(LocalDate dateUntilToPay) {
         this.dateUntilToPay = dateUntilToPay;
     }
+
+    public boolean isBuyRequestExpired() {
+        return (leftToPay > 0 && LocalDate.now().isAfter(dateUntilToPay));
+    }
+
+    public int getMonthlyPay() {
+        return (int)(this.leftToPay/this.numberOfCreditPayments);
+    }
 }

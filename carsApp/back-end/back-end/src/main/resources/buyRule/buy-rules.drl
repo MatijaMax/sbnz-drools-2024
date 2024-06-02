@@ -1,0 +1,42 @@
+package buyRules;
+
+import sbnz.domain.User;
+import sbnz.domain.BuyRequest;
+import java.util.List;
+import java.time.LocalDate;
+
+global User user;
+
+query notPayedCredits( User $u )
+    $request: BuyRequest( user.getId()==$u.getId(), getLeftToPay() > 0 )
+end
+
+query notMoreThan3ActiveCredits( User $u )
+    not(List(size > 3) from collect (BuyRequest( user.getId()==$u.getId(), leftToPay>0 )) )
+end
+
+query excededCreditReturnDate( User $u )
+    not(exists(BuyRequest( user.getId()==$u.getId(), this.isBuyRequestExpired() )))
+end
+
+query canPayMonthly( User $u )
+    Number(intValue > 500) from accumulate(
+        $request : BuyRequest(),
+        init( int res = 1000; ),
+        action( res -= $request.getMonthlyPay(); ),
+        reverse( res += $request.getMonthlyPay(); ),
+        result( res ) )
+end
+
+query userIsOk( User $u )
+    notMoreThan3ActiveCredits( $u; ) and
+    excededCreditReturnDate( $u; ) and
+    canPayMonthly( $u; )
+end
+
+rule "Is user buy request approved"
+    when
+        userIsOk( user; )
+    then
+        System.out.println("User " + user.getFirstName() + " is ok for the buy request");
+end
