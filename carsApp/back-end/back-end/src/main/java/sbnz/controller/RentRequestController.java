@@ -46,31 +46,18 @@ public class RentRequestController {
 
         //trenutno ovako inace ono ispod
         RentRequest rq = new RentRequest();
-        if(true){
-            rq.setId(r.getId());
-            rq.setScheduleDT(LocalDateTime.now());
-            rq.setCancelDT(LocalDateTime.now());
-            rq.setBeginDT(LocalDateTime.now());
-            rq.setReturnDT(LocalDateTime.now());
-            rq.setUser(uService.findOne(r.getUserId()));
-            rq.setCar(cService.findOne(r.getCarId()));
-            rq.setCancelReason(r.getCancelReason());
-            rq.setReturnState(r.getReturnState());
-            rq.setCanceled(r.getCanceled());
-            rq.setLate(r.getLate());
-        }else {
-            rq.setId(r.getId());
-            rq.setScheduleDT(r.getScheduleDT());
-            rq.setCancelDT(r.getCancelDT());
-            rq.setBeginDT(r.getBeginDT());
-            rq.setReturnDT(r.getReturnDT());
-            rq.setUser(uService.findOne(r.getUserId()));
-            rq.setCar(cService.findOne(r.getCarId()));
-            rq.setCancelReason(r.getCancelReason());
-            rq.setReturnState(r.getReturnState());
-            rq.setCanceled(r.getCanceled());
-            rq.setLate(r.getLate());
-        }
+
+        rq.setId(r.getId());
+        rq.setScheduleDT(LocalDateTime.now());
+        rq.setCancelDT(r.getCancelDT());
+        rq.setBeginDT(r.getBeginDT());
+        rq.setReturnDT(r.getReturnDT());
+        rq.setUser(uService.findOne(r.getUserId()));
+        rq.setCar(cService.findOne(r.getCarId()));
+        rq.setCancelReason(r.getCancelReason());
+        rq.setReturnState(r.getReturnState());
+        rq.setCanceled(r.getCanceled());
+        rq.setLate(r.getLate());
 
         rq = rService.save(rq);
         return new ResponseEntity<>(new RentRentingDto(rq), HttpStatus.CREATED);
