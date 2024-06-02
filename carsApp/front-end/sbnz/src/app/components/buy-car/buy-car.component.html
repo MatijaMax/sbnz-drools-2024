@@ -1,50 +1,44 @@
-
 <h1 class="aorta">Buy car</h1>
-    <br>
+<br>
 <form [formGroup]="buyCarForm" (ngSubmit)="onSubmit()">
-    
-    <mat-form-field appearance="fill">
-      <mat-label>User Age</mat-label>
-      <input matInput formControlName="userAge" type="number">
-      <mat-error *ngIf="buyCarForm.get('userAge')">
-        User age is required
-      </mat-error>
-    </mat-form-field>
-  
-    <mat-form-field appearance="fill">
-      <mat-label>Number of Credit Payments</mat-label>
-      <input matInput formControlName="numberOfCreditPayments" type="number">
-      <mat-error *ngIf="buyCarForm.get('numberOfCreditPayments')">
-        Number of credit payments is required
-      </mat-error>
-    </mat-form-field>
-  
-    <mat-form-field appearance="fill">
-      <mat-label>User Employment Type</mat-label>
-      <mat-select formControlName="useremploymenttype">
-        <mat-option value="UNEMPLOYED">Unemployed</mat-option>
-        <mat-option value="EMPLOYED_UNSPECIFIC_TIME">Employed Unspecific Time</mat-option>
-        <mat-option value="EMPLOYED_SPECIFIC_TIME">Employed Specific Time</mat-option>
-      </mat-select>
-      <mat-error *ngIf="buyCarForm.get('useremploymenttype')">
-        Employment type is required
-      </mat-error>
-    </mat-form-field>
-  
-    <mat-form-field appearance="fill">
-      <mat-label>Employment Start Date</mat-label>
-      <input matInput formControlName="employmentStart" [matDatepicker]="pickerStart" type="date">
-      <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
-      <mat-datepicker #pickerStart></mat-datepicker>
-    </mat-form-field>
-  
-    <mat-form-field appearance="fill">
-      <mat-label>Employment End Date</mat-label>
-      <input matInput formControlName="employmentEnd" [matDatepicker]="pickerEnd" type="date">
-      <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
-      <mat-datepicker #pickerEnd></mat-datepicker>
-    </mat-form-field>
-  
-    <button mat-raised-button color="primary" type="submit">Submit</button>
-  </form>
-  
+
+  <mat-form-field appearance="fill">
+    <mat-label>User Age</mat-label>
+    <input matInput formControlName="userAge" type="number">
+    <mat-error *ngIf="buyCarForm.get('userAge')?.invalid">
+      User age is required
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Number of Credit Payments</mat-label>
+    <input matInput formControlName="numberOfCreditPayments" type="number">
+    <mat-error *ngIf="buyCarForm.get('numberOfCreditPayments')?.invalid">
+      Number of credit payments is required
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>User Employment Type</mat-label>
+    <mat-select formControlName="useremploymenttype">
+      <mat-option value="UNEMPLOYED">Unemployed</mat-option>
+      <mat-option value="EMPLOYED_UNSPECIFIC_TIME">Employed Unspecific Time</mat-option>
+      <mat-option value="EMPLOYED_SPECIFIC_TIME">Employed Specific Time</mat-option>
+    </mat-select>
+    <mat-error *ngIf="buyCarForm.get('useremploymenttype')?.invalid">
+      Employment type is required
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Employment Start Date</mat-label>
+    <input matInput formControlName="employmentStart" type="date">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Employment End Date</mat-label>
+    <input matInput formControlName="employmentEnd" type="date">
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit">Submit</button>
+</form>

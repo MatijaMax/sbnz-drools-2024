@@ -7,6 +7,7 @@ import sbnz.domain.BuyRequest;
 import sbnz.dto.BuyRequestDTO;
 import sbnz.service.BuyRequestService;
 
+@CrossOrigin(origins = "http://localhost:5000", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/buy-requests")
 public class BuyRequestController {
