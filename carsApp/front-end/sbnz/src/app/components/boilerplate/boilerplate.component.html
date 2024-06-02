@@ -1,4 +1,4 @@
-<h1>Arragements</h1>
+<h1>Cars</h1>
 <table class="place-table">
   <thead>
     <tr>
@@ -18,6 +18,34 @@
       <td>{{ arrangement.price }}</td>
       <td>{{ arrangement.type }}</td>
       <td>{{ arrangement.engineType }}</td>
+      <td>
+        <form [formGroup]="dateTimeForm" (ngSubmit)="rentCar(arrangement)">
+          <label>Begin date:</label>
+          <input type="date" formControlName="dateB" />
+
+          <label>Time:</label>
+          <input type="time" formControlName="timeB" />
+          <br />
+          <label>Return date:</label>
+          <input type="date" formControlName="dateR" />
+
+          <label>Time:</label>
+          <input type="time" formControlName="timeR" />
+
+          <br />
+          <button
+            type="submit"
+            *ngIf="loggedUser"
+            [disabled]="loggedUser.role != 'ROLE_Regular'"
+          >
+            Rent!
+          </button>
+        </form>
+      </td>
+      <td>
+        <button *ngIf="loggedUser"
+        [disabled]="loggedUser.role != 'ROLE_Regular'" (click)="buyCar(arrangement.id)">Buy car</button>
+      </td>
     </tr>
   </tbody>
 </table>

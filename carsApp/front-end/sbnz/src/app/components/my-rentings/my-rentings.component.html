@@ -1,0 +1,44 @@
+<div *ngIf="retingsRequests && retingsRequests.length > 0; else noRequests">
+  <table class="rent-requests-table">
+    <thead>
+      <tr>
+        <th>Schedule Date Time</th>
+        <th>Cancel Date Time</th>
+        <th>Begin Date Time</th>
+        <th>Return Date Time</th>
+        <th>User ID</th>
+        <th>Car ID</th>
+        <th>Cancel Reason</th>
+        <th>Return State</th>
+        <th>Is Canceled</th>
+        <th>Is Late</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let request of retingsRequests; let odd = odd"
+        [class.odd-row]="odd"
+      >
+        <td>{{ request.scheduleDT | date : "short" }}</td>
+        <td>{{ request.cancelDT | date : "short" }}</td>
+        <td>{{ request.beginDT | date : "short" }}</td>
+        <td>{{ request.returnDT | date : "short" }}</td>
+        <td>{{ request.userId }}</td>
+        <td>{{ request.carId }}</td>
+        <td>{{ request.cancelReason }}</td>
+        <td>{{ request.returnState }}</td>
+        <td>{{ request.canceled }}</td>
+        <td>{{ request.late }}</td>
+        <td *ngIf="!request.canceled && request.returnState.length == 0">
+          <label>Cancler reason:</label>
+          <input type="text" [(ngModel)]="request.cancelReason" />
+          <br />
+          <button (click)="cancel(request)">Cancel!</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<ng-template #noRequests>
+  <p>No rent requests available.</p>
+</ng-template>

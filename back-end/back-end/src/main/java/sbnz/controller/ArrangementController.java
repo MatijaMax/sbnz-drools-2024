@@ -318,12 +318,16 @@ public class ArrangementController {
             KieSession kSession = kieContainer.newKieSession("arrangementRecommendation");
             kSession.setGlobal("recommendationsOld", new ArrangementRecommendationService(aService.findAll(), arrangementGradeService.findAll(), aResService.getByUserId(userId), userId));
             kSession.setGlobal("preferenceOld", preference);
+            kSession.setGlobal("oldUserId", userId);
 
             for(Arrangement a: aService.findAll()){
                 kSession.insert(a);
             }
             for(ArrangementGrade g: arrangementGradeService.findAll()){
                 kSession.insert(g);
+            }
+            for(User u: userService.findAll()){
+                kSession.insert(u);
             }
 
             kSession.getAgenda().getAgendaGroup("novo").setFocus();
