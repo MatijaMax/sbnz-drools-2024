@@ -30,4 +30,14 @@ public class BuyRequestController {
         BuyRequestDTO createdBuyRequest = buyRequestService.createBuyRequest(buyRequestDTO);
         return ResponseEntity.ok(createdBuyRequest);
     }
+
+    @PostMapping("/pay/{id}")
+    public ResponseEntity<String> payOffBuyRequest(@PathVariable Integer id, @RequestParam Long amount) {
+        try {
+            buyRequestService.payOffBuyRequest(id, amount);
+            return ResponseEntity.ok("Payment successful");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Payment failed: " + e.getMessage());
+        }
+    }
 }

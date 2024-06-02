@@ -2,12 +2,15 @@ package sbnz.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sbnz.domain.Transaction;
 import sbnz.dto.BuyRequestDTO;
 import sbnz.domain.BuyRequest;
 import sbnz.repository.BuyRequestRepository;
 import sbnz.repository.CarRepository;
 import sbnz.repository.UserRepository;
+import sbnz.repository.TransactionRepository;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -22,6 +25,8 @@ public class BuyRequestService {
     @Autowired
     private CarRepository carRepository;
 
+    @Autowired
+    private TransactionRepository transactionRepository;
     public BuyRequest getBuyRequestById(Integer id) {
         Optional<BuyRequest> buyRequestOptional = buyRequestRepository.findById(id);
         if (buyRequestOptional.isPresent()) {
@@ -37,6 +42,12 @@ public class BuyRequestService {
         BuyRequest buyRequest = toEntity(buyRequestDTO, userRepository, carRepository);
         BuyRequest savedBuyRequest = buyRequestRepository.save(buyRequest);
         return new BuyRequestDTO(savedBuyRequest);
+    }
+
+    public void payOffBuyRequest(Integer id, Long amount) {
+        BuyRequest buyRequest = buyRequestRepository.findById(id).orElseThrow(() -> new RuntimeException("BuyRequest not found"));
+        Transaction transaction = new Transaction(buyRequest, LocalDate.now(), amount);
+        transactionRepository.save(transaction);
     }
 
     public BuyRequest toEntity(BuyRequestDTO dto, UserRepository userRepository, CarRepository carRepository) {
