@@ -28,10 +28,15 @@ query canPayMonthly( User $u )
         result( res ) )
 end
 
+query isNotTooOld( User $u )
+    not(exists(BuyRequest( user.getId()==$u.getId(), userAge + (int)(numberOfCreditPayments/12) > 75 )))
+end
+
 query userIsOk( User $u )
     notMoreThan3ActiveCredits( $u; ) and
     excededCreditReturnDate( $u; ) and
-    canPayMonthly( $u; )
+    canPayMonthly( $u; ) and
+    isNotTooOld( $u; )
 end
 
 rule "Is user buy request approved"

@@ -1,0 +1,47 @@
+package suspicionUserRules;
+
+import sbnz.domain.RentRequest;
+import sbnz.domain.User;
+import java.util.List;
+
+global User u;
+
+rule "Canceling after one day"
+    agenda-group "rule1"
+    when
+        List(size > 3) from collect (RentRequest( user.getId()==u.getId(), canceledAfterOneDay() ))
+    then
+        System.out.println("User " + u.getFirstName() + " is suspicious because he canceled after one day 3 times");
+end
+
+rule "Canceling one hour before beginning time"
+    agenda-group "rule2"
+    when
+        List(size > 3) from collect (RentRequest( user.getId()==u.getId(), canceledOneHourBeforeBeginning() ))
+    then
+        System.out.println("User " + u.getFirstName() + " is suspicious because he canceled one hour before beginning time 3 times");
+end
+
+rule "More than 2 dirty return states"
+    agenda-group "rule3"
+    when
+        List(size > 2) from collect (RentRequest( user.getId()==u.getId(), returnState.equals("dirty") ))
+    then
+        System.out.println("User " + u.getFirstName() + " is suspicious because he returned car dirty more than 2 times");
+end
+
+rule "More than 2 time late return"
+    agenda-group "rule4"
+    when
+        List(size > 2) from collect (RentRequest( user.getId()==u.getId(), getLate() ))
+    then
+        System.out.println("User " + u.getFirstName() + " is suspicious because he returned car late more than 2 times");
+end
+
+rule "Returned car is broken"
+    agenda-group "rule5"
+    when
+        exists(RentRequest( user.getId()==u.getId(), isBrokenOrHit() ))
+    then
+        System.out.println("User " + u.getFirstName() + " is suspicious because he returned car broken or hit");
+end
