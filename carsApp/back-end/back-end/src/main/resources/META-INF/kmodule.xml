@@ -38,5 +38,9 @@
     <kbase name="buyRule" packages="buyRules">
         <ksession name="buyRules"/>
     </kbase>
+
+    <kbase name="suspicionUserRule" packages="suspicionUserRules">
+        <ksession name="suspicionUserRules"/>
+    </kbase>
     
 </kmodule>

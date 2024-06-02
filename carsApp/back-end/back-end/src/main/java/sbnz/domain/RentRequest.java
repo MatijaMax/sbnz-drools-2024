@@ -34,8 +34,7 @@ public class RentRequest {
     @Column(name="isLate")
     Boolean isLate;
 
-    public RentRequest() {
-    }
+    public RentRequest() { }
 
     public RentRequest(Long id, LocalDateTime scheduleDT, LocalDateTime cancelDT, LocalDateTime beginDT, LocalDateTime returnDT, User user, Car car, String cancelReason, String returnState, Boolean isCanceled, Boolean isLate) {
         this.id = id;
@@ -138,5 +137,17 @@ public class RentRequest {
 
     public void setLate(Boolean late) {
         isLate = late;
+    }
+
+    public boolean canceledAfterOneDay() {
+        return cancelDT != null && scheduleDT != null && !scheduleDT.plusDays(1).isBefore(cancelDT);
+    }
+
+    public boolean canceledOneHourBeforeBeginning() {
+        return cancelDT != null && beginDT != null && !cancelDT.plusHours(1).isBefore(beginDT);
+    }
+
+    public boolean isBrokenOrHit() {
+        return returnState.equals("broken") || returnState.equals("hit");
     }
 }
