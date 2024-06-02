@@ -1,4 +1,5 @@
 export interface RentRequest {
+  id: number;
   scheduleDT: Date;
   cancelDT: Date;
   beginDT: Date;
@@ -7,6 +8,7 @@ export interface RentRequest {
   carId: number;
   cancelReason: string;
   returnState: string;
-  isCanceled: boolean;
-  isLate: boolean;
+  canceled: boolean;
+  late: boolean;
+  returnStateHelp: string;
 }
