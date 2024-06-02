@@ -42,6 +42,10 @@
           </button>
         </form>
       </td>
+      <td>
+        <button *ngIf="loggedUser"
+        [disabled]="loggedUser.role != 'ROLE_Regular'" (click)="buyCar(arrangement.id)">Buy car</button>
+      </td>
     </tr>
   </tbody>
 </table>

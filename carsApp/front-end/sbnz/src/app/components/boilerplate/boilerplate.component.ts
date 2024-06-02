@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Car } from 'src/app/model/car';
@@ -13,7 +13,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   templateUrl: './boilerplate.component.html',
   styleUrls: ['./boilerplate.component.css'],
 })
-export class BoilerplateComponent implements OnInit {
+export class BoilerplateComponent implements OnInit, OnDestroy {
   arrangementsAll: Car[];
   loggedUser: UserLogged | undefined = undefined;
   subscription: Subscription;
@@ -47,11 +47,18 @@ export class BoilerplateComponent implements OnInit {
       timeR: [''],
     });
   }
+
   ngOnInit(): void {
     this.GetArrangements();
     this.subscription = this.authService.loggedUser.subscribe((user) => {
       this.loggedUser = user;
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   GetArrangements() {
@@ -91,8 +98,12 @@ export class BoilerplateComponent implements OnInit {
     this.rentRequest.carId = c.id;
     this.carrService.rentRequestCreate(this.rentRequest).subscribe({
       next: (result: RentRequest) => {
-        console.log('AD');
+        console.log('Rent request created');
       },
     });
+  }
+
+  buyCar(i: Number) {
+    this.router.navigate(['/buy-car', i]);
   }
 }
