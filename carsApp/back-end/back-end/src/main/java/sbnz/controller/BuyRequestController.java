@@ -77,6 +77,7 @@ public class BuyRequestController {
         request1.setId(1);
         request1.setLeftToPay(200L);
         request1.setNumberOfCreditPayments(1);
+        request1.setUserAge(50);
         request1.setDateUntilToPay(LocalDate.now().plusDays(1));
         ksession.insert(request1);
 
@@ -86,6 +87,7 @@ public class BuyRequestController {
         request2.setId(1);
         request2.setLeftToPay(200L);
         request2.setNumberOfCreditPayments(1);
+        request2.setUserAge(50);
         request2.setDateUntilToPay(LocalDate.now().plusDays(1));
         ksession.insert(request2);
 
@@ -95,6 +97,7 @@ public class BuyRequestController {
         request3.setId(1);
         request3.setLeftToPay(200L);
         request3.setNumberOfCreditPayments(1);
+        request3.setUserAge(50);
         request3.setDateUntilToPay(LocalDate.now().plusDays(1));
         ksession.insert(request3);
 
@@ -104,6 +107,7 @@ public class BuyRequestController {
         request4.setId(1);
         request4.setLeftToPay(0L);
         request4.setNumberOfCreditPayments(1);
+        request4.setUserAge(50);
         request4.setDateUntilToPay(LocalDate.now().plusDays(1));
         ksession.insert(request4);
 
