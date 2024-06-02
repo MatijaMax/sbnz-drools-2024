@@ -30,6 +30,13 @@
   >
 
   <a
+    *ngIf="user && user.role == 'ROLE_Regular'"
+    mat-button
+    [routerLink]="['/buy-requests']"
+    >Buy requests</a
+  >
+
+  <a
     *ngIf="user && user.role == 'ROLE_Admin'"
     mat-button
     [routerLink]="['/admin-users-panel']"

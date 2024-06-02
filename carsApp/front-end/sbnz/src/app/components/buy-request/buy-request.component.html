@@ -1,0 +1,22 @@
+<h1 class="aorta">Your Buy Requests</h1>
+<div *ngIf="buyRequests.length === 0">
+  <p>You have no buy requests.</p>
+</div>
+<div *ngIf="buyRequests.length > 0">
+  <div *ngFor="let request of buyRequests">
+    <div class="request-card">
+      <p><strong>Request ID:</strong> {{ request.id }}</p>
+      <p><strong>Car ID:</strong> {{ request.carId }}</p>
+      <p><strong>Number of Credit Payments:</strong> {{ request.numberOfCreditPayments }}</p>
+      <p><strong>User Employment Type:</strong> {{ request.useremploymenttype }}</p>
+      <p><strong>Employment Start:</strong> {{ request.employmentStart }}</p>
+      <p><strong>Employment End:</strong> {{ request.employmentEnd }}</p>
+      <p><strong>Amount left to pay:</strong> {{ request.leftToPay }}</p>
+      <form (ngSubmit)="payRequest(request.id, amount)">
+        <label for="amount-{{ request.id }}">Amount:</label>
+        <input type="number" id="amount-{{ request.id }}" [(ngModel)]="amount" name="amount-{{ request.id }}" required>
+        <button type="submit">Pay</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 
 export interface BuyRequest {
+    id: number;
     userId: number;
     userAge: number;
     carId: number;
@@ -7,5 +8,6 @@ export interface BuyRequest {
     useremploymenttype: string;
     employmentStart?: string; // Optional field
     employmentEnd?: string;   // Optional field
+    leftToPay: number;
   }
   

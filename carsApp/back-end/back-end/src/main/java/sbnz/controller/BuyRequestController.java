@@ -7,6 +7,8 @@ import sbnz.domain.BuyRequest;
 import sbnz.dto.BuyRequestDTO;
 import sbnz.service.BuyRequestService;
 
+import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:5000", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/buy-requests")
@@ -39,5 +41,11 @@ public class BuyRequestController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Payment failed: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<BuyRequestDTO>> getBuyRequestsByUser(@PathVariable Integer userId) {
+        List<BuyRequestDTO> buyRequests = buyRequestService.getBuyRequestsByUser(userId);
+        return ResponseEntity.ok(buyRequests);
     }
 }

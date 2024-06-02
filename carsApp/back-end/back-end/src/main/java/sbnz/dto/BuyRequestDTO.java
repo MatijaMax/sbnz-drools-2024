@@ -13,6 +13,7 @@ public class BuyRequestDTO {
     private String useremploymenttype;
     private LocalDate employmentStart;
     private LocalDate employmentEnd;
+    private Long leftToPay;
 
     public BuyRequestDTO() {
     }
@@ -35,6 +36,14 @@ public class BuyRequestDTO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Long getLeftToPay() {
+        return leftToPay;
+    }
+
+    public void setLeftToPay(Long leftToPay) {
+        this.leftToPay = leftToPay;
     }
 
     public Integer getUserId() {
@@ -102,5 +111,6 @@ public class BuyRequestDTO {
         this.setUseremploymenttype(buyRequest.getUseremploymenttype().toString());
         this.setEmploymentStart(buyRequest.getEmploymentStart());
         this.setEmploymentEnd(buyRequest.getEmploymentEnd());
+        this.setLeftToPay(buyRequest.getLeftToPay());
     }
 }
