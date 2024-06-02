@@ -27,6 +27,7 @@ import { AdminUsersPanelComponent } from './components/admin-users-panel/admin-u
 import { BuyCarComponent } from './components/buy-car/buy-car.component';
 import { MyRentingsComponent } from './components/my-rentings/my-rentings.component';
 import { RetutningRentingsComponent } from './components/retutning-rentings/retutning-rentings.component';
+import { BuyRequestsComponent } from './components/buy-request/buy-request.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'companies', pathMatch: 'full' },
@@ -39,6 +40,7 @@ const appRoutes: Routes = [
   { path: 'register-car', component: RegisterArrangementComponent },
   { path: 'admin-users-panel', component: AdminUsersPanelComponent },
   { path: 'buy-car/:id', component: BuyCarComponent },
+  { path: 'buy-requests', component: BuyRequestsComponent },
 ];
 
 @NgModule({
@@ -55,6 +57,7 @@ const appRoutes: Routes = [
     BuyCarComponent,
     MyRentingsComponent,
     RetutningRentingsComponent,
+    BuyRequestsComponent,
   ],
   imports: [
     BrowserModule,

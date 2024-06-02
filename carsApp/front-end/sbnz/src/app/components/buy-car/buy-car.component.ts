@@ -51,6 +51,7 @@ export class BuyCarComponent implements OnInit {
     if (this.buyCarForm.valid) {
       const formValues = this.buyCarForm.value;
       const buyRequest: BuyRequest = {
+        id: 0,
         userId: this.loggedUser?.id,
         userAge: formValues.userAge,
         carId: Number(this.carId),
@@ -58,6 +59,7 @@ export class BuyCarComponent implements OnInit {
         useremploymenttype: formValues.useremploymenttype,
         employmentStart: formValues.employmentStart,
         employmentEnd: formValues.employmentEnd,
+        leftToPay: 0,
       };
 
       this.carService.createBuyRequest(buyRequest).subscribe({

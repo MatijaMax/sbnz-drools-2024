@@ -43,4 +43,16 @@ export class CarService {
   createBuyRequest(buyRequest: BuyRequest): Observable<any> {
     return this.http.post<any>(environment.apiHost + 'buy-requests', buyRequest);
   }
+
+  getBuyRequestsByUser(userId: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiHost}buy-requests/user/${userId}`);
+  }
+
+  payBuyRequest(requestId: number, amount: number): Observable<any> {
+    return this.http.post<any>(environment.apiHost + `buy-requests/pay/${requestId}`, null, {
+      params: {
+        amount: amount.toString()
+      }
+    });
+  }
 }

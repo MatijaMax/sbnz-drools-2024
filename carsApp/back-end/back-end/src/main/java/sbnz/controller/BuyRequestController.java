@@ -7,6 +7,8 @@ import sbnz.domain.BuyRequest;
 import sbnz.dto.BuyRequestDTO;
 import sbnz.service.BuyRequestService;
 
+import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:5000", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/buy-requests")
@@ -29,5 +31,21 @@ public class BuyRequestController {
     public ResponseEntity<BuyRequestDTO> createBuyRequest(@RequestBody BuyRequestDTO buyRequestDTO) {
         BuyRequestDTO createdBuyRequest = buyRequestService.createBuyRequest(buyRequestDTO);
         return ResponseEntity.ok(createdBuyRequest);
+    }
+
+    @PostMapping("/pay/{id}")
+    public ResponseEntity<String> payOffBuyRequest(@PathVariable Integer id, @RequestParam Long amount) {
+        try {
+            buyRequestService.payOffBuyRequest(id, amount);
+            return ResponseEntity.ok("Payment successful");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Payment failed: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<BuyRequestDTO>> getBuyRequestsByUser(@PathVariable Integer userId) {
+        List<BuyRequestDTO> buyRequests = buyRequestService.getBuyRequestsByUser(userId);
+        return ResponseEntity.ok(buyRequests);
     }
 }
