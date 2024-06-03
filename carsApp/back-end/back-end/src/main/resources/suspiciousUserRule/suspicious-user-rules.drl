@@ -11,6 +11,7 @@ rule "Canceling after one day"
     when
         List(size > 3) from collect (RentRequest( user.getId()==u.getId(), canceledAfterOneDay() ))
     then
+        u.setProfession("sus");
         System.out.println("User " + u.getFirstName() + " is suspicious because he canceled after one day 3 times");
 end
 
@@ -19,6 +20,7 @@ rule "Canceling one hour before beginning time"
     when
         List(size > 3) from collect (RentRequest( user.getId()==u.getId(), canceledOneHourBeforeBeginning() ))
     then
+        u.setProfession("sus");
         System.out.println("User " + u.getFirstName() + " is suspicious because he canceled one hour before beginning time 3 times");
 end
 
@@ -27,6 +29,7 @@ rule "More than 2 dirty return states"
     when
         List(size > 2) from collect (RentRequest( user.getId()==u.getId(), returnState.equals("dirty") ))
     then
+        u.setProfession("sus");
         System.out.println("User " + u.getFirstName() + " is suspicious because he returned car dirty more than 2 times");
 end
 
@@ -35,6 +38,7 @@ rule "More than 2 time late return"
     when
         List(size > 2) from collect (RentRequest( user.getId()==u.getId(), getLate() ))
     then
+        u.setProfession("sus");
         System.out.println("User " + u.getFirstName() + " is suspicious because he returned car late more than 2 times");
 end
 
@@ -43,5 +47,6 @@ rule "Returned car is broken"
     when
         exists(RentRequest( user.getId()==u.getId(), isBrokenOrHit() ))
     then
+        u.setProfession("sus");
         System.out.println("User " + u.getFirstName() + " is suspicious because he returned car broken or hit");
 end

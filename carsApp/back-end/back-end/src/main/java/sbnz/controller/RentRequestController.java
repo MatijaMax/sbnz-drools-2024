@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import sbnz.domain.RentRequest;
 import sbnz.domain.User;
 import sbnz.dto.RentRentingDto;
+import sbnz.dto.SuspiciousUsersDto;
 import sbnz.service.CarService;
 import sbnz.service.RentRequestService;
 import sbnz.service.UserService;
@@ -17,7 +18,9 @@ import sbnz.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:5000", allowedHeaders = "*")
 @RestController
@@ -122,6 +125,40 @@ public class RentRequestController {
         return new ResponseEntity<>(new RentRentingDto(rq), HttpStatus.CREATED);
     }
 
+    @GetMapping(value = "suspiciousUsers")
+    public ResponseEntity<SuspiciousUsersDto> suspiciousUsers() {
+        SuspiciousUsersDto sU = new SuspiciousUsersDto();
+        Set<Integer> susIdsUnique = new HashSet<>();
+        List<User> users = uService.findAll();
+        for(User temp : users){
+            KieContainer kc = KieServices.Factory.get().getKieClasspathContainer();
+            KieSession ksession = kc.newKieSession("suspicionUserRules");
+
+            ksession.setGlobal("u", temp);
+
+            for(RentRequest r : rService.findAll()) {
+                ksession.insert(r);
+            }
+
+            ksession.getAgenda().getAgendaGroup("rule5").setFocus();
+            ksession.fireAllRules();
+            ksession.getAgenda().getAgendaGroup("rule4").setFocus();
+            ksession.fireAllRules();
+            ksession.getAgenda().getAgendaGroup("rule3").setFocus();
+            ksession.fireAllRules();
+            ksession.getAgenda().getAgendaGroup("rule2").setFocus();
+            ksession.fireAllRules();
+            ksession.getAgenda().getAgendaGroup("rule1").setFocus();
+            ksession.fireAllRules();
+        }
+        for(User u : users) {
+            if(u.getProfession().equals("sus")){
+                susIdsUnique.add(u.getId());
+            }
+        }
+        sU.setIdsUnique(susIdsUnique);
+        return new ResponseEntity<>(sU, HttpStatus.OK);
+    }
     @GetMapping(value = "testRule1")
     public ResponseEntity<String> testRule1() {
 

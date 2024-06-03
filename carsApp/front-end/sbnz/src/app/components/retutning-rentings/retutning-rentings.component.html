@@ -18,6 +18,7 @@
       <tr
         *ngFor="let request of retingsRequests; let odd = odd"
         [class.odd-row]="odd"
+        [class.red-row]="isSuspiciousUser(request.userId)"
       >
         <td>{{ request.scheduleDT | date : "short" }}</td>
         <td>{{ request.cancelDT | date : "short" }}</td>

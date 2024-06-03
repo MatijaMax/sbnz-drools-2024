@@ -36,23 +36,36 @@ export class CarService {
     return this.http.get<any>(environment.apiHost + 'rents/all');
   }
 
+  getSus(): Observable<any> {
+    return this.http.get<any>(environment.apiHost + 'rents/suspiciousUsers');
+  }
+
   getAllRentRequestsByUser(id: number): Observable<any> {
     return this.http.get<any>(environment.apiHost + 'rents/all/' + id);
   }
 
   createBuyRequest(buyRequest: BuyRequest): Observable<any> {
-    return this.http.post<any>(environment.apiHost + 'buy-requests', buyRequest);
+    return this.http.post<any>(
+      environment.apiHost + 'buy-requests',
+      buyRequest
+    );
   }
 
   getBuyRequestsByUser(userId: number): Observable<any> {
-    return this.http.get<any>(`${environment.apiHost}buy-requests/user/${userId}`);
+    return this.http.get<any>(
+      `${environment.apiHost}buy-requests/user/${userId}`
+    );
   }
 
   payBuyRequest(requestId: number, amount: number): Observable<any> {
-    return this.http.post<any>(environment.apiHost + `buy-requests/pay/${requestId}`, null, {
-      params: {
-        amount: amount.toString()
+    return this.http.post<any>(
+      environment.apiHost + `buy-requests/pay/${requestId}`,
+      null,
+      {
+        params: {
+          amount: amount.toString(),
+        },
       }
-    });
+    );
   }
 }

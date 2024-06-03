@@ -22,7 +22,6 @@ import { UserServiceService } from './services/user-service.service';
 import { RegisterArrangementComponent } from './components/register-arrangement/register-arrangement.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-import { RentingsComponent } from './components/rentings/rentings.component';
 import { AdminUsersPanelComponent } from './components/admin-users-panel/admin-users-panel.component';
 import { BuyCarComponent } from './components/buy-car/buy-car.component';
 import { MyRentingsComponent } from './components/my-rentings/my-rentings.component';
@@ -34,7 +33,6 @@ const appRoutes: Routes = [
   { path: 'boilerplate', component: BoilerplateComponent },
   { path: 'my-rentings', component: MyRentingsComponent },
   { path: 'return-rentings', component: RetutningRentingsComponent },
-  { path: 'rentings', component: RentingsComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register-car', component: RegisterArrangementComponent },
@@ -51,8 +49,6 @@ const appRoutes: Routes = [
     BoilerplateComponent,
     LoginComponent,
     RegisterArrangementComponent,
-    RentingsComponent,
-    RentingsComponent,
     AdminUsersPanelComponent,
     BuyCarComponent,
     MyRentingsComponent,

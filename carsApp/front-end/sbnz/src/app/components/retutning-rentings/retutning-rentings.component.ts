@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RentRequest } from 'src/app/model/rentRequest';
+import { Suspects } from 'src/app/model/susDto';
 import { UserLogged } from 'src/app/model/user-logged.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { CarService } from 'src/app/services/cars-service';
@@ -13,6 +14,7 @@ import { CarService } from 'src/app/services/cars-service';
 })
 export class RetutningRentingsComponent {
   loggedUser: UserLogged | undefined = undefined;
+  suspiciousUsers: number[] = [];
   subscription: Subscription;
   retingsRequests: RentRequest[];
   constructor(
@@ -25,12 +27,24 @@ export class RetutningRentingsComponent {
       this.GetRRequests();
     });
   }
+
+  LoadSus() {
+    if (this.loggedUser?.id == undefined) {
+      return;
+    }
+    this.carrService.getSus().subscribe({
+      next: (result: Suspects) => {
+        this.suspiciousUsers = result.ids;
+      },
+    });
+  }
   GetRRequests() {
     if (this.loggedUser?.id == undefined) {
       return;
     }
     this.carrService.getAllRentRequests().subscribe({
       next: (result: RentRequest[]) => {
+        this.LoadSus();
         this.retingsRequests = result;
       },
     });
@@ -43,5 +57,9 @@ export class RetutningRentingsComponent {
         this.GetRRequests();
       },
     });
+  }
+
+  isSuspiciousUser(userId: number): boolean {
+    return this.suspiciousUsers.includes(userId);
   }
 }
